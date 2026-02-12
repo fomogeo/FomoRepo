@@ -8,7 +8,7 @@ import EmailSignup from '@/components/EmailSignup'
 export const revalidate = 3600 // Revalidate every hour
 
 export default async function Home() {
-  const { data: products } = await getProducts()
+  const products = await getProducts()
 
   return (
     <main className="min-h-screen">
