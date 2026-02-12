@@ -1,0 +1,4 @@
+name,description,price,original_price,image_url,category,url
+"Wireless Headphones","Premium noise-cancelling headphones with 30-hour battery",199.99,299.99,"https://images.unsplash.com/photo-1505740420928-5e560c06d30e","Electronics","https://amazon.com/dp/B08EXAMPLE"
+"Smart Watch","Fitness tracking and notifications on your wrist",249.99,349.99,"https://images.unsplash.com/photo-1523275335684-37898b6baf30","Electronics","https://amazon.com/dp/B08EXAMPLE2"
+"Coffee Maker","Programmable coffee maker with timer",89.99,129.99,"https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6","Home","https://amazon.com/dp/B08EXAMPLE3"
