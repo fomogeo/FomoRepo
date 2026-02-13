@@ -78,12 +78,14 @@ export async function generateBlogPost(config: BlogPostConfig) {
   // Generate excerpt
   const excerpt = content.substring(0, 200) + '...'
 
-  // Generate slug
+  // Generate slug with Date
+ 
+  const dateSuffix = new Date().toISOString().split('T')[0]; // Result: 2026-02-13
   const slug = title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-
+	.toLowerCase()
+	.replace(/[^a-z0-9]+/g, '-')
+	.replace(/(^-|-$)/g, '') + '-' + dateSuffix; 
+  
   return {
     title,
     slug,
