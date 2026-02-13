@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
         slug: blogPost.slug,
         content: blogPost.content,
         excerpt: blogPost.excerpt,
-        author: 'FOMO Finds Team',
+        author: 'FomoGeo Team',
         published_at: new Date().toISOString(),
         is_published: true, // Auto-publish, or set to false for review
         featured_image: blogPost.featured_image,
