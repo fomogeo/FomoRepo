@@ -123,7 +123,7 @@ export default function Footer() {
       </div>
     </footer>
   )
-}
+
                 <Link href="/deals" className="text-gray-400 hover:text-white transition-colors">
                   Deals
                 </Link>
