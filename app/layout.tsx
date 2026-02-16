@@ -8,9 +8,32 @@ import EmailPopup from '@/components/EmailPopup'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_SITE_NAME || 'FOMO Finds',
-  description: process.env.NEXT_PUBLIC_SITE_TAGLINE || "Don't Miss What Everyone Is Buying",
-  keywords: 'deals, discounts, trending products, best sellers, coupons, affiliate, shopping',
+  title: {
+    default: 'FomoGeo - Verified Deals from Around the World',
+    template: '%s | FomoGeo'
+  },
+  description: 'Discover verified deals and trending products from around the globe. Your trusted source for the best shopping deals worldwide.',
+  keywords: 'deals, discounts, trending products, best sellers, verified deals, worldwide shopping, global deals, FomoGeo',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '64x64' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+  },
+  openGraph: {
+    title: 'FomoGeo - Verified Deals from Around the World',
+    description: 'Discover verified deals and trending products from around the globe.',
+    siteName: 'FomoGeo',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FomoGeo - Verified Deals from Around the World',
+    description: 'Discover verified deals and trending products from around the globe.',
+  },
 }
 
 export default function RootLayout({

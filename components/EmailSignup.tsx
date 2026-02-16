@@ -59,9 +59,9 @@ export default function EmailSignup() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="bg-white text-emerald-700 font-bold px-6 py-3 rounded-lg hover:bg-emerald-50 transition-colors disabled:opacity-50 shadow-lg"
+            className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-6 py-3 rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all disabled:opacity-50 shadow-lg hover:shadow-xl"
           >
-            {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+            {status === 'loading' ? 'Subscribing...' : 'Subscribe Now'}
           </button>
         </div>
 

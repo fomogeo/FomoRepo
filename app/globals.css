@@ -3,27 +3,34 @@
 @tailwind utilities;
 
 :root {
-  /* FomoGeo Brand Colors */
-  --fg-primary: #10B981; /* Emerald 500 */
-  --fg-primary-dark: #059669; /* Emerald 600 */
-  --fg-primary-light: #D1FAE5; /* Emerald 100 */
+  /* FomoGeo Brand Colors - Matching Logo */
+  --fg-primary: #1E90FF; /* Dodger Blue - Logo blue */
+  --fg-primary-dark: #1565C0; /* Darker blue */
+  --fg-primary-light: #64B5F6; /* Light blue */
   
-  --fg-secondary: #0F172A; /* Slate 900 */
-  --fg-secondary-light: #1E293B; /* Slate 800 */
+  --fg-secondary: #FF8C00; /* Dark Orange - Logo orange */
+  --fg-secondary-light: #FFB347; /* Light orange */
+  --fg-secondary-dark: #E67E00; /* Darker orange */
   
-  --fg-accent: #F59E0B; /* Amber 500 - for deals/discounts */
-  --fg-accent-light: #FEF3C7; /* Amber 50 */
+  --fg-accent: #32CD32; /* Lime Green - Money/deals */
+  --fg-accent-light: #90EE90; /* Light green */
+  --fg-accent-dark: #228B22; /* Forest green */
   
-  --fg-text-primary: #0F172A; /* Slate 900 */
-  --fg-text-secondary: #64748B; /* Slate 500 */
+  --fg-text-primary: #0F172A; /* Dark navy - Logo dark */
+  --fg-text-secondary: #475569; /* Slate 600 */
   --fg-text-muted: #94A3B8; /* Slate 400 */
   
   --fg-bg-primary: #FFFFFF;
   --fg-bg-secondary: #F8FAFC; /* Slate 50 */
-  --fg-bg-tertiary: #F1F5F9; /* Slate 100 */
+  --fg-bg-tertiary: #F0F9FF; /* Sky 50 */
   
   --fg-border: #E2E8F0; /* Slate 200 */
   --fg-border-hover: #CBD5E1; /* Slate 300 */
+  
+  /* Gradient combinations from logo */
+  --fg-gradient-blue: linear-gradient(135deg, #1E90FF 0%, #00BFFF 100%);
+  --fg-gradient-orange: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+  --fg-gradient-primary: linear-gradient(135deg, #1E90FF 0%, #1565C0 100%);
 }
 
 * {
@@ -53,19 +60,24 @@ a {
 /* Deal Card Styles */
 .deal-card {
   @apply bg-white rounded-2xl border-2 border-slate-200 overflow-hidden transition-all duration-300;
-  @apply hover:border-emerald-500 hover:shadow-xl hover:-translate-y-1;
+  @apply hover:border-blue-500 hover:shadow-xl hover:-translate-y-1;
 }
 
 /* Discount Badge */
 .discount-badge {
-  @apply absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white;
+  @apply absolute top-3 right-3 bg-gradient-to-r from-orange-500 to-amber-400 text-white;
   @apply px-3 py-1 rounded-full text-sm font-bold shadow-lg z-10;
 }
 
 /* CTA Button Styles */
 .cta-button-primary {
-  @apply px-6 py-3 bg-emerald-600 text-white font-semibold rounded-xl;
-  @apply hover:bg-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl;
+  @apply px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-xl;
+  @apply hover:from-blue-700 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl;
+}
+
+.cta-button-secondary {
+  @apply px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-xl;
+  @apply hover:from-orange-600 hover:to-amber-600 transition-all duration-200 shadow-lg hover:shadow-xl;
 }
 
 html {
@@ -73,5 +85,5 @@ html {
 }
 
 ::selection {
-  @apply bg-emerald-100 text-emerald-900;
+  @apply bg-blue-100 text-blue-900;
 }

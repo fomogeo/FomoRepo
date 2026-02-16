@@ -1,33 +1,129 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Mail, Twitter, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'FOMO Finds'
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About */}
+          {/* About with Logo */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">{siteName}</h3>
-            <p className="text-gray-400 text-sm">
-              Your trusted source for trending products, best deals, and exclusive discounts.
-              We help you find what everyone is buying.
+            <Image 
+              src="/logo.png" 
+              alt="FomoGeo" 
+              width={160} 
+              height={55}
+              className="h-12 w-auto mb-4"
+            />
+            <p className="text-slate-400 text-sm">
+              Your trusted source for verified deals from around the world. 
+              Discover trending products and exclusive discounts daily.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-bold mb-4 text-blue-400">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/" className="text-slate-400 hover:text-blue-400 transition-colors">
                   Home
                 </Link>
               </li>
               <li>
+                <Link href="/categories" className="text-slate-400 hover:text-blue-400 transition-colors">
+                  Categories
+                </Link>
+              </li>
+              <li>
+                <Link href="/deals" className="text-slate-400 hover:text-blue-400 transition-colors">
+                  Deals
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="text-slate-400 hover:text-blue-400 transition-colors">
+                  Blog
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-lg font-bold mb-4 text-orange-400">Legal</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/legal/privacy" className="text-slate-400 hover:text-orange-400 transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/terms" className="text-slate-400 hover:text-orange-400 transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/disclosure" className="text-slate-400 hover:text-orange-400 transition-colors">
+                  Affiliate Disclosure
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Social & Newsletter */}
+          <div>
+            <h3 className="text-lg font-bold mb-4 text-green-400">Connect</h3>
+            <div className="flex space-x-4 mb-4">
+              <a 
+                href="https://twitter.com/fomogeo" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-blue-400 transition-colors"
+              >
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://facebook.com/fomogeo" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-blue-600 transition-colors"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://instagram.com/fomogeo" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-pink-500 transition-colors"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+            </div>
+            <Link 
+              href="/#email-signup"
+              className="inline-flex items-center space-x-2 text-sm text-slate-400 hover:text-white transition-colors"
+            >
+              <Mail className="h-4 w-4" />
+              <span>Subscribe to deals</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-700 mt-8 pt-8 text-center text-sm text-slate-400">
+          <p>&copy; {currentYear} FomoGeo. All rights reserved.</p>
+          <p className="mt-2 text-xs">
+            We may earn a commission from purchases made through our affiliate links. 
+            See our <Link href="/legal/disclosure" className="text-blue-400 hover:underline">disclosure</Link> for details.
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}
                 <Link href="/deals" className="text-gray-400 hover:text-white transition-colors">
                   Deals
                 </Link>
