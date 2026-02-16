@@ -59,7 +59,7 @@ export default function EmailSignup() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="bg-white text-primary-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+            className="bg-white text-emerald-700 font-bold px-6 py-3 rounded-lg hover:bg-emerald-50 transition-colors disabled:opacity-50 shadow-lg"
           >
             {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
           </button>

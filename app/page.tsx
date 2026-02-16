@@ -37,7 +37,7 @@ export default async function Home() {
       </section>
 
       {/* Email Signup */}
-      <section className="py-16 bg-emerald-50">
+      <section className="py-16 bg-gradient-to-br from-emerald-600 to-emerald-500">
         <EmailSignup />
       </section>
 
