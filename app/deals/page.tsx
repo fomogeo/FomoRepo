@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import ProductGrid from '@/components/ProductGrid'
 import { getProducts } from '@/lib/supabase'
 import { Zap } from 'lucide-react'

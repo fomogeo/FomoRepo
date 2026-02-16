@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getProducts } from '@/lib/supabase'
 import Hero from '@/components/Hero'
 import TrendingSection from '@/components/TrendingSection'

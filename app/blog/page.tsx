@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import Link from 'next/link'
 import { getBlogPosts } from '@/lib/supabase'
 import { Calendar, User, ArrowRight } from 'lucide-react'
