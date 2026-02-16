@@ -15,7 +15,7 @@ import { supabaseAdmin } from '@/lib/supabase'
  * - Marks deals as expired if no longer available
  * - Calculates discount percentages
  */
-
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     // Security check

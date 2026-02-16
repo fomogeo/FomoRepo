@@ -18,7 +18,7 @@ import {
  * 1. Process scheduled posts from queue
  * 2. Create and post new promotional content
  * 
- * Schedule: Every 2 hours (0 */2 * * *)
+ * Schedule: Every 2 hours (0 2 * * *)
  * 
  * Platforms supported:
  * - Twitter/X
@@ -26,6 +26,8 @@ import {
  * - Pinterest
  * - Instagram
  */
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {

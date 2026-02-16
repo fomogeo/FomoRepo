@@ -21,6 +21,7 @@ import { generateBlogPostWithImages, getTrendingTopics } from '@/lib/content-gen
  * - Auto-finds relevant images
  * - Varies content types (reviews, guides, comparisons)
  */
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {

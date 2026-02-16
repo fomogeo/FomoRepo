@@ -16,6 +16,7 @@ import { supabaseAdmin } from '@/lib/supabase'
  * This ensures your "Trending" section always shows truly popular products
  */
 
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     // Security check
