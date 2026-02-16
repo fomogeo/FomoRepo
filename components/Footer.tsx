@@ -121,8 +121,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
-  )
 
                 <Link href="/deals" className="text-gray-400 hover:text-white transition-colors">
                   Deals
