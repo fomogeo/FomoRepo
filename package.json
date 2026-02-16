@@ -1,7 +1,7 @@
 {
-  "name": "fomo-deals-platform",
+  "name": "FomoGeo Platform",
   "version": "1.0.0",
-  "description": "Automated FOMO deals affiliate website",
+  "description": "Automated FomoGeo affiliate website",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
