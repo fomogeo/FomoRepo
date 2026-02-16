@@ -18,7 +18,7 @@ import {
  * 1. Process scheduled posts from queue
  * 2. Create and post new promotional content
  * 
- * Schedule: Every 2 hours (0 * /2 * * *)
+ * Schedule: Every 2 hours (0 */2 * * *)
  * 
  * Platforms supported:
  * - Twitter/X
@@ -26,15 +26,20 @@ import {
  * - Pinterest
  * - Instagram
  */
-export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
     // Security check
     const authHeader = request.headers.get('authorization')
+    const querySecret = request.nextUrl.searchParams.get('secret')
     const cronSecret = process.env.CRON_SECRET
     
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    const isAuthorized = cronSecret && (
+      authHeader === `Bearer ${cronSecret}` ||
+      querySecret === cronSecret
+    )
+    
+    if (cronSecret && !isAuthorized) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

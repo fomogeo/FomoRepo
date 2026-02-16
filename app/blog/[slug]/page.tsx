@@ -83,6 +83,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Convert markdown content to HTML
   const htmlContent = markdownToHtml(post.content)
+  
+  // Strip markdown from excerpt
+  const cleanExcerpt = post.excerpt ? post.excerpt
+    .replace(/#{1,6}\s/g, '') // Remove headers
+    .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold
+    .replace(/\*(.*?)\*/g, '$1') // Remove italic
+    .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links
+    .replace(/`(.*?)`/g, '$1') // Remove code
+    .trim() : ''
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -135,10 +144,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )}
 
         {/* Excerpt */}
-        {post.excerpt && (
-          <div className="mb-8 p-6 bg-emerald-50 border-l-4 border-emerald-600 rounded-lg">
-            <p className="text-lg text-slate-700 italic">
-              {post.excerpt}
+        {cleanExcerpt && (
+          <div className="mb-8 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-lg">
+            <p className="text-lg text-slate-700 italic leading-relaxed">
+              {cleanExcerpt}
             </p>
           </div>
         )}

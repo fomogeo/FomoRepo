@@ -36,9 +36,50 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Email Signup */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-500">
-        <EmailSignup />
+      {/* Email Signup - Prominent Section */}
+      <section id="email-signup" className="py-20 bg-gradient-to-br from-orange-500 via-amber-500 to-orange-400 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="relative">
+          <div className="container mx-auto px-4 text-center mb-8">
+            <div className="inline-block px-4 py-2 bg-white/20 rounded-full text-white font-semibold mb-4 backdrop-blur-sm">
+              💰 Exclusive Subscriber Benefits
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+              Get the Best Deals First!
+            </h2>
+            <p className="text-xl text-orange-50 max-w-2xl mx-auto mb-2">
+              Join thousands of smart shoppers who never miss a deal
+            </p>
+          </div>
+          
+          <EmailSignup />
+          
+          {/* Benefits */}
+          <div className="container mx-auto px-4 mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">🎯</div>
+                <h3 className="text-white font-bold mb-2">Early Access</h3>
+                <p className="text-orange-50 text-sm">Get deals before they go public</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">📧</div>
+                <h3 className="text-white font-bold mb-2">Weekly Roundup</h3>
+                <p className="text-orange-50 text-sm">Best deals curated just for you</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">🎁</div>
+                <h3 className="text-white font-bold mb-2">Exclusive Codes</h3>
+                <p className="text-orange-50 text-sm">Subscriber-only discount codes</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Trust Section */}

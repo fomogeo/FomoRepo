@@ -36,44 +36,37 @@ export default function EmailSignup() {
   }
 
   return (
-    <div className="text-center">
-      <Mail className="h-12 w-12 mx-auto mb-4 text-white" />
-      <h2 className="text-3xl font-bold text-white mb-2">
-        Never Miss a Deal
-      </h2>
-      <p className="text-white opacity-90 mb-6">
-        Get exclusive discounts and trending products delivered to your inbox
-      </p>
-
+    <div className="text-center max-w-2xl mx-auto px-4">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
         <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Enter your email address"
             required
-            className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white text-gray-900"
+            className="flex-1 px-5 py-4 rounded-xl focus:outline-none focus:ring-4 focus:ring-white/50 text-slate-900 font-medium shadow-lg"
             disabled={status === 'loading'}
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-6 py-3 rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all disabled:opacity-50 shadow-lg hover:shadow-xl"
+            className="bg-white text-orange-600 font-bold px-8 py-4 rounded-xl hover:bg-orange-50 transition-all disabled:opacity-50 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 whitespace-nowrap"
           >
-            {status === 'loading' ? 'Subscribing...' : 'Subscribe Now'}
+            {status === 'loading' ? 'Subscribing...' : 'Subscribe Free →'}
           </button>
         </div>
 
         {message && (
-          <p className={`mt-3 text-sm ${status === 'success' ? 'text-white' : 'text-red-200'}`}>
+          <p className={`mt-4 text-sm font-medium ${status === 'success' ? 'text-white bg-green-500/20 backdrop-blur-sm py-2 px-4 rounded-lg' : 'text-red-100 bg-red-500/20 backdrop-blur-sm py-2 px-4 rounded-lg'}`}>
             {message}
           </p>
         )}
       </form>
 
-      <p className="text-xs text-white opacity-75 mt-4">
-        We respect your privacy. Unsubscribe anytime.
+      <p className="text-sm text-orange-50 mt-4 flex items-center justify-center gap-2">
+        <span className="text-lg">🔒</span>
+        <span>We respect your privacy. Unsubscribe anytime. No spam, ever.</span>
       </p>
     </div>
   )

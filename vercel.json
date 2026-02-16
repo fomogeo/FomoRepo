@@ -28,7 +28,7 @@
     },
     {
       "path": "/api/cron/social-media-post",
-      "schedule": "0 6 * * *"
+      "schedule": "0 */2 * * *"
     }
   ]
 }
