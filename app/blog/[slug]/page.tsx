@@ -3,6 +3,50 @@ import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/supabase'
 import Link from 'next/link'
 
+// Simple Markdown to HTML converter
+function markdownToHtml(markdown: string): string {
+  let html = markdown
+  
+  // Headers
+  html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>')
+  html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>')
+  html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>')
+  
+  // Bold
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+  
+  // Italic
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>')
+  
+  // Links
+  html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-emerald-600 hover:underline">$1</a>')
+  
+  // Line breaks and paragraphs
+  html = html.split('\n\n').map(para => {
+    para = para.trim()
+    if (!para) return ''
+    
+    // Don't wrap if already has HTML tags
+    if (para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<ol')) {
+      return para
+    }
+    
+    // Check for list items
+    if (para.includes('\n- ')) {
+      const items = para.split('\n- ').filter(i => i.trim())
+      const listItems = items.map(item => `<li>${item.trim()}</li>`).join('\n')
+      return `<ul>${listItems}</ul>`
+    }
+    
+    return `<p>${para}</p>`
+  }).join('\n')
+  
+  // Single line breaks
+  html = html.replace(/\n/g, '<br>')
+  
+  return html
+}
+
 interface BlogPostPageProps {
   params: {
     slug: string
@@ -36,6 +80,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     month: 'long',
     day: 'numeric'
   })
+
+  // Convert markdown content to HTML
+  const htmlContent = markdownToHtml(post.content)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -111,7 +158,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             prose-img:rounded-xl prose-img:shadow-lg
             prose-blockquote:border-l-4 prose-blockquote:border-emerald-600 
             prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-slate-700"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
         {/* Tags */}
