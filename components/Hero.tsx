@@ -29,6 +29,21 @@ export default function Hero() {
           </div>
 
           <p className="text-xl md:text-2xl mb-8 text-white font-semibold drop-shadow-lg">
+
+          {/* Large Logo */}
+          <div className="mb-8">
+            <Image 
+              src="/logo.png" 
+              alt="FomoGeo - Verified Deals from Around the World" 
+              width={500} 
+              height={165}
+              className="h-32 md:h-40 w-auto mx-auto drop-shadow-2xl"
+              priority
+            />
+          </div>
+          
+          <p className="text-xl md:text-2xl mb-8 text-blue-50 font-medium">
+
             {tagline}
           </p>
           

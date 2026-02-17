@@ -16,8 +16,12 @@ import { supabaseAdmin } from '@/lib/supabase'
  * 3. GitHub Actions
  * 
  * Security: Add CRON_SECRET to env vars and check it here
- */
-
+ 
+<<<<<<< HEAD
+*/
+=======
+export const dynamic = 'force-dynamic';
+//>>>>>>> 0152ba39897fa04402805b32dd769eec08331e88
 export async function GET(request: NextRequest) {
   try {
     // Security check - verify cron secret
