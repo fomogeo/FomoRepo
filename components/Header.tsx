@@ -17,59 +17,31 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 gap-4">
 
-          {/* Logo */}
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity shrink-0">
-            <Image
-              src="/logo.png"
-              alt="FomoGeo"
-              width={200}
-              height={65}
-              className="h-11 w-auto"
-              priority
-            />
+            <Image src="/logo.png" alt="FomoGeo" width={200} height={65} className="h-11 w-auto" priority />
           </Link>
 
-          {/* Live clock */}
           <LiveClock />
 
-          {/* Navigation */}
           <nav className="flex items-center space-x-2 md:space-x-4 shrink-0">
-            <Link
-              href="/categories"
-              className="flex items-center space-x-1 font-semibold text-sm transition-colors px-2 py-1 rounded-lg hover:bg-white/5"
-              style={{ color: '#7EB8D8' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#00D4C8')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#7EB8D8')}
-            >
+            <Link href="/categories" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
               <Grid3x3 className="h-4 w-4" />
               <span className="hidden sm:inline">Categories</span>
             </Link>
-            <Link
-              href="/deals"
-              className="flex items-center space-x-1 font-semibold text-sm transition-colors px-2 py-1 rounded-lg hover:bg-white/5"
-              style={{ color: '#7EB8D8' }}
-            >
+            <Link href="/deals" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
               <Tag className="h-4 w-4" />
               <span className="hidden sm:inline">Deals</span>
             </Link>
-            <Link
-              href="/blog"
-              className="flex items-center space-x-1 font-semibold text-sm transition-colors px-2 py-1 rounded-lg hover:bg-white/5"
-              style={{ color: '#7EB8D8' }}
-            >
+            <Link href="/blog" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Blog</span>
             </Link>
-            <Link
-              href="/#email-signup"
-              className="btn-gold px-4 py-2 text-sm whitespace-nowrap"
-            >
+            <Link href="/#email-signup" className="btn-gold px-4 py-2 text-sm whitespace-nowrap">
               🔥 Get Deals
             </Link>
           </nav>
         </div>
       </div>
-
       <SeasonalBanner />
     </header>
   )

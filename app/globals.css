@@ -154,3 +154,46 @@ html { scroll-behavior: smooth; }
   padding: 12px 20px;
   border-radius: 0 8px 8px 0;
 }
+
+/* ── Hover colour utilities (CSS-only, works in server components) ── */
+.fg-nav-link       { color: #7EB8D8; transition: color 0.2s; }
+.fg-nav-link:hover { color: #00D4C8; }
+
+.fg-footer-link-teal       { color: #7EB8D8; transition: color 0.2s; }
+.fg-footer-link-teal:hover { color: #00D4C8; }
+
+.fg-footer-link-gold       { color: #7EB8D8; transition: color 0.2s; }
+.fg-footer-link-gold:hover { color: #FFB300; }
+
+.fg-close-btn       { color: #4A7A9B; transition: color 0.2s; }
+.fg-close-btn:hover { color: #E8F4FD; }
+
+/* Blog card hover — border + title */
+.fg-blog-card {
+  background: linear-gradient(135deg, #0D2840, #091E30);
+  border: 1px solid #1A3A55;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.fg-blog-card:hover              { border-color: rgba(0,212,200,0.5); transform: translateY(-4px); }
+.fg-blog-card .fg-card-title     { color: #E8F4FD; transition: color 0.2s; }
+.fg-blog-card:hover .fg-card-title { color: #00D4C8; }
+
+/* Category card hover */
+.fg-cat-card {
+  background: linear-gradient(135deg, #0D2840, #091E30);
+  border: 1px solid rgba(0,212,200,0.2);
+  border-radius: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  display: block;
+  padding: 1.25rem;
+  text-align: center;
+}
+.fg-cat-card:hover {
+  border-color: rgba(0,212,200,0.7);
+  box-shadow: 0 8px 30px rgba(0,212,200,0.15);
+  transform: translateY(-8px);
+}
+.fg-cat-card .fg-cat-icon    { display: inline-block; transition: transform 0.3s; }
+.fg-cat-card:hover .fg-cat-icon { transform: scale(1.15); }

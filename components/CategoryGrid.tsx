@@ -26,19 +26,7 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="group relative p-5 rounded-2xl transition-all duration-300 hover:-translate-y-2 text-center"
-              style={{
-                background: 'linear-gradient(135deg, #0D2840, #091E30)',
-                border: `1px solid rgba(0,212,200,0.2)`,
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = category.color || '#00D4C8'
-                e.currentTarget.style.boxShadow = `0 8px 30px ${category.color || '#00D4C8'}25`
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'rgba(0,212,200,0.2)'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
+              className="fg-cat-card relative"
             >
               {category.trending && (
                 <div className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full"
@@ -46,11 +34,11 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
                   🔥
                 </div>
               )}
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform inline-block"
+              <span className="fg-cat-icon text-4xl mb-3 block"
                 style={{ filter: `drop-shadow(0 0 12px ${category.color || '#00D4C8'}60)` }}>
                 {category.icon}
-              </div>
-              <h3 className="text-sm font-bold mb-1 transition-colors" style={{ color: '#E8F4FD' }}>
+              </span>
+              <h3 className="text-sm font-bold mb-1" style={{ color: '#E8F4FD' }}>
                 {category.name}
               </h3>
               <p className="text-xs line-clamp-2" style={{ color: '#4A7A9B' }}>
@@ -62,8 +50,7 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
 
         {!showAll && (
           <div className="text-center">
-            <Link href="/categories"
-              className="btn-gold inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl">
+            <Link href="/categories" className="btn-gold inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl">
               <span>View All 30 Categories</span>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

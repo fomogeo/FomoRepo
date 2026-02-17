@@ -30,11 +30,8 @@ export default async function BlogPage() {
       {/* Header */}
       <div className="relative py-20 overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #0B1E30 0%, #071828 100%)', borderBottom: '1px solid rgba(0,212,200,0.15)' }}>
-        {/* Glow orbs */}
         <div className="absolute top-0 right-0 w-96 h-96 pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(255,179,0,0.06) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-0 left-0 w-64 h-64 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,200,0.08) 0%, transparent 70%)' }} />
         <div className="container mx-auto px-4 text-center relative">
           <h1 className="text-5xl md:text-6xl font-bold mb-4">
             Deal Hunter&apos;s <span style={{ color: '#FFB300' }}>Blog</span>
@@ -85,16 +82,14 @@ export default async function BlogPage() {
   )
 }
 
+// Pure CSS hover via fg-blog-card class — no event handlers needed
 function BlogCard({ post }: { post: any }) {
   return (
-    <article className="rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1"
-      style={{ background: 'linear-gradient(135deg, #0D2840, #091E30)', border: '1px solid #1A3A55' }}
-      onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,212,200,0.5)')}
-      onMouseLeave={e => (e.currentTarget.style.borderColor = '#1A3A55')}
-    >
+    <article className="fg-blog-card flex flex-col">
       {post.featured_image ? (
         <Link href={`/blog/${post.slug}`} className="block h-48 overflow-hidden" style={{ background: '#0B1E30' }}>
-          <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
+          <img src={post.featured_image} alt={post.title}
+            className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
         </Link>
       ) : (
         <Link href={`/blog/${post.slug}`} className="block h-48" style={{ background: 'linear-gradient(135deg, #0D2840, #0B1E30)' }} />
@@ -112,13 +107,9 @@ function BlogCard({ post }: { post: any }) {
           </span>
         </div>
 
-        {/* Clickable title */}
+        {/* Title inherits fg-card-title hover colour from parent fg-blog-card CSS */}
         <Link href={`/blog/${post.slug}`}>
-          <h2 className="text-lg font-bold mb-3 line-clamp-2 transition-colors cursor-pointer"
-            style={{ color: '#E8F4FD' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#00D4C8')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#E8F4FD')}
-          >
+          <h2 className="fg-card-title text-lg font-bold mb-3 line-clamp-2 cursor-pointer">
             {post.title}
           </h2>
         </Link>
