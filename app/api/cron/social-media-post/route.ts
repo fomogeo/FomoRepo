@@ -20,24 +20,15 @@ import {
  * 1. Process scheduled posts from queue
  * 2. Create and post new promotional content
  * 
-<<<<<<< HEAD
  * Schedule: Once per day at 14:00 UTC (0 14 * * *)
  * Note: Vercel Hobby accounts allow max 1 run per day per cron job
-=======
- * Schedule: Every 2 hours (0 2 * * *)
->>>>>>> 0152ba39897fa04402805b32dd769eec08331e88
  * 
  * Platforms supported:
  * - Twitter/X
  * - Facebook
  * - Pinterest
  * - Instagram
- 
-<<<<<<< HEAD
-=======
-*/
-export const dynamic = 'force-dynamic';
->>>>>>> 0152ba39897fa04402805b32dd769eec08331e88
+ */
 
 export async function GET(request: NextRequest) {
   try {
