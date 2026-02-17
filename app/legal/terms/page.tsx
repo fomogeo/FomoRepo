@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 export default function TermsPage() {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'FOMO Finds'
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'FomoGeo'
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'your-domain.com'
 
   return (

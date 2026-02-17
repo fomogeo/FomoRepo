@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 export default function DisclosurePage() {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'FOMO Finds'
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'FomoGeo'
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">

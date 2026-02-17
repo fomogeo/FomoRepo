@@ -9,13 +9,9 @@ export default function EmailPopup() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
 
   useEffect(() => {
-    // Show popup after 30 seconds if not previously dismissed
     const dismissed = localStorage.getItem('email-popup-dismissed')
     if (!dismissed) {
-      const timer = setTimeout(() => {
-        setIsVisible(true)
-      }, 30000) // 30 seconds
-
+      const timer = setTimeout(() => setIsVisible(true), 30000)
       return () => clearTimeout(timer)
     }
   }, [])
@@ -28,23 +24,20 @@ export default function EmailPopup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
-
     try {
-      const response = await fetch('/api/subscribe', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       })
-
-      const data = await response.json()
-
+      const data = await res.json()
       if (data.success) {
         setStatus('success')
-        setTimeout(() => {
-          handleClose()
-        }, 2000)
+        setTimeout(handleClose, 2500)
+      } else {
+        setStatus('idle')
       }
-    } catch (error) {
+    } catch {
       setStatus('idle')
     }
   }
@@ -52,38 +45,46 @@ export default function EmailPopup() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 relative">
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
+      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}>
+      <div className="relative max-w-md w-full rounded-2xl p-8"
+        style={{
+          background: 'linear-gradient(135deg, #0D2840, #091E30)',
+          border: '1px solid rgba(0,212,200,0.3)',
+          boxShadow: '0 0 60px rgba(0,212,200,0.1), 0 30px 80px rgba(0,0,0,0.5)',
+        }}>
+        <button onClick={handleClose} className="absolute top-4 right-4 transition-colors"
+          style={{ color: '#4A7A9B' }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#E8F4FD')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#4A7A9B')}>
           <X className="h-6 w-6" />
         </button>
 
+        {/* Decorative glow */}
+        <div className="absolute top-0 right-0 w-32 h-32 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(255,179,0,0.08) 0%, transparent 70%)' }} />
+
         {status === 'success' ? (
           <div className="text-center py-8">
-            <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Mail className="h-8 w-8 text-green-600" />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{ background: 'rgba(0,200,83,0.15)', border: '2px solid rgba(0,200,83,0.4)' }}>
+              <Mail className="h-8 w-8" style={{ color: '#00C853' }} />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              You&apos;re In!
-            </h3>
-            <p className="text-gray-600">
-              Check your inbox for exclusive deals
-            </p>
+            <h3 className="text-2xl font-bold mb-2" style={{ color: '#E8F4FD' }}>You&apos;re In! 🎉</h3>
+            <p style={{ color: '#7EB8D8' }}>Check your inbox for exclusive deals</p>
           </div>
         ) : (
           <>
             <div className="text-center mb-6">
-              <div className="bg-primary-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Mail className="h-8 w-8 text-primary-600" />
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                style={{ background: 'rgba(255,179,0,0.15)', border: '2px solid rgba(255,179,0,0.3)' }}>
+                <Mail className="h-8 w-8" style={{ color: '#FFB300' }} />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Get 10% Off Your First Purchase
+              <h3 className="text-2xl font-bold mb-2" style={{ color: '#E8F4FD' }}>
+                🎯 Get Deals First!
               </h3>
-              <p className="text-gray-600">
-                Plus exclusive access to new deals before anyone else
+              <p style={{ color: '#7EB8D8' }}>
+                Exclusive access to new deals before anyone else
               </p>
             </div>
 
@@ -91,22 +92,26 @@ export default function EmailPopup() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 mb-4"
                 disabled={status === 'loading'}
+                className="w-full px-4 py-3 rounded-xl mb-4 outline-none"
+                style={{
+                  background: 'rgba(7,24,40,0.8)',
+                  border: '1px solid rgba(0,212,200,0.3)',
+                  color: '#E8F4FD',
+                }}
+                onFocus={e => (e.currentTarget.style.borderColor = '#00D4C8')}
+                onBlur={e => (e.currentTarget.style.borderColor = 'rgba(0,212,200,0.3)')}
               />
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50"
-              >
-                {status === 'loading' ? 'Subscribing...' : 'Get My Discount'}
+              <button type="submit" disabled={status === 'loading'}
+                className="btn-gold w-full py-3 font-bold rounded-xl disabled:opacity-60">
+                {status === 'loading' ? 'Subscribing...' : '🔥 Get Exclusive Deals'}
               </button>
             </form>
 
-            <p className="text-xs text-gray-500 text-center mt-4">
+            <p className="text-xs text-center mt-4" style={{ color: '#4A7A9B' }}>
               No spam. Unsubscribe anytime.
             </p>
           </>

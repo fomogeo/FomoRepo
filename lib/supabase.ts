@@ -137,7 +137,7 @@ export async function subscribeEmail(email: string) {
 
   if (existing) {
     if (existing.is_subscribed) {
-      return { success: true, message: 'Already subscribed!' }
+      return { success: true, already: true }
     }
     // Re-subscribe if previously unsubscribed
     const { error } = await supabaseAdmin

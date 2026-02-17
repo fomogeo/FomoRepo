@@ -6,118 +6,104 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About with Logo */}
+    <footer style={{ background: '#050E1A', borderTop: '1px solid rgba(0,212,200,0.15)' }}>
+      {/* Top glow line */}
+      <div style={{ height: 2, background: 'linear-gradient(90deg, transparent, #00D4C8, #FFB300, #FF6B00, #00D4C8, transparent)' }} />
+
+      <div className="container mx-auto px-4 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
+          {/* Brand */}
           <div>
-            <Image 
-              src="/logo.png" 
-              alt="FomoGeo" 
-              width={160} 
-              height={55}
-              className="h-12 w-auto mb-4"
-            />
-            <p className="text-slate-400 text-sm">
-              Your trusted source for verified deals from around the world. 
+            <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-12 w-auto mb-4" />
+            <p className="text-sm leading-relaxed" style={{ color: '#7EB8D8' }}>
+              Your trusted source for verified deals from around the world.
               Discover trending products and exclusive discounts daily.
             </p>
+            <div className="flex space-x-4 mt-5">
+              {[
+                { href: 'https://twitter.com/fomogeo', Icon: Twitter, color: '#00D4C8' },
+                { href: 'https://facebook.com/fomogeo', Icon: Facebook, color: '#4A90D9' },
+                { href: 'https://instagram.com/fomogeo', Icon: Instagram, color: '#FF6B00' },
+              ].map(({ href, Icon, color }) => (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer"
+                  className="transition-all hover:scale-110"
+                  style={{ color: '#7EB8D8' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = color)}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#7EB8D8')}
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-blue-400">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/" className="text-slate-400 hover:text-blue-400 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/categories" className="text-slate-400 hover:text-blue-400 transition-colors">
-                  Categories
-                </Link>
-              </li>
-              <li>
-                <Link href="/deals" className="text-slate-400 hover:text-blue-400 transition-colors">
-                  Deals
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-slate-400 hover:text-blue-400 transition-colors">
-                  Blog
-                </Link>
-              </li>
+            <h3 className="text-base font-bold mb-5 uppercase tracking-wider" style={{ color: '#00D4C8' }}>
+              Quick Links
+            </h3>
+            <ul className="space-y-3 text-sm">
+              {[['/', 'Home'], ['/categories', 'Categories'], ['/deals', 'Deals'], ['/blog', 'Blog']].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="transition-colors hover:translate-x-1 inline-flex items-center gap-1"
+                    style={{ color: '#7EB8D8' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#00D4C8')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7EB8D8')}
+                  >
+                    <span style={{ color: '#00D4C8' }}>›</span> {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-orange-400">Legal</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/legal/privacy" className="text-slate-400 hover:text-orange-400 transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/legal/terms" className="text-slate-400 hover:text-orange-400 transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/legal/disclosure" className="text-slate-400 hover:text-orange-400 transition-colors">
-                  Affiliate Disclosure
-                </Link>
-              </li>
+            <h3 className="text-base font-bold mb-5 uppercase tracking-wider" style={{ color: '#FFB300' }}>
+              Legal
+            </h3>
+            <ul className="space-y-3 text-sm">
+              {[
+                ['/legal/privacy', 'Privacy Policy'],
+                ['/legal/terms', 'Terms of Service'],
+                ['/legal/disclosure', 'Affiliate Disclosure'],
+                ['/legal/unsubscribe', 'Unsubscribe'],
+              ].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="transition-colors"
+                    style={{ color: '#7EB8D8' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#FFB300')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7EB8D8')}
+                  >
+                    <span style={{ color: '#FFB300' }}>›</span> {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Social & Newsletter */}
+          {/* Newsletter */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-green-400">Connect</h3>
-            <div className="flex space-x-4 mb-4">
-              <a 
-                href="https://twitter.com/fomogeo" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://facebook.com/fomogeo" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-blue-600 transition-colors"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://instagram.com/fomogeo" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-pink-500 transition-colors"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-            </div>
-            <Link 
-              href="/#email-signup"
-              className="inline-flex items-center space-x-2 text-sm text-slate-400 hover:text-white transition-colors"
+            <h3 className="text-base font-bold mb-5 uppercase tracking-wider" style={{ color: '#00C853' }}>
+              Stay Updated
+            </h3>
+            <p className="text-sm mb-4" style={{ color: '#7EB8D8' }}>Get exclusive deals delivered to your inbox</p>
+            <Link href="/#email-signup"
+              className="btn-gold inline-flex items-center gap-2 px-5 py-3 text-sm"
             >
               <Mail className="h-4 w-4" />
-              <span>Subscribe to deals</span>
+              Subscribe Free
             </Link>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-slate-700 mt-8 pt-8 text-center text-sm text-slate-400">
-          <p>&copy; {currentYear} FomoGeo. All rights reserved.</p>
-          <p className="mt-2 text-xs">
-            We may earn a commission from purchases made through our affiliate links. 
-            See our <Link href="/legal/disclosure" className="text-blue-400 hover:underline">disclosure</Link> for details.
+        {/* Bottom bar */}
+        <div className="mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-3 text-xs" style={{ borderTop: '1px solid rgba(0,212,200,0.1)', color: '#4A7A9B' }}>
+          <p>© {currentYear} FomoGeo. All rights reserved.</p>
+          <p>
+            We may earn a commission from purchases made through our affiliate links. &nbsp;
+            <Link href="/legal/disclosure" className="hover:text-fg-teal transition-colors" style={{ color: '#00D4C8' }}>See disclosure</Link>
           </p>
         </div>
       </div>

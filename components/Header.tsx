@@ -1,82 +1,91 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Tag, FileText, Grid3x3 } from 'lucide-react'
+import LiveClock from './LiveClock'
 
 export default function Header() {
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+    <header
+      className="sticky top-0 z-50"
+      style={{
+        background: 'rgba(7, 24, 40, 0.95)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(0, 212, 200, 0.2)',
+        boxShadow: '0 4px 30px rgba(0,0,0,0.5)',
+      }}
+    >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 gap-4">
+
           {/* Logo */}
-          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-            <Image 
-              src="/logo.png" 
-              alt="FomoGeo - Verified Deals from Around the World" 
-              width={200} 
+          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity shrink-0">
+            <Image
+              src="/logo.png"
+              alt="FomoGeo"
+              width={200}
               height={65}
-              className="h-14 w-auto"
+              className="h-11 w-auto"
               priority
             />
           </Link>
 
+          {/* Live clock */}
+          <LiveClock />
+
           {/* Navigation */}
-          <nav className="flex items-center space-x-4 md:space-x-6">
-            <Link 
-              href="/categories" 
-              className="flex items-center space-x-1 text-slate-700 hover:text-blue-600 transition-colors font-medium"
+          <nav className="flex items-center space-x-2 md:space-x-4 shrink-0">
+            <Link
+              href="/categories"
+              className="flex items-center space-x-1 font-semibold text-sm transition-colors px-2 py-1 rounded-lg hover:bg-white/5"
+              style={{ color: '#7EB8D8' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#00D4C8')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#7EB8D8')}
             >
               <Grid3x3 className="h-4 w-4" />
               <span className="hidden sm:inline">Categories</span>
             </Link>
-            <Link 
-              href="/deals" 
-              className="flex items-center space-x-1 text-slate-700 hover:text-blue-600 transition-colors font-medium"
+            <Link
+              href="/deals"
+              className="flex items-center space-x-1 font-semibold text-sm transition-colors px-2 py-1 rounded-lg hover:bg-white/5"
+              style={{ color: '#7EB8D8' }}
             >
               <Tag className="h-4 w-4" />
               <span className="hidden sm:inline">Deals</span>
             </Link>
-            <Link 
-              href="/blog" 
-              className="flex items-center space-x-1 text-slate-700 hover:text-blue-600 transition-colors font-medium"
+            <Link
+              href="/blog"
+              className="flex items-center space-x-1 font-semibold text-sm transition-colors px-2 py-1 rounded-lg hover:bg-white/5"
+              style={{ color: '#7EB8D8' }}
             >
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Blog</span>
             </Link>
-            <Link 
-              href="/#email-signup" 
-              className="px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
+            <Link
+              href="/#email-signup"
+              className="btn-gold px-4 py-2 text-sm whitespace-nowrap"
             >
-              Get Deals
+              🔥 Get Deals
             </Link>
           </nav>
         </div>
       </div>
 
-      {/* Seasonal Banner */}
       <SeasonalBanner />
     </header>
   )
 }
 
 function SeasonalBanner() {
-  const now = new Date()
-  const month = now.getMonth() + 1
-  
-  if (month === 11) {
-    return (
-      <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-2 text-center text-sm font-bold">
-        🛍️ Black Friday Sale - Up to 70% Off! Limited Time Only
-      </div>
-    )
-  }
-
-  if (month === 12) {
-    return (
-      <div className="bg-gradient-to-r from-green-600 to-red-600 text-white py-2 text-center text-sm font-bold">
-        🎄 Holiday Deals - Don&apos;t Miss Out!
-      </div>
-    )
-  }
-
+  const month = new Date().getMonth() + 1
+  if (month === 11) return (
+    <div className="py-2 text-center text-sm font-bold text-white" style={{ background: 'linear-gradient(90deg, #FF6B00, #FFB300, #FF6B00)' }}>
+      🛍️ Black Friday Sale – Up to 70% Off! Limited Time Only
+    </div>
+  )
+  if (month === 12) return (
+    <div className="py-2 text-center text-sm font-bold text-white" style={{ background: 'linear-gradient(90deg, #00C853, #00D4C8)' }}>
+      🎄 Holiday Deals – Don&apos;t Miss Out!
+    </div>
+  )
   return null
 }

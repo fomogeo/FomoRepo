@@ -393,7 +393,7 @@ Edit templates in `/lib/social-media/socialPoster.ts`:
 -- In Supabase SQL Editor
 SELECT title, published_at, author 
 FROM blog_posts 
-WHERE author = 'FOMO Finds Team'
+WHERE author = 'FomoGeo Team'
 ORDER BY published_at DESC
 LIMIT 10;
 ```

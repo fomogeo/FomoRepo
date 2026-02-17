@@ -1,57 +1,24 @@
-import { TrendingUp, Star, Zap } from 'lucide-react'
 import Image from 'next/image'
 
 export default function Hero() {
-  const tagline = process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Verified Deals from Around the World'
-
   return (
-    <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 text-white py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-
-          {/* White logo strip with soft fade edges */}
-          <div className="relative flex justify-center items-center mb-8">
-            {/* Fading blue sides */}
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full h-full bg-gradient-to-r from-blue-500 via-transparent to-blue-500 pointer-events-none z-10" />
-            </div>
-            {/* White pill background */}
-            <div className="relative z-20 bg-white rounded-3xl px-12 py-6 shadow-2xl">
-              <Image 
-                src="/logo.png" 
-                alt="FomoGeo - Verified Deals from Around the World" 
-                width={700} 
-                height={230}
-                className="h-40 md:h-52 w-auto mx-auto"
-                priority
-              />
-            </div>
-          </div>
-
-          <p className="text-xl md:text-2xl mb-8 text-white font-semibold drop-shadow-lg">
-            {tagline}
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-8">
-            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full border border-white/30 shadow-lg hover:bg-white/30 transition-all">
-              <TrendingUp className="h-5 w-5" />
-              <span className="font-semibold">Trending Products</span>
-            </div>
-            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full border border-white/30 shadow-lg hover:bg-white/30 transition-all">
-              <Star className="h-5 w-5" />
-              <span className="font-semibold">Best Sellers</span>
-            </div>
-            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full border border-white/30 shadow-lg hover:bg-white/30 transition-all">
-              <Zap className="h-5 w-5 text-yellow-300" />
-              <span className="font-semibold">Flash Deals</span>
-            </div>
-          </div>
-
-          <p className="text-base md:text-lg text-blue-50 max-w-2xl mx-auto">
-            Discover the hottest products and best deals from around the web.
-            Updated daily with fresh finds verified by our team.
-          </p>
-        </div>
+    <section className="relative w-full overflow-hidden" style={{ background: '#071828' }}>
+      {/* Hero banner image — full width, no overlaid text (it's already in the image) */}
+      <div className="relative w-full">
+        <Image
+          src="/hero-banner.png"
+          alt="FomoGeo – Verified Deals from Around the World"
+          width={1920}
+          height={960}
+          className="w-full h-auto"
+          priority
+          quality={95}
+        />
+        {/* Soft bottom fade to blend into the next dark section */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom, transparent, #071828)' }}
+        />
       </div>
     </section>
   )
