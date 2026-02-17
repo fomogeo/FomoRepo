@@ -126,30 +126,43 @@ export async function getProductBySlug(slug: string) {
   return data as Product
 }
 
-// Email subscription functions
+// Email subscription functions - use supabaseAdmin to bypass RLS
 export async function subscribeEmail(email: string) {
-  const { data, error } = await supabase
+  // First check if already subscribed
+  const { data: existing } = await supabaseAdmin
     .from('email_subscribers')
-    .insert([
-      {
-        email,
-        is_subscribed: true,
-        subscribed_at: new Date().toISOString(),
-      },
-    ])
-    .select()
+    .select('id, is_subscribed')
+    .eq('email', email)
     .single()
+
+  if (existing) {
+    if (existing.is_subscribed) {
+      return { success: true, message: 'Already subscribed!' }
+    }
+    // Re-subscribe if previously unsubscribed
+    const { error } = await supabaseAdmin
+      .from('email_subscribers')
+      .update({ is_subscribed: true, subscribed_at: new Date().toISOString(), unsubscribed_at: null })
+      .eq('email', email)
+    if (error) return { success: false, error: error.message }
+    return { success: true }
+  }
+
+  // New subscriber
+  const { error } = await supabaseAdmin
+    .from('email_subscribers')
+    .insert([{ email, is_subscribed: true, subscribed_at: new Date().toISOString() }])
 
   if (error) {
     console.error('Error subscribing email:', error)
     return { success: false, error: error.message }
   }
 
-  return { success: true, data }
+  return { success: true }
 }
 
 export async function unsubscribeEmail(email: string) {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('email_subscribers')
     .update({
       is_subscribed: false,

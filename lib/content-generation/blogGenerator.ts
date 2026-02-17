@@ -72,24 +72,20 @@ export async function generateBlogPost(config: BlogPostConfig) {
 
   // Call OpenAI API
   const content = await callOpenAI(prompt, minWords)
-  const formattedContent = content.replace(/\n(?!\n)/g, '\n\n'); 
-
 
   // Generate excerpt
   const excerpt = content.substring(0, 200) + '...'
 
-  // Generate slug with Date
- 
-  const dateSuffix = new Date().toISOString().split('T')[0]; // Result: 2026-02-13
+  // Generate slug
   const slug = title
-	.toLowerCase()
-	.replace(/[^a-z0-9]+/g, '-')
-	.replace(/(^-|-$)/g, '') + '-' + dateSuffix; 
-  
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+
   return {
     title,
     slug,
-    content: formattedContent,
+    content,
     excerpt,
     tags: keywords || [category?.toLowerCase() || 'deals'],
   }
@@ -127,17 +123,20 @@ Products to feature:
 ${productList}
 
 Requirements:
-1. WORD COUNT: At least 1,500 words total.
-2. STRUCTURE PER PRODUCT: For every product, you MUST use this exact layout:
-   ### [Product Name]
-   **Key Features**: (A short 2-sentence summary)
-   - **Pros**: (Bullet points)
-   - **Cons**: (Bullet points)
-   **Who it's best for**: (One bolded sentence)
-   **Why we recommend it**: (A short paragraph)
-3. COMPARISON TABLE: Near the top, include a Markdown table comparing the top 5 products.
-4. WHITE SPACE: Use frequent line breaks. No long paragraphs.
-5. SECTIONS: Include a ## How to Choose section and an ## FAQ section with 5 questions.
+1. Write at least 1,500 words
+2. Start with an engaging introduction (150 words)
+3. For each product, write 120-150 words covering:
+   - Key features
+   - Pros and cons
+   - Who it's best for
+   - Why we recommend it
+4. Include a comparison table
+5. Add a "How to Choose" section
+6. End with a conclusion and FAQ section
+7. Use natural language, not robotic
+8. Be helpful and honest
+9. Include transition words for readability
+10. Optimize for SEO without keyword stuffing
 
 Write in a friendly, authoritative tone. Make it genuinely useful for readers making a purchase decision.`
 }
@@ -403,14 +402,7 @@ async function callOpenAI(prompt: string, minWords: number = 1500): Promise<stri
         messages: [
           {
             role: 'system',
-			content: `You are an expert SEO content writer. 
-			CRITICAL FORMATTING RULES:
-			1. Use Markdown exclusively. 
-			2. Use ## for section headers and ### for product titles.
-			3. Never write more than 3 sentences in a single paragraph. 
-			4. Use bullet points for all lists (Pros, Cons, Features).
-			5. Use bold text for key terms to make the post "skimmable".
-			6. Always include a Markdown table when a comparison is requested.`
+            content: 'You are an expert content writer specializing in product reviews, buying guides, and SEO-optimized blog posts. Write engaging, helpful, and honest content that helps readers make purchasing decisions. Always write in a natural, conversational tone.'
           },
           {
             role: 'user',

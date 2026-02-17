@@ -1,8 +1,8 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { getProductBySlug } from '@/lib/supabase'
 import { getUserCountry, getAffiliateLink, trackAffiliateClick } from '@/lib/affiliateRouter'
-
-export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {

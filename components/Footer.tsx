@@ -24,7 +24,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links (Merged from both versions) */}
+          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-blue-400">Quick Links</h3>
             <ul className="space-y-2 text-sm">
@@ -48,15 +48,10 @@ export default function Footer() {
                   Blog
                 </Link>
               </li>
-              <li>
-                <Link href="/products" className="text-slate-400 hover:text-blue-400 transition-colors">
-                  Products
-                </Link>
-              </li>
             </ul>
           </div>
 
-          {/* Legal (Merged from both versions) */}
+          {/* Legal */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-orange-400">Legal</h3>
             <ul className="space-y-2 text-sm">
@@ -75,23 +70,15 @@ export default function Footer() {
                   Affiliate Disclosure
                 </Link>
               </li>
-              <li>
-                <Link href="/legal/unsubscribe" className="text-slate-400 hover:text-orange-400 transition-colors">
-                  Unsubscribe
-                </Link>
-              </li>
             </ul>
           </div>
 
-          {/* Connect & Newsletter (Merged from both versions) */}
+          {/* Social & Newsletter */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-green-400">Stay Updated</h3>
-            <p className="text-slate-400 text-sm mb-4">
-              Get the latest deals delivered to your inbox.
-            </p>
+            <h3 className="text-lg font-bold mb-4 text-green-400">Connect</h3>
             <div className="flex space-x-4 mb-4">
               <a 
-                href="https://twitter.com" 
+                href="https://twitter.com/fomogeo" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-slate-400 hover:text-blue-400 transition-colors"
@@ -99,7 +86,7 @@ export default function Footer() {
                 <Twitter className="h-5 w-5" />
               </a>
               <a 
-                href="https://facebook.com" 
+                href="https://facebook.com/fomogeo" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-slate-400 hover:text-blue-600 transition-colors"
@@ -107,7 +94,7 @@ export default function Footer() {
                 <Facebook className="h-5 w-5" />
               </a>
               <a 
-                href="https://instagram.com" 
+                href="https://instagram.com/fomogeo" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-slate-400 hover:text-pink-500 transition-colors"
@@ -128,12 +115,10 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-slate-700 mt-8 pt-8 text-center text-sm text-slate-400">
           <p>&copy; {currentYear} FomoGeo. All rights reserved.</p>
-          <div className="mt-2 text-xs space-y-1">
-            <p>We may earn a commission from purchases made through our affiliate links.</p>
-            <p>
-              See our <Link href="/legal/disclosure" className="text-blue-400 hover:underline">disclosure</Link> for details.
-            </p>
-          </div>
+          <p className="mt-2 text-xs">
+            We may earn a commission from purchases made through our affiliate links. 
+            See our <Link href="/legal/disclosure" className="text-blue-400 hover:underline">disclosure</Link> for details.
+          </p>
         </div>
       </div>
     </footer>

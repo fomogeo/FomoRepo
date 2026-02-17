@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { generateBlogPostWithImages, getTrendingTopics } from '@/lib/content-generation/blogGenerator'
@@ -21,15 +23,21 @@ import { generateBlogPostWithImages, getTrendingTopics } from '@/lib/content-gen
  * - Auto-finds relevant images
  * - Varies content types (reviews, guides, comparisons)
  */
-export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    // Security check
+    // Security check - accept both Authorization header and query parameter
     const authHeader = request.headers.get('authorization')
+    const querySecret = request.nextUrl.searchParams.get('secret')
     const cronSecret = process.env.CRON_SECRET
     
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    // Check if secret matches (either in header or query param)
+    const isAuthorized = cronSecret && (
+      authHeader === `Bearer ${cronSecret}` ||
+      querySecret === cronSecret
+    )
+    
+    if (cronSecret && !isAuthorized) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -92,7 +100,7 @@ export async function GET(request: NextRequest) {
         slug: blogPost.slug,
         content: blogPost.content,
         excerpt: blogPost.excerpt,
-        author: 'FomoGeo Team',
+        author: 'FOMO Finds Team',
         published_at: new Date().toISOString(),
         is_published: true, // Auto-publish, or set to false for review
         featured_image: blogPost.featured_image,
