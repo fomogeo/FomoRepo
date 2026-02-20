@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Product Collector - FomoGeo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 { font-size: 28px; margin-bottom: 8px; }
+    .header p { opacity: 0.9; }
+    .content { padding: 30px; }
+    .section {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      color: #1e293b;
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .input-group { margin-bottom: 15px; }
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #475569;
+      font-size: 14px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    textarea { resize: vertical; min-height: 80px; font-family: 'Courier New', monospace; }
+    .btn {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+    .product-list {
+      list-style: none;
+      max-height: 400px;
+      overflow-y: auto;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      background: white;
+    }
+    .product-item {
+      padding: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .product-item:last-child { border-bottom: none; }
+    .product-item:hover { background: #f8fafc; }
+    .product-info { flex: 1; min-width: 0; }
+    .product-name {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .product-meta {
+      font-size: 12px;
+      color: #64748b;
+      display: flex;
+      gap: 12px;
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .stat-box {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #3b82f6;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .alert {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-info {
+      background: #dbeafe;
+      border: 1px solid #3b82f6;
+      color: #1e40af;
+    }
+    .alert-warning {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      color: #92400e;
+    }
+    code {
+      background: #1e293b;
+      color: #fbbf24;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚀 Amazon Product Collector</h1>
+      <p>Bulk add Amazon affiliate products using SiteStripe</p>
+    </div>
+
+    <div class="content">
+      <!-- Instructions -->
+      <div class="section">
+        <h2>📖 How to Use</h2>
+        <div class="alert alert-info">
+          <span>ℹ️</span>
+          <span><strong>Step 1:</strong> Log into Amazon Associates → Browse Amazon.com → Use SiteStripe toolbar to get product links</span>
+        </div>
+        <div class="alert alert-warning">
+          <span>⚠️</span>
+          <span><strong>Step 2:</strong> For each product, paste the Amazon URL below, fill in details, click "Add Product"</span>
+        </div>
+        <p style="margin-top: 12px; color: #475569; font-size: 14px;">
+          <strong>SiteStripe Tips:</strong> The toolbar appears at the top of Amazon.com when you're logged into Associates. 
+          Click "Get Link" → "Full Link" to copy. Or just copy the product URL from your browser.
+        </p>
+      </div>
+
+      <!-- Add Product Form -->
+      <div class="section">
+        <h2>➕ Add Product</h2>
+        
+        <div class="input-group">
+          <label>Amazon Product URL (or ASIN) *</label>
+          <input type="text" id="amazonUrl" placeholder="https://www.amazon.com/dp/B08XYZ... or just B08XYZ...">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="input-group">
+            <label>Price ($) *</label>
+            <input type="number" id="price" placeholder="29.99" step="0.01">
+          </div>
+          <div class="input-group">
+            <label>Original Price ($ - optional)</label>
+            <input type="number" id="originalPrice" placeholder="49.99" step="0.01">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Product Name *</label>
+          <input type="text" id="productName" placeholder="Enter product name from Amazon listing">
+        </div>
+
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="description" placeholder="Short description (optional - will use product name if empty)"></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>Category *</label>
+          <select id="category">
+            <option value="electronics">Electronics</option>
+            <option value="home-kitchen">Home & Kitchen</option>
+            <option value="fashion-apparel">Fashion & Apparel</option>
+            <option value="beauty-personal-care">Beauty & Personal Care</option>
+            <option value="health-wellness">Health & Wellness</option>
+            <option value="sports-outdoors">Sports & Outdoors</option>
+            <option value="toys-games">Toys & Games</option>
+            <option value="books-media">Books & Media</option>
+            <option value="pet-supplies">Pet Supplies</option>
+            <option value="baby-kids">Baby & Kids</option>
+            <option value="automotive">Automotive</option>
+            <option value="garden-outdoor">Garden & Outdoor</option>
+            <option value="office-supplies">Office Supplies</option>
+            <option value="tools-home-improvement">Tools & Home Improvement</option>
+            <option value="jewelry-watches">Jewelry & Watches</option>
+            <option value="gaming">Gaming</option>
+            <option value="smart-home">Smart Home</option>
+            <option value="furniture">Furniture</option>
+            <option value="luggage-travel">Luggage & Travel</option>
+            <option value="arts-crafts">Arts & Crafts</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Image URL (optional - leave blank to use placeholder)</label>
+          <input type="text" id="imageUrl" placeholder="https://m.media-amazon.com/images/...">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn" onclick="addProduct()">➕ Add Product</button>
+          <button class="btn btn-danger btn-sm" onclick="quickFill()">⚡ Quick Fill (Test)</button>
+        </div>
+      </div>
+
+      <!-- Product List -->
+      <div class="section">
+        <h2>📦 Added Products (<span id="productCount">0</span>)</h2>
+        
+        <div class="stats">
+          <div class="stat-box">
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">Total Products</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="statDiscount">0</div>
+            <div class="stat-label">With Discounts</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="statCategories">0</div>
+            <div class="stat-label">Categories</div>
+          </div>
+        </div>
+
+        <ul class="product-list" id="productList" style="margin-top: 15px;">
+          <li style="padding: 40px; text-align: center; color: #94a3b8;">
+            No products added yet. Add your first product above! 👆
+          </li>
+        </ul>
+
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+          <button class="btn btn-success" onclick="downloadCSV()" id="downloadBtn" disabled>
+            ⬇️ Download CSV (0 products)
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑️ Clear All</button>
+        </div>
+      </div>
+
+      <!-- Bookmarklet Section -->
+      <div class="section">
+        <h2>🔖 Optional: Amazon Auto-Fill Bookmarklet</h2>
+        <p style="margin-bottom: 12px; color: #475569; font-size: 14px;">
+          Drag this link to your bookmarks bar. When viewing a product on Amazon.com, click it to auto-fill the form above!
+        </p>
+        <a href="javascript:(function(){const url=window.location.href;const title=document.querySelector('#productTitle')?.innerText||'';const price=document.querySelector('.a-price .a-offscreen')?.innerText.replace('$','').trim()||'';const img=document.querySelector('#landingImage')?.src||'';window.open(`amazon-product-collector.html?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}&img=${encodeURIComponent(img)}`,'_blank')})();" 
+           style="display: inline-block; background: #ff9900; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+          📦 FomoGeo Quick Add
+        </a>
+        <p style="margin-top: 12px; color: #64748b; font-size: 13px;">
+          <strong>How to install:</strong> Drag the orange button above to your browser's bookmarks bar. Then visit any Amazon product page and click it!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let products = [];
+
+    // Load products from localStorage on start
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('fomogeo_products');
+      if (saved) {
+        products = JSON.parse(saved);
+        renderProducts();
+      }
+      
+      // Check for URL params (from bookmarklet)
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('url')) {
+        document.getElementById('amazonUrl').value = params.get('url');
+        document.getElementById('productName').value = params.get('title') || '';
+        document.getElementById('price').value = params.get('price') || '';
+        document.getElementById('imageUrl').value = params.get('img') || '';
+      }
+    });
+
+    function extractASIN(url) {
+      // Extract ASIN from Amazon URL or return if already ASIN
+      if (!url) return '';
+      if (/^B[0-9A-Z]{9}$/.test(url.trim())) return url.trim(); // Already an ASIN
+      const match = url.match(/\/dp\/([B0-9A-Z]{10})|\/gp\/product\/([B0-9A-Z]{10})|\/exec\/obidos\/ASIN\/([B0-9A-Z]{10})/);
+      return match ? (match[1] || match[2] || match[3]) : '';
+    }
+
+    function addProduct() {
+      const url = document.getElementById('amazonUrl').value.trim();
+      const price = parseFloat(document.getElementById('price').value);
+      const originalPrice = document.getElementById('originalPrice').value 
+        ? parseFloat(document.getElementById('originalPrice').value) 
+        : null;
+      const name = document.getElementById('productName').value.trim();
+      const description = document.getElementById('description').value.trim() || name;
+      const category = document.getElementById('category').value;
+      const imageUrl = document.getElementById('imageUrl').value.trim() || 
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500';
+
+      // Validation
+      if (!url || !price || !name) {
+        alert('❌ Please fill in: URL, Price, and Product Name');
+        return;
+      }
+
+      const asin = extractASIN(url);
+      if (!asin) {
+        alert('❌ Invalid Amazon URL or ASIN. Please check and try again.');
+        return;
+      }
+
+      // Build affiliate URL
+      const affiliateUrl = `https://www.amazon.com/dp/${asin}?tag=fomogeo-20`;
+
+      const product = {
+        name,
+        description,
+        price,
+        original_price: originalPrice,
+        image_url: imageUrl,
+        category,
+        url: affiliateUrl,
+        asin,
+      };
+
+      products.push(product);
+      localStorage.setItem('fomogeo_products', JSON.stringify(products));
+      renderProducts();
+      clearForm();
+
+      alert(`✅ Added: ${name}`);
+    }
+
+    function renderProducts() {
+      const list = document.getElementById('productList');
+      const count = document.getElementById('productCount');
+      
+      if (products.length === 0) {
+        list.innerHTML = '<li style="padding: 40px; text-align: center; color: #94a3b8;">No products added yet. Add your first product above! 👆</li>';
+        document.getElementById('downloadBtn').disabled = true;
+        document.getElementById('downloadBtn').textContent = '⬇️ Download CSV (0 products)';
+      } else {
+        list.innerHTML = products.map((p, i) => `
+          <li class="product-item">
+            <div class="product-info">
+              <div class="product-name">${p.name}</div>
+              <div class="product-meta">
+                <span>$${p.price.toFixed(2)}</span>
+                ${p.original_price ? `<span style="text-decoration: line-through;">$${p.original_price.toFixed(2)}</span>` : ''}
+                <span>${p.category}</span>
+                <span>${p.asin}</span>
+              </div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="removeProduct(${i})">🗑️</button>
+          </li>
+        `).join('');
+        
+        document.getElementById('downloadBtn').disabled = false;
+        document.getElementById('downloadBtn').textContent = `⬇️ Download CSV (${products.length} products)`;
+      }
+
+      count.textContent = products.length;
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').textContent = products.length;
+      document.getElementById('statDiscount').textContent = products.filter(p => p.original_price).length;
+      
+      const categories = new Set(products.map(p => p.category));
+      document.getElementById('statCategories').textContent = categories.size;
+    }
+
+    function removeProduct(index) {
+      if (confirm('Remove this product?')) {
+        products.splice(index, 1);
+        localStorage.setItem('fomogeo_products', JSON.stringify(products));
+        renderProducts();
+      }
+    }
+
+    function clearAll() {
+      if (confirm('Clear all products? This cannot be undone.')) {
+        products = [];
+        localStorage.removeItem('fomogeo_products');
+        renderProducts();
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('amazonUrl').value = '';
+      document.getElementById('price').value = '';
+      document.getElementById('originalPrice').value = '';
+      document.getElementById('productName').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('imageUrl').value = '';
+    }
+
+    function downloadCSV() {
+      if (products.length === 0) {
+        alert('No products to download');
+        return;
+      }
+
+      // Build CSV content
+      const headers = 'name,description,price,original_price,image_url,category,url';
+      const rows = products.map(p => {
+        return [
+          `"${p.name.replace(/"/g, '""')}"`,
+          `"${p.description.replace(/"/g, '""')}"`,
+          p.price,
+          p.original_price || '',
+          `"${p.image_url}"`,
+          p.category,
+          `"${p.url}"`
+        ].join(',');
+      });
+
+      const csv = [headers, ...rows].join('\n');
+
+      // Download file
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fomogeo-amazon-products-${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      alert(`✅ Downloaded ${products.length} products!\n\nNext steps:\n1. Move the CSV to /scripts/feeds/ folder\n2. Run: node scripts/import-csv.js <filename> generic amazon`);
+    }
+
+    function quickFill() {
+      // Test data for quick demo
+      document.getElementById('amazonUrl').value = 'B08N5WRWNW';
+      document.getElementById('price').value = '29.99';
+      document.getElementById('originalPrice').value = '49.99';
+      document.getElementById('productName').value = 'Test Product - Echo Dot (4th Gen)';
+      document.getElementById('description').value = 'Smart speaker with Alexa';
+      document.getElementById('category').value = 'electronics';
+    }
+  </script>
+</body>
+</html>
