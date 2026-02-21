@@ -8,17 +8,21 @@ export default async function DealsPage() {
   const products = await getProducts({ limit: 100 })
 
   return (
-    <div className="min-h-screen">
-      <div className="page-header">
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-fg-heading">
-            All <span className="text-fg-orange">Deals</span>
-          </h1>
-          <p className="text-lg text-fg-body">Browse our complete collection of verified deals from around the world</p>
+    <div className="min-h-screen section-dark">
+      <div className="w-full relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
+        <img src="/hero-light.png" alt="All Deals" className="w-full h-64 object-cover opacity-40" />
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
+              All <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Deals</span>
+            </h1>
+            <p className="text-lg text-cyan-300">Browse our complete collection of verified deals from around the world</p>
+          </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-10 section-mint">
+      <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <ProductGrid products={products} />

@@ -17,19 +17,19 @@ export default async function Home() {
       <Hero />
       <CategoryGrid />
       
-      <section className="py-16 section-white">
+      <section className="py-16 section-dark">
         <div className="container mx-auto px-4">
           <TrendingSection products={products.filter(p => p.is_trending)} />
         </div>
       </section>
       
-      <section className="py-16 section-warm">
+      <section className="py-16 section-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-fg-heading">
-              <span className="text-fg-blue">Latest</span> Deals
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Latest</span> Deals
             </h2>
-            <p className="text-fg-body text-lg">Fresh deals added daily from trusted sellers worldwide</p>
+            <p className="text-gray-300 text-lg">Fresh deals added daily from trusted sellers worldwide</p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-3">
@@ -45,30 +45,30 @@ export default async function Home() {
 
       <WeatherWidget />
       
-      <section className="py-16 section-mint">
+      <section className="py-16 section-green">
         <div className="container mx-auto px-4">
           <EmailSignup />
         </div>
       </section>
 
-      <section className="py-12 section-white border-t border-gray-200">
+      <section className="py-12 section-dark border-t border-cyan-500/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">10k+</div>
-              <p className="text-sm text-fg-muted mt-2">Products</p>
+              <div className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">10k+</div>
+              <p className="text-sm text-gray-400 mt-2">Products</p>
             </div>
             <div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">30</div>
-              <p className="text-sm text-fg-muted mt-2">Categories</p>
+              <div className="text-5xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">30</div>
+              <p className="text-sm text-gray-400 mt-2">Categories</p>
             </div>
             <div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">50k+</div>
-              <p className="text-sm text-fg-muted mt-2">Happy Customers</p>
+              <div className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">50k+</div>
+              <p className="text-sm text-gray-400 mt-2">Happy Customers</p>
             </div>
             <div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">24/7</div>
-              <p className="text-sm text-fg-muted mt-2">Deal Updates</p>
+              <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">24/7</div>
+              <p className="text-sm text-gray-400 mt-2">Deal Updates</p>
             </div>
           </div>
         </div>

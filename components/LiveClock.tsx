@@ -10,7 +10,7 @@ export default function LiveClock() {
     const updateTime = () => {
       const now = new Date()
       setTime(now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }))
-      setDate(now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }))
+      setDate(now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }))
     }
     updateTime()
     const interval = setInterval(updateTime, 1000)
@@ -18,13 +18,10 @@ export default function LiveClock() {
   }, [])
 
   return (
-    <div className="flex flex-col items-center text-center px-3">
-      <div className="text-fg-blue font-bold text-base md:text-lg tracking-wide">
-        {time}
-      </div>
-      <div className="text-fg-muted text-xs">
-        {date}
-      </div>
+    <div className="flex items-center gap-2 text-sm">
+      <div className="font-bold text-teal-400 tracking-wide">{time}</div>
+      <div className="text-gray-400">|</div>
+      <div className="text-gray-300">{date}</div>
     </div>
   )
 }
