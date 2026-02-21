@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import EmailPopup from '@/components/EmailPopup'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -43,6 +44,7 @@ export default function RootLayout({
         <Footer />
         <EmailPopup />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
