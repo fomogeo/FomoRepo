@@ -7,6 +7,52 @@ import { getBlogPostBySlug } from '@/lib/supabase'
 import { Calendar, User, ArrowLeft } from 'lucide-react'
 import { format } from 'date-fns'
 
+// Simple markdown to HTML converter
+function markdownToHtml(markdown: string): string {
+  if (!markdown) return ''
+  
+  let html = markdown
+  
+  // Convert headers
+  html = html.replace(/^### (.*$)/gm, '<h3 class="text-2xl font-bold text-white mt-8 mb-4">$1</h3>')
+  html = html.replace(/^## (.*$)/gm, '<h2 class="text-3xl font-bold text-white mt-10 mb-6">$1</h2>')
+  html = html.replace(/^# (.*$)/gm, '<h1 class="text-4xl font-bold text-white mt-12 mb-6">$1</h1>')
+  
+  // Convert bold
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+  
+  // Convert italic
+  html = html.replace(/\*(.*?)\*/g, '<em class="text-cyan-300">$1</em>')
+  
+  // Convert lists
+  html = html.replace(/^\* (.*$)/gm, '<li class="ml-6 mb-2 text-gray-200">$1</li>')
+  html = html.replace(/^- (.*$)/gm, '<li class="ml-6 mb-2 text-gray-200">$1</li>')
+  
+  // Wrap consecutive list items in ul
+  html = html.replace(/(<li.*?<\/li>\n?)+/g, '<ul class="list-disc pl-6 mb-6 space-y-2">$&</ul>')
+  
+  // Convert paragraphs (lines that aren't headers or lists)
+  const lines = html.split('\n')
+  const processedLines = lines.map(line => {
+    const trimmed = line.trim()
+    if (!trimmed) return '<br/>'
+    if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('<li') || trimmed.startsWith('</ul')) {
+      return line
+    }
+    if (!trimmed.startsWith('<')) {
+      return `<p class="text-gray-200 mb-4 leading-relaxed">${line}</p>`
+    }
+    return line
+  })
+  
+  html = processedLines.join('\n')
+  
+  // Clean up extra breaks
+  html = html.replace(/<br\/>\s*<br\/>/g, '<br/>')
+  
+  return html
+}
+
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getBlogPostBySlug(params.slug)
   
@@ -15,6 +61,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   }
 
   const author = post.author === 'FOMO Finds Team' ? 'FomoGeo Team' : post.author
+  const htmlContent = markdownToHtml(post.content)
 
   return (
     <div className="min-h-screen section-dark">
@@ -32,7 +79,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </Link>
 
         {post.featured_image && (
-          <div className="relative w-full h-96 rounded-2xl overflow-hidden mb-8">
+          <div className="relative w-full h-96 rounded-2xl overflow-hidden mb-8 border border-cyan-500/30">
             <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover" />
           </div>
         )}
@@ -48,10 +95,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </span>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">{post.title}</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">{post.title}</h1>
 
         {post.excerpt && (
-          <p className="text-xl text-gray-300 mb-8 leading-relaxed">{post.excerpt}</p>
+          <p className="text-xl text-gray-300 mb-8 leading-relaxed border-l-4 border-cyan-400 pl-6 italic">
+            {post.excerpt}
+          </p>
         )}
 
         {post.tags && post.tags.length > 0 && (
@@ -64,10 +113,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </div>
         )}
 
+        <div className="border-t border-cyan-500/20 pt-8 mb-8"></div>
+
         <div 
-          className="prose prose-lg prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          className="blog-content"
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
+
+        <div className="border-t border-cyan-500/20 mt-12 pt-8">
+          <p className="text-gray-400 text-sm">
+            Written by <span className="text-cyan-400 font-semibold">{author}</span> on {format(new Date(post.published_at || post.created_at), 'MMMM d, yyyy')}
+          </p>
+        </div>
       </article>
     </div>
   )

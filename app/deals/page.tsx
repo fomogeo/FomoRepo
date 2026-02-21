@@ -19,12 +19,12 @@ export default async function DealsPage() {
       
       <div className="w-full relative">
         <img src="/hero-light.png" alt="All Deals" className="w-full h-auto" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-transparent flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 via-slate-900/30 to-transparent flex items-center justify-center">
           <div className="text-center px-4">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg">
-              All <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Deals</span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-2xl">
+              All <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl">Deals</span>
             </h1>
-            <p className="text-lg text-cyan-300 drop-shadow">Browse our complete collection of verified deals</p>
+            <p className="text-lg text-cyan-300 drop-shadow-lg">Browse our complete collection of verified deals</p>
           </div>
         </div>
       </div>

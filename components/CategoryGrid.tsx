@@ -25,7 +25,7 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
             <Link 
               key={category.id} 
               href={`/category/${category.slug}`} 
-              className="relative group bg-white rounded-xl p-4 text-center shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1"
+              className="deal-card group p-4 text-center"
             >
               {category.trending && (
                 <div className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 border border-orange-300">
@@ -40,11 +40,11 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
                 {category.icon}
               </span>
               
-              <h3 className="text-sm font-bold mb-1 text-gray-900 group-hover:text-cyan-600 transition">
+              <h3 className="text-sm font-bold mb-1 text-white group-hover:text-cyan-400 transition">
                 {category.name}
               </h3>
               
-              <p className="text-xs line-clamp-2 text-gray-600">
+              <p className="text-xs line-clamp-2 text-gray-300">
                 {category.description.split(',')[0]}
               </p>
             </Link>
