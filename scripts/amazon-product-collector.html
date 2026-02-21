@@ -207,6 +207,11 @@
       <div class="section">
         <h2>➕ Add Product</h2>
         
+        <div class="alert alert-info" style="font-size: 13px; margin-bottom: 15px;">
+          <span>💡</span>
+          <span><strong>Tip:</strong> Use the bookmarklet below to auto-fill this form from Amazon product pages!</span>
+        </div>
+        
         <div class="input-group">
           <label>Amazon Product URL (or ASIN) *</label>
           <input type="text" id="amazonUrl" placeholder="https://www.amazon.com/dp/B08XYZ... or just B08XYZ...">
@@ -307,15 +312,22 @@
       <div class="section">
         <h2>🔖 Optional: Amazon Auto-Fill Bookmarklet</h2>
         <p style="margin-bottom: 12px; color: #475569; font-size: 14px;">
-          Drag this link to your bookmarks bar. When viewing a product on Amazon.com, click it to auto-fill the form above!
+          Drag this link to your bookmarks bar. When viewing a product on Amazon.com, click it to capture the product data, then come back to this page and it will auto-fill!
         </p>
-        <a href="javascript:(function(){const url=window.location.href;const title=document.querySelector('#productTitle')?.innerText||'';const price=document.querySelector('.a-price .a-offscreen')?.innerText.replace('$','').trim()||'';const img=document.querySelector('#landingImage')?.src||'';window.open(`amazon-product-collector.html?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}&img=${encodeURIComponent(img)}`,'_blank')})();" 
+        <a href="javascript:(function(){const url=window.location.href;const title=document.querySelector('#productTitle')?.innerText?.trim()||'';const priceText=document.querySelector('.a-price .a-offscreen')?.innerText||document.querySelector('.a-price-whole')?.innerText||'';const price=priceText.replace(/[$,]/g,'').trim();const img=document.querySelector('#landingImage')?.src||document.querySelector('#imgBlkFront')?.src||'';if(url.includes('amazon.com')){localStorage.setItem('fomogeo_product_data',JSON.stringify({url,title,price,img,timestamp:Date.now()}));alert('✅ Product data captured!\n\nProduct: '+title+'\nPrice: $'+price+'\n\nNow go back to your Product Collector tool and the form will auto-fill!');}else{alert('⚠️ Please use this bookmarklet on an Amazon product page.');}})();" 
            style="display: inline-block; background: #ff9900; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: 600;">
           📦 FomoGeo Quick Add
         </a>
         <p style="margin-top: 12px; color: #64748b; font-size: 13px;">
-          <strong>How to install:</strong> Drag the orange button above to your browser's bookmarks bar. Then visit any Amazon product page and click it!
+          <strong>How to use:</strong>
         </p>
+        <ol style="margin-top: 8px; margin-left: 20px; color: #64748b; font-size: 13px; line-height: 1.6;">
+          <li>Drag the orange button above to your browser's bookmarks bar</li>
+          <li>Keep this Product Collector page open in one tab</li>
+          <li>Open Amazon.com in another tab and find a product</li>
+          <li>Click the bookmarklet (it will show a confirmation)</li>
+          <li>Come back to this tab — the form will auto-fill!</li>
+        </ol>
       </div>
     </div>
   </div>
@@ -331,7 +343,31 @@
         renderProducts();
       }
       
-      // Check for URL params (from bookmarklet)
+      // Check for bookmarklet data (stored by clicking bookmarklet on Amazon)
+      const bookmarkletData = localStorage.getItem('fomogeo_product_data');
+      if (bookmarkletData) {
+        try {
+          const data = JSON.parse(bookmarkletData);
+          // Only auto-fill if data is recent (within last 5 minutes)
+          const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+          if (data.timestamp && data.timestamp > fiveMinutesAgo) {
+            document.getElementById('amazonUrl').value = data.url || '';
+            document.getElementById('productName').value = data.title || '';
+            document.getElementById('price').value = data.price || '';
+            document.getElementById('imageUrl').value = data.img || '';
+            
+            // Clear the bookmarklet data so it doesn't auto-fill again
+            localStorage.removeItem('fomogeo_product_data');
+            
+            // Show success message
+            alert('✅ Auto-filled from Amazon!\n\nProduct: ' + data.title + '\n\nJust select a category and click "Add Product"');
+          }
+        } catch (e) {
+          // Invalid data, ignore
+        }
+      }
+      
+      // Check for URL params (legacy support - shouldn't happen now but kept for compatibility)
       const params = new URLSearchParams(window.location.search);
       if (params.get('url')) {
         document.getElementById('amazonUrl').value = params.get('url');
@@ -374,7 +410,7 @@
       }
 
       // Build affiliate URL
-      const affiliateUrl = `https://www.amazon.com/dp/${asin}?tag=fomogeo-20`;
+      const affiliateUrl = `https://www.amazon.com/dp/${asin}?tag=YOUR-TAG-20`;
 
       const product = {
         name,
