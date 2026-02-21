@@ -160,45 +160,62 @@ export async function getBlogPostBySlug(slug: string) {
 }
 
 // Email subscription functions
-export async function subscribeEmail(email: string) {
-  // Check if already subscribed
-  const { data: existing } = await supabase
-    .from('email_subscribers')
-    .select('*')
-    .eq('email', email)
-    .single()
+export async function subscribeEmail(email: string): Promise<{ success: boolean; already: boolean; error?: string }> {
+  try {
+    // Check if already subscribed
+    const { data: existing } = await supabase
+      .from('email_subscribers')
+      .select('*')
+      .eq('email', email)
+      .single()
 
-  if (existing) {
-    if (existing.is_subscribed) {
-      return { success: true, already: true }
+    if (existing) {
+      if (existing.is_subscribed) {
+        return { success: true, already: true }
+      }
+      // Re-subscribe
+      const { error } = await supabaseAdmin
+        .from('email_subscribers')
+        .update({ is_subscribed: true, unsubscribed_at: null })
+        .eq('email', email)
+
+      if (error) {
+        return { success: false, already: false, error: error.message }
+      }
+      return { success: true, already: false }
     }
-    // Re-subscribe
+
+    // New subscriber
     const { error } = await supabaseAdmin
       .from('email_subscribers')
-      .update({ is_subscribed: true, unsubscribed_at: null })
-      .eq('email', email)
+      .insert([{ email, is_subscribed: true }])
 
-    return { success: !error, already: false }
+    if (error) {
+      return { success: false, already: false, error: error.message }
+    }
+    return { success: true, already: false }
+  } catch (error) {
+    return { success: false, already: false, error: 'Failed to subscribe' }
   }
-
-  // New subscriber
-  const { error } = await supabaseAdmin
-    .from('email_subscribers')
-    .insert([{ email, is_subscribed: true }])
-
-  return { success: !error, already: false }
 }
 
-export async function unsubscribeEmail(email: string) {
-  const { error } = await supabaseAdmin
-    .from('email_subscribers')
-    .update({ 
-      is_subscribed: false,
-      unsubscribed_at: new Date().toISOString()
-    })
-    .eq('email', email)
+export async function unsubscribeEmail(email: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { error } = await supabaseAdmin
+      .from('email_subscribers')
+      .update({ 
+        is_subscribed: false,
+        unsubscribed_at: new Date().toISOString()
+      })
+      .eq('email', email)
 
-  return { success: !error }
+    if (error) {
+      return { success: false, error: error.message }
+    }
+    return { success: true }
+  } catch (error) {
+    return { success: false, error: 'Failed to unsubscribe' }
+  }
 }
 
 // Coupon functions
