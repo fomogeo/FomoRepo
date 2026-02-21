@@ -25,18 +25,20 @@ export default async function CategoryPage({ params }: { params: { slug: string 
         strategy="afterInteractive"
       />
       
-      <div className="w-full relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
-        <img src="/hero-light.png" alt={category.name} className="w-full h-48 object-cover opacity-40" />
-        <div className="absolute inset-0 z-20 flex items-center">
+      <div className="w-full relative">
+        <img src="/hero-light.png" alt={category.name} className="w-full h-auto" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-transparent flex items-center">
           <div className="container mx-auto px-4">
-            <div className="flex items-center gap-4 mb-4">
-              <span className="text-6xl" style={{filter: `drop-shadow(0 0 10px ${category.color})`}}>
+            <div className="flex items-center gap-4">
+              <span 
+                className="text-6xl drop-shadow-lg" 
+                style={{filter: `drop-shadow(0 0 15px ${category.color})`}}
+              >
                 {category.icon}
               </span>
               <div>
-                <h1 className="text-5xl font-bold text-white mb-2">{category.name}</h1>
-                <p className="text-cyan-300 text-lg">{category.description}</p>
+                <h1 className="text-5xl font-bold text-white mb-2 drop-shadow-lg">{category.name}</h1>
+                <p className="text-cyan-300 text-lg drop-shadow">{category.description}</p>
               </div>
             </div>
           </div>

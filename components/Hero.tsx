@@ -5,8 +5,8 @@ export default function Hero() {
         <img
           src="/hero-light-full.png"
           alt="FomoGeo - Verified Deals from Around the World"
-          className="w-full h-auto object-cover"
-          style={{ maxHeight: '400px', objectFit: 'cover' }}
+          className="w-full h-auto"
+          style={{ display: 'block' }}
         />
       </div>
     </section>

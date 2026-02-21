@@ -18,10 +18,9 @@ export default function LiveClock() {
   }, [])
 
   return (
-    <div className="flex items-center gap-2 text-sm">
+    <div className="flex flex-col text-sm">
       <div className="font-bold text-teal-400 tracking-wide">{time}</div>
-      <div className="text-gray-400">|</div>
-      <div className="text-gray-300">{date}</div>
+      <div className="text-gray-300 text-xs">{date}</div>
     </div>
   )
 }

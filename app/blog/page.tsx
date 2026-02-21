@@ -23,15 +23,15 @@ export default async function BlogPage() {
         strategy="afterInteractive"
       />
       
-      <div className="w-full relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
-        <img src="/hero-light.png" alt="Blog" className="w-full h-64 object-cover opacity-40" />
-        <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
+      {/* Full height banner with overlay */}
+      <div className="w-full relative">
+        <img src="/hero-light.png" alt="Blog" className="w-full h-auto" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-transparent flex items-center justify-center">
+          <div className="text-center px-4">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg">
               Deal Hunter's <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Blog</span>
             </h1>
-            <p className="text-lg text-cyan-300 max-w-2xl mx-auto">Expert tips, buying guides, and insider secrets</p>
+            <p className="text-lg text-cyan-300 max-w-2xl mx-auto drop-shadow">Expert tips, buying guides, and insider secrets</p>
           </div>
         </div>
       </div>
