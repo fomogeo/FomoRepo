@@ -6,15 +6,22 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-200">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="relative overflow-hidden" style={{
+      background: 'linear-gradient(135deg, #E6F7FF 0%, #FFF7E6 50%, #F0FFF4 100%)'
+    }}>
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-orange-400 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-12 w-auto mb-4" />
-            <p className="text-sm text-fg-body leading-relaxed">
+            <p className="text-sm text-fg-body leading-relaxed mb-4">
               Your trusted source for verified deals from around the world. Discover trending products and exclusive discounts daily.
             </p>
-            <div className="flex space-x-4 mt-4">
+            <div className="flex space-x-4">
               <a href="https://twitter.com/fomogeo" className="text-fg-muted hover:text-fg-blue transition"><Twitter className="h-5 w-5" /></a>
               <a href="https://facebook.com/fomogeo" className="text-fg-muted hover:text-fg-blue transition"><Facebook className="h-5 w-5" /></a>
               <a href="https://instagram.com/fomogeo" className="text-fg-muted hover:text-fg-blue transition"><Instagram className="h-5 w-5" /></a>
@@ -49,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-fg-muted">
+        <div className="mt-10 pt-6 border-t border-gray-300/50 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-fg-muted">
           <p>© {currentYear} FomoGeo. All rights reserved.</p>
           <p>We may earn a commission from purchases via affiliate links. <Link href="/legal/disclosure" className="link-primary">See disclosure</Link></p>
         </div>

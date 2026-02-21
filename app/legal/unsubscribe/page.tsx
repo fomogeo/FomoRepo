@@ -34,9 +34,9 @@ export default function UnsubscribePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="bg-sky-gradient py-16 border-b border-gray-200">
-        <div className="container mx-auto px-4">
+    <div className="min-h-screen">
+      <div className="page-header">
+        <div className="container mx-auto px-4 relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold text-center text-fg-heading">Unsubscribe</h1>
         </div>
       </div>

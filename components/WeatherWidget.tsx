@@ -22,15 +22,17 @@ export default function WeatherWidget() {
   if (!weather) return null
 
   return (
-    <section className="py-12 bg-sky-gradient">
+    <section className="py-12 section-sky border-y border-blue-100">
       <div className="container mx-auto px-4">
-        <h3 className="text-2xl font-bold text-center mb-6 text-fg-heading">7-Day Forecast: {location}</h3>
+        <h3 className="text-3xl font-bold text-center mb-8 text-fg-heading">
+          7-Day Forecast: <span className="text-fg-blue">{location}</span>
+        </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
           {weather.daily.time.map((date: string, i: number) => (
-            <div key={i} className="card-light text-center">
-              <p className="text-xs text-fg-muted mb-2">{new Date(date).toLocaleDateString('en', {weekday: 'short'})}</p>
-              <Sun className="h-8 w-8 mx-auto text-fg-orange mb-2" />
-              <p className="font-bold text-fg-heading">{Math.round(weather.daily.temperature_2m_max[i])}°</p>
+            <div key={i} className="card-light text-center bg-white/80 backdrop-blur">
+              <p className="text-xs text-fg-muted mb-2 font-semibold">{new Date(date).toLocaleDateString('en', {weekday: 'short'})}</p>
+              <Sun className="h-10 w-10 mx-auto text-fg-orange mb-2" />
+              <p className="font-bold text-lg text-fg-heading">{Math.round(weather.daily.temperature_2m_max[i])}°</p>
               <p className="text-xs text-fg-muted">{Math.round(weather.daily.temperature_2m_min[i])}°</p>
             </div>
           ))}

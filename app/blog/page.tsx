@@ -14,9 +14,9 @@ export default async function BlogPage() {
   const posts = await getBlogPosts(20)
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="bg-sky-gradient py-16 border-b border-gray-200">
-        <div className="container mx-auto px-4 text-center">
+    <div className="min-h-screen">
+      <div className="page-header">
+        <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-fg-heading">
             Deal Hunter's <span className="text-fg-orange">Blog</span>
           </h1>
@@ -24,7 +24,7 @@ export default async function BlogPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-10">
+      <div className="container mx-auto px-4 py-10 section-white">
         <AdSpace size="leaderboard" />
 
         {posts.length > 0 ? (
@@ -49,7 +49,7 @@ export default async function BlogPage() {
         <div className="my-8"><AdSpace size="leaderboard" /></div>
       </div>
 
-      <section className="py-14 bg-warm-gradient border-t border-gray-200">
+      <section className="py-14 section-warm border-t border-orange-100">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4 text-fg-heading">Never Miss a <span className="text-fg-orange">Deal!</span></h2>
           <p className="mb-6 text-fg-body">Subscribe to get expert buying guides and exclusive deals</p>
@@ -63,9 +63,8 @@ export default async function BlogPage() {
 function BlogCard({ post }: { post: any }) {
   return (
     <article className="deal-card flex flex-col">
-      {/* Issue 4 FIX: Only render image if it exists */}
       {post.featured_image && (
-        <Link href={`/blog/${post.slug}`} className="block h-48 overflow-hidden bg-gray-100">
+        <Link href={`/blog/${post.slug}`} className="block h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-orange-50">
           <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
         </Link>
       )}

@@ -7,17 +7,19 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
   const categories = showAll ? CATEGORIES : getTrendingCategories().slice(0, limit)
 
   return (
-    <section className="py-16 bg-sky-gradient">
+    <section className="py-16 section-sky">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-fg-heading">
-            {showAll ? 'All ' : 'Trending '}
-            <span className="text-fg-blue">Categories</span>
-          </h2>
-          <p className="text-fg-body">
-            {showAll ? 'Explore all 30 product categories and find the perfect deals' : 'Shop the hottest product categories with verified deals'}
-          </p>
-        </div>
+        {/* FIX: Only show heading if NOT showAll (showAll pages have their own header) */}
+        {!showAll && (
+          <div className="text-center mb-12">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-fg-heading">
+              Trending <span className="text-fg-blue">Categories</span>
+            </h2>
+            <p className="text-fg-body text-lg">
+              Shop the hottest product categories with verified deals
+            </p>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
           {categories.map((category) => (
