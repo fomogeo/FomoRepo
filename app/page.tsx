@@ -10,7 +10,7 @@ import AdSpace from '@/components/AdSpace'
 import { getProducts } from '@/lib/supabase'
 
 export default async function Home() {
-  const products = await getProducts(20)
+  const products = await getProducts({ limit: 20 })
 
   return (
     <>

@@ -5,7 +5,7 @@ import ProductGrid from '@/components/ProductGrid'
 import AdSpace from '@/components/AdSpace'
 
 export default async function DealsPage() {
-  const products = await getProducts(100)
+  const products = await getProducts({ limit: 100 })
 
   return (
     <div className="min-h-screen bg-white">
