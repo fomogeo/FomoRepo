@@ -224,3 +224,9 @@ export async function getActiveCoupons(productId?: string) {
 
   return data || []
 }
+
+export async function getProductBySlug(slug: string) {
+  // For now, slug is the same as ID
+  // If you want actual slugs, add a slug column to products table
+  return getProductById(slug)
+}
