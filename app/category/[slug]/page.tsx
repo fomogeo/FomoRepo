@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import { CATEGORIES } from '@/lib/categories/categories'
 import ProductGrid from '@/components/ProductGrid'
@@ -13,12 +14,17 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     notFound()
   }
 
-  // FIX: Pass category slug to filter products
   const products = await getProducts({ category: params.slug, limit: 100 })
 
   return (
     <div className="min-h-screen section-dark">
-      {/* Header with banner */}
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      
       <div className="w-full relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
         <img src="/hero-light.png" alt={category.name} className="w-full h-48 object-cover opacity-40" />
@@ -52,7 +58,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
           <div className="text-center py-20 card-light">
             <div className="text-6xl mb-4">{category.icon}</div>
             <p className="text-lg mb-2 text-white">No products in this category yet.</p>
-            <p className="text-gray-400">Check back soon for amazing deals!</p>
+            <p className="text-gray-300">Check back soon for amazing deals!</p>
           </div>
         )}
       </div>

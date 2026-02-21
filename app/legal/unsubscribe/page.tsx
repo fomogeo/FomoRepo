@@ -1,5 +1,6 @@
 'use client'
 
+import Script from 'next/script'
 import { useState } from 'react'
 import { Mail } from 'lucide-react'
 
@@ -34,18 +35,27 @@ export default function UnsubscribePage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="page-header">
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-center text-fg-heading">Unsubscribe</h1>
+    <div className="min-h-screen section-dark">
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      
+      <div className="w-full relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
+        <img src="/hero-light.png" alt="Unsubscribe" className="w-full h-48 object-cover opacity-40" />
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-white">Unsubscribe</h1>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">
         <div className="card-light p-8 text-center">
-          <Mail className="h-12 w-12 mx-auto mb-4 text-fg-orange" />
-          <h2 className="text-2xl font-bold mb-4 text-fg-heading">Unsubscribe from our mailing list</h2>
-          <p className="text-fg-body mb-6">
+          <Mail className="h-12 w-12 mx-auto mb-4 text-orange-400" />
+          <h2 className="text-2xl font-bold mb-4 text-white">Unsubscribe from our mailing list</h2>
+          <p className="text-gray-300 mb-6">
             Enter your email address to unsubscribe from receiving deal alerts and newsletters.
           </p>
           
@@ -65,7 +75,7 @@ export default function UnsubscribePage() {
           </form>
           
           {message && (
-            <p className={`mt-4 text-sm ${status === 'success' ? 'text-fg-green' : 'text-red-500'}`}>
+            <p className={`mt-4 text-sm ${status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
               {message}
             </p>
           )}

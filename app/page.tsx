@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import Script from 'next/script'
 import Hero from '@/components/Hero'
 import CategoryGrid from '@/components/CategoryGrid'
 import TrendingSection from '@/components/TrendingSection'
@@ -14,6 +15,12 @@ export default async function Home() {
 
   return (
     <>
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
       <Hero />
       <CategoryGrid />
       
@@ -56,19 +63,19 @@ export default async function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">10k+</div>
-              <p className="text-sm text-gray-400 mt-2">Products</p>
+              <p className="text-sm text-gray-300 mt-2">Products</p>
             </div>
             <div>
               <div className="text-5xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">30</div>
-              <p className="text-sm text-gray-400 mt-2">Categories</p>
+              <p className="text-sm text-gray-300 mt-2">Categories</p>
             </div>
             <div>
               <div className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">50k+</div>
-              <p className="text-sm text-gray-400 mt-2">Happy Customers</p>
+              <p className="text-sm text-gray-300 mt-2">Happy Customers</p>
             </div>
             <div>
               <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">24/7</div>
-              <p className="text-sm text-gray-400 mt-2">Deal Updates</p>
+              <p className="text-sm text-gray-300 mt-2">Deal Updates</p>
             </div>
           </div>
         </div>

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Cloud, Sun, CloudRain, Wind } from 'lucide-react'
+import { Sun } from 'lucide-react'
+import Script from 'next/script'
 
 export default function WeatherWidget() {
   const [weather, setWeather] = useState<any>(null)
@@ -22,22 +23,30 @@ export default function WeatherWidget() {
   if (!weather) return null
 
   return (
-    <section className="py-12 section-sky border-y border-blue-100">
-      <div className="container mx-auto px-4">
-        <h3 className="text-3xl font-bold text-center mb-8 text-fg-heading">
-          7-Day Forecast: <span className="text-fg-blue">{location}</span>
-        </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
-          {weather.daily.time.map((date: string, i: number) => (
-            <div key={i} className="card-light text-center bg-white/80 backdrop-blur">
-              <p className="text-xs text-fg-muted mb-2 font-semibold">{new Date(date).toLocaleDateString('en', {weekday: 'short'})}</p>
-              <Sun className="h-10 w-10 mx-auto text-fg-orange mb-2" />
-              <p className="font-bold text-lg text-fg-heading">{Math.round(weather.daily.temperature_2m_max[i])}°</p>
-              <p className="text-xs text-fg-muted">{Math.round(weather.daily.temperature_2m_min[i])}°</p>
-            </div>
-          ))}
+    <>
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 border-y border-cyan-500/30">
+        <div className="container mx-auto px-4">
+          <h3 className="text-3xl font-bold text-center mb-8 text-white">
+            7-Day Forecast: <span className="text-cyan-400">{location}</span>
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+            {weather.daily.time.map((date: string, i: number) => (
+              <div key={i} className="bg-white/90 backdrop-blur rounded-xl p-4 text-center shadow-lg hover:shadow-xl transition-shadow">
+                <p className="text-xs text-gray-600 mb-2 font-semibold">{new Date(date).toLocaleDateString('en', {weekday: 'short'})}</p>
+                <Sun className="h-10 w-10 mx-auto text-orange-500 mb-2" />
+                <p className="font-bold text-lg text-gray-900">{Math.round(weather.daily.temperature_2m_max[i])}°</p>
+                <p className="text-xs text-gray-600">{Math.round(weather.daily.temperature_2m_min[i])}°</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,9 +16,15 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   return (
     <div className="min-h-screen section-dark">
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
-          {/* Product Image */}
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-800 border border-cyan-500/30">
             <Image
               src={product.image_url}
@@ -40,7 +47,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
             )}
           </div>
 
-          {/* Product Info */}
           <div>
             <div className="mb-4">
               <Link
@@ -66,7 +72,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </div>
             )}
 
-            {/* Price */}
             <div className="mb-8 p-6 rounded-xl bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30">
               <div className="flex items-baseline gap-3 mb-2">
                 <span className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
@@ -86,7 +91,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
               )}
             </div>
 
-            {/* CTA */}
             <Link
               href={`/api/affiliate-router?productId=${product.id}`}
               className="btn-primary w-full justify-center text-lg py-4 mb-6"
@@ -97,7 +101,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
               <ExternalLink className="h-5 w-5" />
             </Link>
 
-            {/* Description */}
             {product.description && (
               <div className="prose prose-invert max-w-none">
                 <h2 className="text-2xl font-bold mb-4 text-white">Product Details</h2>

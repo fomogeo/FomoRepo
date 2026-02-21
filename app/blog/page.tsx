@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import Script from 'next/script'
 import Link from 'next/link'
 import { getBlogPosts } from '@/lib/supabase'
 import { Calendar, User, ArrowRight } from 'lucide-react'
@@ -15,7 +16,13 @@ export default async function BlogPage() {
 
   return (
     <div className="min-h-screen section-dark">
-      {/* Header with banner */}
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      
       <div className="w-full relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
         <img src="/hero-light.png" alt="Blog" className="w-full h-64 object-cover opacity-40" />
@@ -24,7 +31,7 @@ export default async function BlogPage() {
             <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
               Deal Hunter's <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Blog</span>
             </h1>
-            <p className="text-lg text-cyan-300 max-w-2xl mx-auto">Expert tips, buying guides, and insider secrets to help you save money</p>
+            <p className="text-lg text-cyan-300 max-w-2xl mx-auto">Expert tips, buying guides, and insider secrets</p>
           </div>
         </div>
       </div>
@@ -57,7 +64,7 @@ export default async function BlogPage() {
       <section className="py-14 section-teal border-t border-cyan-500/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4 text-white">Never Miss a <span className="text-yellow-400">Deal!</span></h2>
-          <p className="mb-6 text-gray-300">Subscribe to get expert buying guides and exclusive deals</p>
+          <p className="mb-6 text-white">Subscribe to get expert buying guides and exclusive deals</p>
           <Link href="/#email-signup" className="btn-orange px-8 py-4 font-bold">Subscribe Now</Link>
         </div>
       </section>
@@ -66,7 +73,6 @@ export default async function BlogPage() {
 }
 
 function BlogCard({ post }: { post: any }) {
-  // FIX: Change author display
   const author = post.author === 'FOMO Finds Team' ? 'FomoGeo Team' : post.author
 
   return (
@@ -78,7 +84,7 @@ function BlogCard({ post }: { post: any }) {
       )}
 
       <div className="p-6 flex flex-col flex-1">
-        <div className="flex items-center gap-4 text-xs mb-3 text-gray-400">
+        <div className="flex items-center gap-4 text-xs mb-3 text-gray-300">
           <span className="flex items-center gap-1">
             <Calendar className="h-3.5 w-3.5 text-cyan-400" />
             {format(new Date(post.published_at || post.created_at), 'MMM d, yyyy')}

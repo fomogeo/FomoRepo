@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import Script from 'next/script'
 import { getProducts } from '@/lib/supabase'
 import ProductGrid from '@/components/ProductGrid'
 import AdSpace from '@/components/AdSpace'
@@ -9,6 +10,13 @@ export default async function DealsPage() {
 
   return (
     <div className="min-h-screen section-dark">
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      
       <div className="w-full relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
         <img src="/hero-light.png" alt="All Deals" className="w-full h-64 object-cover opacity-40" />
@@ -17,7 +25,7 @@ export default async function DealsPage() {
             <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
               All <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Deals</span>
             </h1>
-            <p className="text-lg text-cyan-300">Browse our complete collection of verified deals from around the world</p>
+            <p className="text-lg text-cyan-300">Browse our complete collection of verified deals</p>
           </div>
         </div>
       </div>
