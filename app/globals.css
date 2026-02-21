@@ -3,197 +3,238 @@
 @tailwind utilities;
 
 /* ── Google Fonts ─────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
 
 :root {
-  --fg-navy:   #071828;
-  --fg-dark:   #0B1E30;
-  --fg-card:   #0D2840;
-  --fg-border: #1A3A55;
-  --fg-teal:   #00D4C8;
-  --fg-cyan:   #00E5FF;
-  --fg-gold:   #FFB300;
-  --fg-amber:  #FF8F00;
-  --fg-orange: #FF6B00;
-  --fg-green:  #00C853;
-  --fg-text:   #E8F4FD;
-  --fg-muted:  #7EB8D8;
+  /* FomoGeo Light Brand Colors - From Official Brand Guide */
+  --primary-blue: #1E88E5;
+  --primary-blue-hover: #1565C0;
+  --geo-orange: #FB8C00;
+  --geo-orange-hover: #E65100;
+  --verified-green: #43A047;
+  --verified-green-hover: #2E7D32;
+  
+  --bg-white: #FFFFFF;
+  --bg-soft-sky: #E6F7FF;
+  --bg-warm: #FFF7E6;
+  --bg-mint: #F0FFF4;
+  --bg-blush: #FFF0F5;
+  --bg-lavender: #F5F5FF;
+  
+  --text-heading: #1A237E;
+  --text-body: #455A64;
+  --text-muted: #90A4AE;
+  
+  --border-light: #E0E0E0;
+  --shadow-soft: rgba(0, 0, 0, 0.08);
 }
 
-* { box-sizing: border-box; padding: 0; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: var(--fg-navy);
-  color: var(--fg-text);
-  font-family: 'Barlow', sans-serif;
+  background: var(--bg-white);
+  color: var(--text-body);
+  font-family: 'Inter', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Barlow Condensed', 'Rajdhani', sans-serif;
-  letter-spacing: 0.02em;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  color: var(--text-heading);
+  font-weight: 700;
 }
 
 a { color: inherit; text-decoration: none; }
 html { scroll-behavior: smooth; }
 
 ::selection {
-  background: rgba(0, 212, 200, 0.3);
-  color: #fff;
+  background: var(--bg-soft-sky);
+  color: var(--text-heading);
 }
 
 /* ── Scrollbar ───────────────────────────────── */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--fg-navy); }
-::-webkit-scrollbar-thumb { background: var(--fg-border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--fg-teal); }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-soft-sky); }
+::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-blue-hover); }
 
 /* ── Deal Card ───────────────────────────────── */
 .deal-card {
-  @apply rounded-2xl overflow-hidden transition-all duration-300 border;
-  background: linear-gradient(135deg, #0D2840 0%, #091E30 100%);
-  border-color: #1A3A55;
+  @apply rounded-xl overflow-hidden transition-all duration-300 border bg-white;
+  border-color: var(--border-light);
+  box-shadow: 0 2px 8px var(--shadow-soft);
 }
 .deal-card:hover {
-  border-color: var(--fg-teal);
-  box-shadow: 0 0 30px rgba(0,212,200,0.15), 0 20px 60px rgba(0,0,0,0.4);
+  border-color: var(--primary-blue);
+  box-shadow: 0 8px 24px rgba(30, 136, 229, 0.15);
   transform: translateY(-4px);
 }
 
 /* ── Discount Badge ──────────────────────────── */
 .discount-badge {
-  @apply absolute top-3 right-3 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg z-10;
-  background: linear-gradient(135deg, #FF6B00, #FFB300);
-}
-
-/* ── Gold Shimmer Text ───────────────────────── */
-.text-shimmer {
-  background: linear-gradient(90deg, #FFB300, #FFFFFF, #FF8F00, #FFB300);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 3s linear infinite;
-}
-
-@keyframes shimmer {
-  to { background-position: 200% center; }
-}
-
-/* ── Teal Glow Border ────────────────────────── */
-.glow-border {
-  border: 1px solid rgba(0,212,200,0.4);
-  box-shadow: 0 0 20px rgba(0,212,200,0.1), inset 0 0 20px rgba(0,212,200,0.05);
-}
-.glow-border:hover {
-  border-color: rgba(0,212,200,0.8);
-  box-shadow: 0 0 30px rgba(0,212,200,0.25);
+  @apply absolute top-3 right-3 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-md z-10;
+  background: linear-gradient(135deg, var(--geo-orange), var(--geo-orange-hover));
 }
 
 /* ── CTA Buttons ─────────────────────────────── */
-.btn-gold {
-  @apply font-bold rounded-xl transition-all duration-200 shadow-lg;
+.btn-primary {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-md inline-flex items-center gap-2;
+  background: var(--primary-blue);
+  color: white;
+}
+.btn-primary:hover {
+  background: var(--primary-blue-hover);
+  box-shadow: 0 6px 20px rgba(30, 136, 229, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-orange {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-md inline-flex items-center gap-2;
+  background: var(--geo-orange);
+  color: white;
+}
+.btn-orange:hover {
+  background: var(--geo-orange-hover);
+  box-shadow: 0 6px 20px rgba(251, 140, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-green {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-md inline-flex items-center gap-2;
+  background: var(--verified-green);
+  color: white;
+}
+.btn-green:hover {
+  background: var(--verified-green-hover);
+  box-shadow: 0 6px 20px rgba(67, 160, 71, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ── Section Backgrounds ────────────────────────── */
+.section-white    { background: var(--bg-white); }
+.section-sky      { background: var(--bg-soft-sky); }
+.section-warm     { background: var(--bg-warm); }
+.section-mint     { background: var(--bg-mint); }
+
+/* ── Card Styles ────────────────────────────────── */
+.card-light {
+  @apply rounded-xl p-6 bg-white border transition-all duration-300;
+  border-color: var(--border-light);
+  box-shadow: 0 2px 8px var(--shadow-soft);
+}
+.card-light:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* ── Badges ─────────────────────────────────────── */
+.badge-trending {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+  background: linear-gradient(135deg, #FF6B00, #FF8F00);
+  color: white;
+}
+
+.badge-verified {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+  background: var(--verified-green);
+  color: white;
+}
+
+.badge-best-seller {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
   background: linear-gradient(135deg, #FFB300, #FF8F00);
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-  box-shadow: 0 4px 20px rgba(255,143,0,0.4);
-}
-.btn-gold:hover {
-  background: linear-gradient(135deg, #FFC400, #FF9F00);
-  box-shadow: 0 6px 30px rgba(255,179,0,0.6);
-  transform: translateY(-1px);
+  color: white;
 }
 
-.btn-teal {
-  @apply font-bold rounded-xl transition-all duration-200;
-  background: linear-gradient(135deg, #00D4C8, #00E5FF);
-  color: var(--fg-navy);
-  box-shadow: 0 4px 20px rgba(0,212,200,0.4);
+/* ── Links ──────────────────────────────────────── */
+.link-primary {
+  color: var(--primary-blue);
+  transition: color 0.2s;
 }
-.btn-teal:hover {
-  box-shadow: 0 6px 30px rgba(0,212,200,0.6);
-  transform: translateY(-1px);
-}
-
-/* ── Section background variants ────────────── */
-.section-dark    { background: var(--fg-navy); }
-.section-darker  { background: var(--fg-dark); }
-.section-card    { background: var(--fg-card); }
-
-/* ── Starfield subtle bg pattern ─────────────── */
-.starfield {
-  background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 30% 60%, rgba(0,212,200,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 30%, rgba(255,179,0,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.1) 0%, transparent 100%),
-    radial-gradient(2px 2px at 50% 10%, rgba(0,229,255,0.2) 0%, transparent 100%);
+.link-primary:hover {
+  color: var(--primary-blue-hover);
+  text-decoration: underline;
 }
 
-/* ── Prose override for dark mode blog ───────── */
-.prose-dark {
-  color: var(--fg-text);
+/* ── Form Elements ──────────────────────────────── */
+input[type="email"],
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  @apply w-full px-4 py-3 rounded-lg border transition-all outline-none;
+  border-color: var(--border-light);
+  background: white;
+  color: var(--text-body);
 }
-.prose-dark h1, .prose-dark h2, .prose-dark h3 {
-  color: #fff;
-  font-family: 'Barlow Condensed', sans-serif;
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
 }
-.prose-dark a { color: var(--fg-teal); }
-.prose-dark strong { color: var(--fg-gold); }
-.prose-dark code {
-  background: rgba(0,212,200,0.1);
-  border: 1px solid rgba(0,212,200,0.2);
-  border-radius: 4px;
+
+/* ── Alert Boxes ────────────────────────────────── */
+.alert {
+  @apply rounded-lg p-4 flex items-start gap-3;
+}
+.alert-info {
+  background: var(--bg-soft-sky);
+  border: 1px solid var(--primary-blue);
+  color: var(--text-heading);
+}
+.alert-success {
+  background: var(--bg-mint);
+  border: 1px solid var(--verified-green);
+  color: var(--text-heading);
+}
+.alert-warning {
+  background: var(--bg-warm);
+  border: 1px solid var(--geo-orange);
+  color: var(--text-heading);
+}
+
+/* ── Prose for Blog Content ─────────────────────── */
+.prose {
+  color: var(--text-body);
+  max-width: none;
+}
+.prose h1, .prose h2, .prose h3 {
+  color: var(--text-heading);
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.prose p {
+  margin-bottom: 1.25rem;
+  line-height: 1.75;
+}
+.prose a {
+  color: var(--primary-blue);
+  text-decoration: underline;
+}
+.prose strong {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+.prose code {
+  background: var(--bg-soft-sky);
   padding: 2px 6px;
-  color: var(--fg-cyan);
+  border-radius: 4px;
+  font-size: 0.9em;
 }
-.prose-dark blockquote {
-  border-left: 4px solid var(--fg-gold);
-  background: rgba(255,179,0,0.05);
-  padding: 12px 20px;
-  border-radius: 0 8px 8px 0;
+.prose blockquote {
+  border-left: 4px solid var(--primary-blue);
+  padding-left: 1.5rem;
+  font-style: italic;
+  color: var(--text-muted);
 }
 
-/* ── Hover colour utilities (CSS-only, works in server components) ── */
-.fg-nav-link       { color: #7EB8D8; transition: color 0.2s; }
-.fg-nav-link:hover { color: #00D4C8; }
-
-.fg-footer-link-teal       { color: #7EB8D8; transition: color 0.2s; }
-.fg-footer-link-teal:hover { color: #00D4C8; }
-
-.fg-footer-link-gold       { color: #7EB8D8; transition: color 0.2s; }
-.fg-footer-link-gold:hover { color: #FFB300; }
-
-.fg-close-btn       { color: #4A7A9B; transition: color 0.2s; }
-.fg-close-btn:hover { color: #E8F4FD; }
-
-/* Blog card hover — border + title */
-.fg-blog-card {
-  background: linear-gradient(135deg, #0D2840, #091E30);
-  border: 1px solid #1A3A55;
-  border-radius: 1rem;
-  overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s;
+/* ── Responsive Utilities ───────────────────────── */
+@media (max-width: 640px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
 }
-.fg-blog-card:hover              { border-color: rgba(0,212,200,0.5); transform: translateY(-4px); }
-.fg-blog-card .fg-card-title     { color: #E8F4FD; transition: color 0.2s; }
-.fg-blog-card:hover .fg-card-title { color: #00D4C8; }
-
-/* Category card hover */
-.fg-cat-card {
-  background: linear-gradient(135deg, #0D2840, #091E30);
-  border: 1px solid rgba(0,212,200,0.2);
-  border-radius: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  display: block;
-  padding: 1.25rem;
-  text-align: center;
-}
-.fg-cat-card:hover {
-  border-color: rgba(0,212,200,0.7);
-  box-shadow: 0 8px 30px rgba(0,212,200,0.15);
-  transform: translateY(-8px);
-}
-.fg-cat-card .fg-cat-icon    { display: inline-block; transition: transform 0.3s; }
-.fg-cat-card:hover .fg-cat-icon { transform: scale(1.15); }

@@ -1,55 +1,48 @@
-import './globals.css'
 import type { Metadata } from 'next'
+import { Inter, Poppins } from 'next/font/google'
+import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import EmailPopup from '@/components/EmailPopup'
+import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script'
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const poppins = Poppins({ weight: ['600', '700', '800'], subsets: ['latin'], variable: '--font-poppins' })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'FomoGeo – Verified Deals from Around the World',
-    template: '%s | FomoGeo'
-  },
-  description: 'Discover verified deals and trending products from around the globe. Your trusted source for the best shopping deals worldwide.',
-  keywords: 'deals, discounts, trending products, best sellers, verified deals, worldwide shopping, FomoGeo',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: '64x64' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
-    ],
-    apple: [{ url: '/icon.png', sizes: '180x180', type: 'image/png' }],
-  },
-  openGraph: {
-    title: 'FomoGeo – Verified Deals from Around the World',
-    description: 'Discover verified deals and trending products from around the globe.',
-    siteName: 'FomoGeo',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'FomoGeo – Verified Deals from Around the World',
-    description: 'Discover verified deals and trending products from around the globe.',
-  },
+  title: 'FomoGeo - Verified Deals from Around the World',
+  description: 'Discover the best deals on products from around the world. Verified, curated, and updated daily.',
+  keywords: 'deals, discounts, shopping, worldwide deals, verified deals, fomo, affiliate',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID
+
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <head>
-        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <script
+        {adsenseId && (
+          <Script
             async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
             crossOrigin="anonymous"
+            strategy="afterInteractive"
           />
         )}
       </head>
-      <body style={{ background: '#071828' }}>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-          <EmailPopup />
-        </div>
+      <body className="bg-white">
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
+        <EmailPopup />
+        <Analytics />
       </body>
     </html>
   )

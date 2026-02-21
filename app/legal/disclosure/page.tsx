@@ -1,105 +1,41 @@
-export const dynamic = 'force-dynamic'
-
 export default function DisclosurePage() {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'FomoGeo'
-
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <h1 className="text-4xl font-bold text-gray-900 mb-6">
-        Affiliate Disclosure
-      </h1>
+    <div className="min-h-screen bg-white">
+      <div className="bg-sky-gradient py-16 border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-center text-fg-heading">Affiliate Disclosure</h1>
+        </div>
+      </div>
 
-      <div className="prose prose-lg">
-        <p className="text-gray-600 mb-6">
-          Last Updated: {new Date().toLocaleDateString()}
-        </p>
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <div className="prose prose-lg max-w-none">
+          <p className="text-fg-muted mb-8">Last Updated: {new Date().toLocaleDateString()}</p>
+          
+          <h2 className="text-2xl font-bold text-fg-heading mt-8 mb-4">Affiliate Relationships</h2>
+          <p className="text-fg-body mb-6">
+            FomoGeo participates in affiliate marketing programs including Amazon Associates, Awin, ShareASale, CJ Affiliate, and others.
+          </p>
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            What You Should Know
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            {siteName} participates in various affiliate marketing programs. This means that when you 
-            click on certain links on our site and make a purchase, we may receive a commission at 
-            no additional cost to you.
+          <h2 className="text-2xl font-bold text-fg-heading mt-8 mb-4">How It Works</h2>
+          <p className="text-fg-body mb-6">
+            When you click on product links and make a purchase, we may earn a small commission at no additional cost to you.
+            These commissions help us maintain and improve our service.
           </p>
-          <p className="text-gray-700 leading-relaxed">
-            We are committed to transparency. This disclosure is made in accordance with the 
-            Federal Trade Commission's 16 CFR, Part 255: "Guides Concerning the Use of Endorsements 
-            and Testimonials in Advertising."
-          </p>
-        </section>
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Affiliate Networks We Work With
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            We may earn commissions through the following affiliate programs:
-          </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Amazon Associates and other Amazon international programs</li>
-            <li>Awin (formerly Affiliate Window)</li>
-            <li>CJ Affiliate (Commission Junction)</li>
-            <li>Impact</li>
-            <li>ShareASale</li>
-            <li>Rakuten Advertising</li>
-            <li>Other affiliate networks and direct partnerships</li>
+          <h2 className="text-2xl font-bold text-fg-heading mt-8 mb-4">Our Commitment</h2>
+          <ul className="list-disc pl-6 text-fg-body mb-6">
+            <li>We only recommend products we believe offer value</li>
+            <li>Our reviews and recommendations are honest and unbiased</li>
+            <li>Affiliate relationships do not influence our editorial content</li>
+            <li>We clearly disclose when content contains affiliate links</li>
           </ul>
-        </section>
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Our Commitment to You
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            We only recommend products and services that we believe will add value to our readers. 
-            Our editorial integrity is never compromised by affiliate relationships.
+          <h2 className="text-2xl font-bold text-fg-heading mt-8 mb-4">Transparency</h2>
+          <p className="text-fg-body mb-6">
+            All product prices and availability are provided by merchant partners and are subject to change.
+            We make every effort to ensure accuracy but cannot guarantee all information is up-to-date.
           </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>We provide honest, unbiased information about products</li>
-            <li>Our recommendations are based on research and data</li>
-            <li>Affiliate commissions do not influence our content</li>
-            <li>We clearly disclose affiliate relationships</li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            How It Works
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            When you click on an affiliate link and make a purchase, the merchant pays us a small 
-            commission. This helps us:
-          </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Keep our site running and free for visitors</li>
-            <li>Create and maintain high-quality content</li>
-            <li>Research and review products</li>
-            <li>Provide valuable deal information</li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            No Extra Cost to You
-          </h2>
-          <p className="text-gray-700 leading-relaxed">
-            Using our affiliate links does not increase the price you pay. In many cases, we negotiate 
-            special discounts and deals that are exclusive to our visitors, so you may actually save money.
-          </p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Questions?
-          </h2>
-          <p className="text-gray-700 leading-relaxed">
-            If you have any questions about our affiliate relationships or how we recommend products, 
-            please feel free to contact us. We're always happy to provide more information about our 
-            practices and policies.
-          </p>
-        </section>
+        </div>
       </div>
     </div>
   )

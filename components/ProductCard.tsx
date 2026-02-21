@@ -1,84 +1,60 @@
-'use client'
-
-import Image from 'next/image'
 import Link from 'next/link'
-import { Tag, TrendingUp, Star, ExternalLink } from 'lucide-react'
-import { Product } from '@/lib/supabase'
-import { useState } from 'react'
+import Image from 'next/image'
+import { ExternalLink, TrendingUp, Star } from 'lucide-react'
+
+interface Product {
+  id: string
+  name: string
+  description: string | null
+  price: number
+  original_price: number | null
+  discount_percentage: number | null
+  image_url: string
+  category: string
+  is_trending: boolean
+  is_best_seller: boolean
+}
 
 export default function ProductCard({ product }: { product: Product }) {
-  const [imageError, setImageError] = useState(false)
-  const hasDiscount = product.discount_percentage && product.discount_percentage > 0
-
   return (
-    <div className="deal-card group relative rounded-2xl overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #0D2840, #091E30)', border: '1px solid #1A3A55' }}
-    >
-      {/* Image */}
-      <div className="relative h-56" style={{ background: '#0B1E30' }}>
-        {!imageError ? (
-          <Image
-            src={product.image_url || '/placeholder-product.jpg'}
-            alt={product.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className="h-full flex items-center justify-center">
-            <Tag className="h-16 w-16" style={{ color: '#1A3A55' }} />
-          </div>
+    <article className="deal-card group">
+      {product.discount_percentage && product.discount_percentage > 0 && (
+        <div className="discount-badge">-{product.discount_percentage}%</div>
+      )}
+      
+      {product.is_trending && (
+        <div className="absolute top-3 left-3 badge-trending z-10"><TrendingUp className="h-3 w-3" /> Trending</div>
+      )}
+      
+      {product.is_best_seller && (
+        <div className="absolute top-3 left-3 badge-best-seller z-10"><Star className="h-3 w-3 fill-current" /> Best Seller</div>
+      )}
+
+      <Link href={`/products/${product.id}`} className="block relative h-56 bg-gray-50">
+        <Image src={product.image_url} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+      </Link>
+
+      <div className="p-5">
+        <Link href={`/products/${product.id}`}>
+          <h3 className="font-bold text-lg mb-2 text-fg-heading line-clamp-2 group-hover:text-fg-blue transition">{product.name}</h3>
+        </Link>
+        
+        {product.description && (
+          <p className="text-sm text-fg-body mb-3 line-clamp-2">{product.description}</p>
         )}
 
-        {/* Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1.5">
-          {product.is_trending && (
-            <span className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold"
-              style={{ background: 'rgba(255,107,0,0.9)', color: '#fff' }}>
-              <TrendingUp className="h-3 w-3" /> Trending
-            </span>
-          )}
-          {hasDiscount && (
-            <span className="px-2 py-1 rounded-full text-xs font-bold"
-              style={{ background: 'linear-gradient(135deg, #FFB300, #FF6B00)', color: '#fff' }}>
-              {product.discount_percentage}% OFF
-            </span>
+        <div className="flex items-baseline gap-2 mb-4">
+          <span className="text-2xl font-bold text-fg-orange">${product.price.toFixed(2)}</span>
+          {product.original_price && (
+            <span className="text-sm text-fg-muted line-through">${product.original_price.toFixed(2)}</span>
           )}
         </div>
 
-        {product.is_best_seller && (
-          <div className="absolute top-2 right-2">
-            <Star className="h-6 w-6" style={{ color: '#FFB300', filter: 'drop-shadow(0 0 6px rgba(255,179,0,0.8))' }} fill="#FFB300" />
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="font-semibold line-clamp-2 mb-2 transition-colors" style={{ color: '#E8F4FD' }}>
-          {product.name}
-        </h3>
-        <p className="text-sm line-clamp-2 mb-3" style={{ color: '#7EB8D8' }}>
-          {product.description}
-        </p>
-
-        {/* Price */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl font-bold" style={{ color: '#FFB300' }}>
-            ${product.price.toFixed(2)}
-          </span>
-          {product.original_price && product.original_price > product.price && (
-            <span className="text-sm line-through" style={{ color: '#4A7A9B' }}>
-              ${product.original_price.toFixed(2)}
-            </span>
-          )}
-        </div>
-
-        <Link href={`/products/${product.id}`}
-          className="btn-gold w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold">
-          View Deal <ExternalLink className="h-4 w-4" />
+        <Link href={`/products/${product.id}`} className="btn-primary w-full justify-center text-sm">
+          <ExternalLink className="h-4 w-4" />
+          View Deal
         </Link>
       </div>
-    </div>
+    </article>
   )
 }
