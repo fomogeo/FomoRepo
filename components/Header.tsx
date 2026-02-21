@@ -6,6 +6,8 @@ import LiveClock from './LiveClock'
 export default function Header() {
   return (
     <header
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+     crossorigin="anonymous"></script>
       className="sticky top-0 z-50"
       style={{
         background: 'rgba(7, 24, 40, 0.95)',
