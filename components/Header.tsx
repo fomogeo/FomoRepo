@@ -7,8 +7,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-slate-800 backdrop-blur-sm border-b border-cyan-500/30 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 gap-4">
-          {/* Left: FomoGeo Text (hidden on mobile) + Clock */}
+          {/* Left: FomoGeo Text (show on desktop, hide on mobile) + Clock */}
           <div className="flex items-center gap-6">
+            {/* FIXED: md:flex means show on medium+ screens */}
             <Link href="/" className="hidden md:flex items-center hover:opacity-90 transition-opacity shrink-0">
               <span className="text-3xl font-black tracking-tight" style={{fontFamily: 'Poppins, sans-serif'}}>
                 <span className="bg-gradient-to-b from-cyan-300 to-blue-600 bg-clip-text text-transparent">Fomo</span>

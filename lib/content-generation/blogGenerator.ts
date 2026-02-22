@@ -110,8 +110,32 @@ export async function generateBlogPost(config: BlogPostConfig) {
   // Call OpenAI API
   const content = await callOpenAI(prompt, minWords)
 
-  // Generate excerpt
-  const excerpt = content.substring(0, 200) + '...'
+  // ISSUE 3 FIXED: Generate excerpt - strip ALL markdown before creating excerpt
+  const stripMarkdown = (text: string): string => {
+    return text
+      // Remove headers (all # symbols)
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/^#{1,6}/gm, '')
+      // Remove bold/italic
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      .replace(/__([^_]+)__/g, '$1')
+      .replace(/_([^_]+)_/g, '$1')
+      // Remove links
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Remove code blocks
+      .replace(/`([^`]+)`/g, '$1')
+      // Remove tables
+      .replace(/\|[^\n]+\|/g, '')
+      .replace(/[-]{3,}/g, '')
+      // Clean up whitespace
+      .replace(/\n\n+/g, ' ')
+      .replace(/\n/g, ' ')
+      .trim()
+  }
+  
+  const cleanContent = stripMarkdown(content)
+  const excerpt = cleanContent.substring(0, 200) + '...'
 
   // Generate slug
   const slug = title
