@@ -37,11 +37,12 @@ export default function WeatherWidget() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      <section className="py-12 bg-gradient-to-br from-sky-900/30 to-blue-900/30 border-y border-sky-500/30">
+      {/* ISSUE 3: More vibrant background - blue to cyan gradient */}
+      <section className="py-12 bg-gradient-to-br from-blue-900/40 via-cyan-900/30 to-blue-900/40 border-y border-cyan-500/40">
         <div className="container mx-auto px-4">
           <h3 className="text-3xl font-bold text-center mb-8">
             <span className="text-white">7-Day Forecast: </span>
-            <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">{location}</span>
+            <span className="bg-gradient-to-r from-sky-300 to-cyan-300 bg-clip-text text-transparent">{location}</span>
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
             {weather.daily.time.map((date: string, i: number) => (

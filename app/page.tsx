@@ -24,8 +24,8 @@ export default async function Home() {
       <Hero />
       <CategoryGrid />
       
-      {/* ISSUE 8: Trending Now on orange/warm background */}
-      <section className="py-16 bg-gradient-to-br from-orange-900/20 to-red-900/20 border-y border-orange-500/20">
+      {/* ISSUE 2: Trending Now - subtle dark gradient (works with orange AND cyan text) */}
+      <section className="py-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-y border-slate-700">
         <div className="container mx-auto px-4">
           <TrendingSection products={products.filter(p => p.is_trending)} />
         </div>

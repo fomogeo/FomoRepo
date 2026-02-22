@@ -7,22 +7,35 @@ import { getBlogPostBySlug } from '@/lib/supabase'
 import { Calendar, User, ArrowLeft } from 'lucide-react'
 import { format } from 'date-fns'
 
-// Enhanced markdown to HTML converter
+// Enhanced markdown to HTML converter - FIXES ALL # symbols
 function markdownToHtml(markdown: string): string {
   if (!markdown) return ''
   
   let html = markdown
   
-  // ISSUE 10: Remove comparison tables (they don't format properly)
-  // Remove table attempts with | and -----
+  // ISSUE 4: Remove ALL comparison tables
   html = html.replace(/\|[^\n]+\|/g, '') // Remove table rows
   html = html.replace(/[-]{3,}/g, '') // Remove separator lines
   
-  // ISSUE 11: Convert headers with color styling
-  html = html.replace(/^#### (.*$)/gm, '<h4 class="text-xl font-bold text-cyan-400 mt-6 mb-3">$1</h4>')
-  html = html.replace(/^### (.*$)/gm, '<h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4 border-l-4 border-orange-400 pl-4">$1</h3>')
-  html = html.replace(/^## (.*$)/gm, '<h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-10 mb-6">$1</h2>')
-  html = html.replace(/^# (.*$)/gm, '<h1 class="text-4xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent mt-12 mb-6">$1</h1>')
+  // CRITICAL: Convert headers BEFORE processing anything else
+  // This catches ALL # patterns including at start of content
+  html = html.replace(/^######\s+(.*$)/gm, '<h6 class="text-base font-bold text-purple-400 mt-4 mb-2">$1</h6>')
+  html = html.replace(/^#####\s+(.*$)/gm, '<h5 class="text-lg font-bold text-pink-400 mt-5 mb-3">$1</h5>')
+  html = html.replace(/^####\s+(.*$)/gm, '<h4 class="text-xl font-bold text-cyan-400 mt-6 mb-3">$1</h4>')
+  html = html.replace(/^###\s+(.*$)/gm, '<h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4 border-l-4 border-orange-400 pl-4">$1</h3>')
+  html = html.replace(/^##\s+(.*$)/gm, '<h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-10 mb-6">$1</h2>')
+  html = html.replace(/^#\s+(.*$)/gm, '<h1 class="text-4xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent mt-12 mb-6">$1</h1>')
+  
+  // Also catch headers without space after #
+  html = html.replace(/^######([^\s].*$)/gm, '<h6 class="text-base font-bold text-purple-400 mt-4 mb-2">$1</h6>')
+  html = html.replace(/^#####([^\s].*$)/gm, '<h5 class="text-lg font-bold text-pink-400 mt-5 mb-3">$1</h5>')
+  html = html.replace(/^####([^\s].*$)/gm, '<h4 class="text-xl font-bold text-cyan-400 mt-6 mb-3">$1</h4>')
+  html = html.replace(/^###([^\s].*$)/gm, '<h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4 border-l-4 border-orange-400 pl-4">$1</h3>')
+  html = html.replace(/^##([^\s].*$)/gm, '<h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-10 mb-6">$1</h2>')
+  html = html.replace(/^#([^\s].*$)/gm, '<h1 class="text-4xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent mt-12 mb-6">$1</h1>')
+  
+  // Remove any remaining standalone # symbols
+  html = html.replace(/^#{1,6}\s*$/gm, '')
   
   // Convert bold with color
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
@@ -41,7 +54,7 @@ function markdownToHtml(markdown: string): string {
   // Wrap consecutive list items in ul
   html = html.replace(/(<li.*?<\/li>\n?)+/g, '<ul class="space-y-2 mb-6 ml-4">$&</ul>')
   
-  // Convert paragraphs (lines that aren't headers or lists)
+  // Convert paragraphs
   const lines = html.split('\n')
   const processedLines = lines.map(line => {
     const trimmed = line.trim()
@@ -57,7 +70,7 @@ function markdownToHtml(markdown: string): string {
   
   html = processedLines.join('\n')
   
-  // Clean up extra breaks and empty paragraphs
+  // Clean up
   html = html.replace(/<br\/>\s*<br\/>/g, '<br/>')
   html = html.replace(/<p>\s*<\/p>/g, '')
   

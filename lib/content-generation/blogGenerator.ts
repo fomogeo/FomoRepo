@@ -40,15 +40,63 @@ export async function generateBlogPost(config: BlogPostConfig) {
   let prompt = ''
   let title = ''
 
+  // Add variety to titles - weekly, monthly, seasonal, themed
+  const now = new Date()
+  const month = now.toLocaleDateString('en', { month: 'long' })
+  const year = now.getFullYear()
+  const weekNumber = Math.ceil((now.getDate() + new Date(year, now.getMonth(), 1).getDay()) / 7)
+  const season = ['Winter', 'Winter', 'Spring', 'Spring', 'Spring', 'Summer', 'Summer', 'Summer', 'Fall', 'Fall', 'Fall', 'Winter'][now.getMonth()]
+  const quarter = `Q${Math.floor(now.getMonth() / 3) + 1}`
+  
+  // Title variations for more uniqueness
+  const titleVariations = {
+    'top-10-weekly': `Top 10 ${category} Products This Week (Week ${weekNumber})`,
+    'top-10-monthly': `Best ${category} Products of ${month} ${year}`,
+    'top-10-seasonal': `Top ${category} Picks for ${season} ${year}`,
+    'top-10-quarterly': `Best ${category} Products ${quarter} ${year}`,
+    'top-10-budget': `Top 10 Budget-Friendly ${category} Products`,
+    'top-10-premium': `Best Premium ${category} Products Worth the Money`,
+    'top-10-trending': `10 Trending ${category} Products Everyone's Buying`,
+    
+    'buying-guide-seasonal': `${category} Buying Guide for ${season} ${year}`,
+    'buying-guide-budget': `How to Choose ${category} on a Budget`,
+    'buying-guide-premium': `Premium ${category} Buying Guide: What to Look For`,
+    'buying-guide-beginners': `${category} for Beginners: Complete Buying Guide`,
+    'buying-guide-expert': `Expert's Guide to Choosing ${category}`,
+    
+    'how-to-seasonal': `How to Choose ${category} for ${season}`,
+    'how-to-budget': `How to Find Quality ${category} Without Breaking the Bank`,
+    'how-to-compare': `How to Compare ${category}: Key Features to Consider`,
+  }
+
   switch (type) {
     case 'top-10':
+      // Randomly select variation for uniqueness
+      const top10Variations = [
+        'top-10-weekly',
+        'top-10-monthly', 
+        'top-10-seasonal',
+        'top-10-quarterly',
+        'top-10-budget',
+        'top-10-premium',
+        'top-10-trending'
+      ]
+      const selectedTop10 = top10Variations[Math.floor(Math.random() * top10Variations.length)]
+      title = titleVariations[selectedTop10]
       prompt = await generateTop10Prompt(category, products, keywords)
-      title = `Top 10 ${category} Products of ${new Date().getFullYear()}`
       break
 
     case 'buying-guide':
+      const buyingGuideVariations = [
+        'buying-guide-seasonal',
+        'buying-guide-budget',
+        'buying-guide-premium',
+        'buying-guide-beginners',
+        'buying-guide-expert'
+      ]
+      const selectedGuide = buyingGuideVariations[Math.floor(Math.random() * buyingGuideVariations.length)]
+      title = titleVariations[selectedGuide]
       prompt = await generateBuyingGuidePrompt(category, keywords)
-      title = `${category} Buying Guide: How to Choose the Best One`
       break
 
     case 'comparison':
@@ -58,12 +106,25 @@ export async function generateBlogPost(config: BlogPostConfig) {
 
     case 'product-review':
       prompt = await generateProductReviewPrompt(products?.[0], keywords)
-      title = `${products?.[0]?.name} Review: Is It Worth Buying?`
+      // Add variety to review titles
+      const reviewVariations = [
+        `${products?.[0]?.name} Review: Is It Worth Buying?`,
+        `${products?.[0]?.name}: Honest Review & Pros/Cons`,
+        `Is ${products?.[0]?.name} Worth the Hype? Our Review`,
+        `${products?.[0]?.name} Review (${month} ${year})`,
+      ]
+      title = reviewVariations[Math.floor(Math.random() * reviewVariations.length)]
       break
 
     case 'how-to':
+      const howToVariations = [
+        'how-to-seasonal',
+        'how-to-budget',
+        'how-to-compare'
+      ]
+      const selectedHowTo = howToVariations[Math.floor(Math.random() * howToVariations.length)]
+      title = titleVariations[selectedHowTo]
       prompt = await generateHowToPrompt(category, keywords)
-      title = `How to Choose the Perfect ${category}: Complete Guide`
       break
 
     default:
