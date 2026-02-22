@@ -37,8 +37,8 @@ export default function WeatherWidget() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      {/* ISSUE 3: More vibrant background - blue to cyan gradient */}
-      <section className="py-12 bg-gradient-to-br from-blue-900/40 via-cyan-900/30 to-blue-900/40 border-y border-cyan-500/40">
+      {/* ISSUE 4: Weather now matches new Trending background (section-card style) */}
+      <section className="py-12 section-card border-y border-slate-700">
         <div className="container mx-auto px-4">
           <h3 className="text-3xl font-bold text-center mb-8">
             <span className="text-white">7-Day Forecast: </span>

@@ -11,14 +11,15 @@ export default function TermsPage() {
         strategy="afterInteractive"
       />
       
-      <div className="w-full relative">
+      {/* Banner - full, no overlay */}
+      <div className="w-full">
         <img src="/hero-light.png" alt="Terms of Service" className="w-full h-auto" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-transparent flex items-center justify-center">
-          <div className="text-center px-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">Terms of Service</h1>
-            <p className="text-cyan-300 mt-4 drop-shadow">Last Updated: {new Date().toLocaleDateString()}</p>
-          </div>
-        </div>
+      </div>
+
+      {/* Title below banner */}
+      <div className="py-12 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-white">Terms of Service</h1>
+        <p className="text-cyan-300 mt-4">Last Updated: {new Date().toLocaleDateString()}</p>
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-4xl">
