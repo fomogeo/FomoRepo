@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Mail, Twitter, Facebook, Instagram } from 'lucide-react'
+import { Mail, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -16,14 +16,26 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-12 w-auto mb-4" />
+            {/* ISSUE 3: New logo in white tile */}
+            <div className="bg-white rounded-lg p-3 inline-block border-2 border-gray-200 shadow-md mb-4">
+              <Image src="/fomogeo.png" alt="FomoGeo" width={140} height={48} className="h-10 w-auto" />
+            </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-4">
               Your trusted source for <span className="text-cyan-400 font-semibold">verified deals</span> from around the world. Discover trending products and <span className="text-orange-400 font-semibold">exclusive discounts</span> daily.
             </p>
             <div className="flex space-x-4">
-              <a href="https://twitter.com/fomogeo" className="text-gray-400 hover:text-cyan-400 transition"><Twitter className="h-5 w-5" /></a>
-              <a href="https://facebook.com/fomogeo" className="text-gray-400 hover:text-blue-400 transition"><Facebook className="h-5 w-5" /></a>
-              <a href="https://instagram.com/fomogeo" className="text-gray-400 hover:text-pink-400 transition"><Instagram className="h-5 w-5" /></a>
+              {/* ISSUE 6 & 7: X icon and new links, open in new window */}
+              <a href="https://x.com/fomogeo_" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition">
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61587989941776" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="https://instagram.com/fomogeo" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-400 transition">
+                <Instagram className="h-5 w-5" />
+              </a>
             </div>
           </div>
 

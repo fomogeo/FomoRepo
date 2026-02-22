@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sun } from 'lucide-react'
+import { Sun, Cloud, CloudRain, Wind } from 'lucide-react'
 import Script from 'next/script'
 
 export default function WeatherWidget() {
@@ -22,6 +22,13 @@ export default function WeatherWidget() {
 
   if (!weather) return null
 
+  const getWeatherIcon = (temp: number, precip: number) => {
+    if (precip > 60) return <CloudRain className="h-10 w-10 text-blue-400" />
+    if (precip > 30) return <Cloud className="h-10 w-10 text-gray-400" />
+    if (temp > 25) return <Sun className="h-10 w-10 text-yellow-400" />
+    return <Wind className="h-10 w-10 text-cyan-400" />
+  }
+
   return (
     <>
       <Script
@@ -30,18 +37,32 @@ export default function WeatherWidget() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 border-y border-cyan-500/30">
+      <section className="py-12 bg-gradient-to-br from-sky-900/30 to-blue-900/30 border-y border-sky-500/30">
         <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center mb-8 text-white">
-            7-Day Forecast: <span className="text-cyan-400">{location}</span>
+          <h3 className="text-3xl font-bold text-center mb-8">
+            <span className="text-white">7-Day Forecast: </span>
+            <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">{location}</span>
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
             {weather.daily.time.map((date: string, i: number) => (
-              <div key={i} className="bg-white/90 backdrop-blur rounded-xl p-4 text-center shadow-lg hover:shadow-xl transition-shadow">
-                <p className="text-xs text-gray-600 mb-2 font-semibold">{new Date(date).toLocaleDateString('en', {weekday: 'short'})}</p>
-                <Sun className="h-10 w-10 mx-auto text-orange-500 mb-2" />
-                <p className="font-bold text-lg text-gray-900">{Math.round(weather.daily.temperature_2m_max[i])}°</p>
-                <p className="text-xs text-gray-600">{Math.round(weather.daily.temperature_2m_min[i])}°</p>
+              <div key={i} className="bg-gradient-to-br from-white/95 to-sky-50/95 backdrop-blur rounded-xl p-4 text-center shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 border border-sky-200">
+                <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">
+                  {new Date(date).toLocaleDateString('en', {weekday: 'short'})}
+                </p>
+                <div className="flex justify-center mb-2">
+                  {getWeatherIcon(weather.daily.temperature_2m_max[i], weather.daily.precipitation_probability_max[i])}
+                </div>
+                <p className="font-black text-2xl mb-1 bg-gradient-to-br from-orange-500 to-red-500 bg-clip-text text-transparent">
+                  {Math.round(weather.daily.temperature_2m_max[i])}°
+                </p>
+                <p className="text-xs text-gray-600 font-semibold">
+                  {Math.round(weather.daily.temperature_2m_min[i])}°
+                </p>
+                {weather.daily.precipitation_probability_max[i] > 30 && (
+                  <p className="text-xs text-blue-600 mt-1 font-semibold">
+                    💧 {weather.daily.precipitation_probability_max[i]}%
+                  </p>
+                )}
               </div>
             ))}
           </div>

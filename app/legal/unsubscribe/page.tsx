@@ -43,12 +43,15 @@ export default function UnsubscribePage() {
         strategy="afterInteractive"
       />
       
-      <div className="w-full relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-transparent z-10"></div>
-        <img src="/hero-light.png" alt="Unsubscribe" className="w-full h-48 object-cover opacity-40" />
-        <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white">Unsubscribe</h1>
-        </div>
+      {/* Banner - full, no overlay */}
+      <div className="w-full">
+        <img src="/hero-light.png" alt="Unsubscribe" className="w-full h-auto" />
+      </div>
+
+      {/* Title below banner */}
+      <div className="py-12 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-white">Unsubscribe</h1>
+        <p className="text-lg text-gray-300 mt-4">Manage your email preferences</p>
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">

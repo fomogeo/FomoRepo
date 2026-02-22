@@ -24,7 +24,8 @@ export default async function Home() {
       <Hero />
       <CategoryGrid />
       
-      <section className="py-16 section-dark">
+      {/* ISSUE 8: Trending Now on orange/warm background */}
+      <section className="py-16 bg-gradient-to-br from-orange-900/20 to-red-900/20 border-y border-orange-500/20">
         <div className="container mx-auto px-4">
           <TrendingSection products={products.filter(p => p.is_trending)} />
         </div>
@@ -52,7 +53,6 @@ export default async function Home() {
 
       <WeatherWidget />
       
-      {/* ISSUE 2: Changed from section-green to section-teal (light blue) */}
       <section className="py-16 section-teal">
         <div className="container mx-auto px-4">
           <EmailSignup />
