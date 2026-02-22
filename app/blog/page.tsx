@@ -23,17 +23,17 @@ export default async function BlogPage() {
         strategy="afterInteractive"
       />
       
-      {/* More transparent overlay - 40% instead of 80% */}
-      <div className="w-full relative">
+      {/* Full banner - NO overlay */}
+      <div className="w-full">
         <img src="/hero-light.png" alt="Blog" className="w-full h-auto" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 via-slate-900/30 to-transparent flex items-center justify-center">
-          <div className="text-center px-4">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-2xl">
-              Deal Hunter's <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent drop-shadow-2xl">Blog</span>
-            </h1>
-            <p className="text-lg text-cyan-300 max-w-2xl mx-auto drop-shadow-lg">Expert tips, buying guides, and insider secrets</p>
-          </div>
-        </div>
+      </div>
+
+      {/* Title BELOW banner */}
+      <div className="py-12 text-center">
+        <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
+          Deal Hunter's <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Blog</span>
+        </h1>
+        <p className="text-lg text-gray-300 max-w-2xl mx-auto">Expert tips, buying guides, and insider secrets</p>
       </div>
 
       <div className="container mx-auto px-4 py-10">

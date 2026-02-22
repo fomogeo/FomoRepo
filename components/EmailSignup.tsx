@@ -3,15 +3,6 @@
 import { useState } from 'react'
 import { Mail } from 'lucide-react'
 
-function sanitizeEmail(email: string): string {
-  return email.trim().toLowerCase().replace(/[<>]/g, '')
-}
-
-function isValidEmail(email: string): boolean {
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-  return regex.test(email)
-}
-
 export default function EmailSignup() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'already' | 'error'>('idle')
@@ -19,29 +10,23 @@ export default function EmailSignup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const cleanEmail = sanitizeEmail(email)
-    
-    if (!isValidEmail(cleanEmail)) {
-      setStatus('error')
-      setMessage('Please enter a valid email address')
-      return
-    }
-
     setStatus('loading')
+    
     try {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail })
+        body: JSON.stringify({ email })
       })
+      
       const data = await res.json()
       
       if (data.success && data.already) {
         setStatus('already')
-        setMessage('You\'re already subscribed!')
+        setMessage('You are already subscribed!')
       } else if (data.success) {
         setStatus('success')
-        setMessage('🎉 Successfully subscribed!')
+        setMessage('Successfully subscribed! Check your inbox.')
         setEmail('')
       } else {
         setStatus('error')
@@ -54,12 +39,14 @@ export default function EmailSignup() {
   }
 
   return (
-    <div className="card-light max-w-2xl mx-auto text-center p-8" id="email-signup">
-      <Mail className="h-12 w-12 mx-auto mb-4 text-fg-blue" />
-      <h3 className="text-2xl font-bold mb-2 text-fg-heading">Never Miss a Deal!</h3>
-      <p className="text-fg-body mb-6">Get exclusive deals and offers delivered straight to your inbox</p>
+    <div id="email-signup" className="card-light p-8 text-center max-w-2xl mx-auto">
+      <Mail className="h-12 w-12 mx-auto mb-4 text-orange-400" />
+      <h2 className="text-2xl font-bold mb-4 text-white">Never Miss a Deal!</h2>
+      <p className="text-gray-300 mb-6">
+        Get exclusive deals and expert buying guides delivered straight to your inbox
+      </p>
       
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
         <input
           type="email"
           value={email}
@@ -69,16 +56,24 @@ export default function EmailSignup() {
           required
           disabled={status === 'loading'}
         />
-        <button type="submit" className="btn-orange" disabled={status === 'loading'}>
+        <button 
+          type="submit" 
+          className="btn-orange px-6 py-3 whitespace-nowrap"
+          disabled={status === 'loading'}
+        >
           {status === 'loading' ? 'Subscribing...' : 'Subscribe Free'}
         </button>
       </form>
       
       {message && (
-        <p className={`mt-4 text-sm ${status === 'success' || status === 'already' ? 'text-fg-green' : 'text-red-500'}`}>
+        <p className={`mt-4 text-sm ${status === 'success' || status === 'already' ? 'text-green-400' : 'text-red-400'}`}>
           {message}
         </p>
       )}
+      
+      <p className="text-xs text-gray-400 mt-4">
+        We respect your privacy. Unsubscribe anytime.
+      </p>
     </div>
   )
 }

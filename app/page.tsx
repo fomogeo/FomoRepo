@@ -52,7 +52,8 @@ export default async function Home() {
 
       <WeatherWidget />
       
-      <section className="py-16 section-green">
+      {/* ISSUE 2: Changed from section-green to section-teal (light blue) */}
+      <section className="py-16 section-teal">
         <div className="container mx-auto px-4">
           <EmailSignup />
         </div>

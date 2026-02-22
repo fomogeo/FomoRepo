@@ -25,10 +25,11 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
             <Link 
               key={category.id} 
               href={`/category/${category.slug}`} 
-              className="deal-card group p-4 text-center"
+              className="deal-card group p-4 text-center relative"
             >
+              {/* ISSUE 7: Fire icon always visible on showAll page */}
               {category.trending && (
-                <div className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 border border-orange-300">
+                <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 border border-orange-300 ${showAll ? '' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}>
                   🔥
                 </div>
               )}

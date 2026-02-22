@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { Tag, FileText, Grid3x3 } from 'lucide-react'
 import LiveClock from './LiveClock'
 
@@ -8,10 +7,13 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-cyan-500/30 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 gap-4">
-          {/* Left: Logo + Clock */}
+          {/* Left: FomoGeo Text + Clock */}
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity shrink-0">
-              <Image src="/logo.png" alt="FomoGeo" width={180} height={60} className="h-10 w-auto" priority />
+              <span className="text-2xl font-bold">
+                <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Fomo</span>
+                <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Geo</span>
+              </span>
             </Link>
             <LiveClock />
           </div>

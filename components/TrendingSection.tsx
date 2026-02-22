@@ -7,10 +7,11 @@ export default function TrendingSection({ products }: { products: any[] }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-4xl font-bold text-fg-heading">
-          <span className="text-fg-orange">🔥 Trending</span> Now
+        <h2 className="text-4xl font-bold text-white">
+          <span className="text-orange-400">🔥 Trending</span>{' '}
+          <span className="text-cyan-400">Now</span>
         </h2>
-        <Link href="/deals" className="text-fg-blue hover:text-fg-blue-hover font-semibold text-lg transition">
+        <Link href="/deals" className="text-cyan-400 hover:text-cyan-300 font-semibold text-lg transition">
           View All →
         </Link>
       </div>
