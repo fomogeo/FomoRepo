@@ -6,14 +6,16 @@ export default function TrendingSection({ products }: { products: any[] }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-4xl font-bold text-white">
-          <span className="text-orange-400">🔥 Trending</span>{' '}
-          <span className="text-cyan-400">Now</span>
+      {/* OLD STYLE: Trending Now with fire emoji */}
+      <div className="text-center mb-12">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <span className="text-3xl mr-2">🔥</span>
+          <span className="text-white">Trending </span>
+          <span className="text-orange-400">Now</span>
         </h2>
-        <Link href="/deals" className="text-cyan-400 hover:text-cyan-300 font-semibold text-lg transition">
-          View All →
-        </Link>
+        <p className="text-gray-300 text-base">
+          Hot deals everyone is buying right now
+        </p>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

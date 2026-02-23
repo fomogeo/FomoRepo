@@ -7,6 +7,7 @@ import TrendingSection from '@/components/TrendingSection'
 import ProductGrid from '@/components/ProductGrid'
 import EmailSignup from '@/components/EmailSignup'
 import WeatherWidget from '@/components/WeatherWidget'
+import ColorfulDivider from '@/components/ColorfulDivider'
 import AdSpace from '@/components/AdSpace'
 import { getProducts } from '@/lib/supabase'
 
@@ -24,14 +25,12 @@ export default async function Home() {
       <Hero />
       <CategoryGrid />
       
-      {/* ISSUE 3: Trending Now - NOW uses section-card background (was dark gradient) */}
       <section className="py-16 section-card">
         <div className="container mx-auto px-4">
           <TrendingSection products={products.filter(p => p.is_trending)} />
         </div>
       </section>
       
-      {/* ISSUE 3: Latest Deals - NOW uses dark gradient (was section-card) */}
       <section className="py-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-y border-slate-700">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -82,6 +81,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Colorful divider before footer */}
+      <ColorfulDivider />
     </>
   )
 }

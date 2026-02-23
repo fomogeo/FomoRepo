@@ -37,13 +37,18 @@ export default function WeatherWidget() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      {/* ISSUE 4: Weather now matches new Trending background (section-card style) */}
       <section className="py-12 section-card border-y border-slate-700">
         <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center mb-8">
-            <span className="text-white">7-Day Forecast: </span>
-            <span className="bg-gradient-to-r from-sky-300 to-cyan-300 bg-clip-text text-transparent">{location}</span>
-          </h3>
+          {/* OLD STYLE: Delivery Weather Forecast */}
+          <div className="text-center mb-8">
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">
+              <span className="text-2xl mr-2">☀️</span>
+              <span className="text-white">Delivery </span>
+              <span className="text-cyan-400">Weather Forecast</span>
+            </h3>
+            <p className="text-gray-400 text-sm">Know the weather at your location before your order arrives</p>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
             {weather.daily.time.map((date: string, i: number) => (
               <div key={i} className="bg-gradient-to-br from-white/95 to-sky-50/95 backdrop-blur rounded-xl p-4 text-center shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 border border-sky-200">
