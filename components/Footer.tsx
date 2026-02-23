@@ -16,12 +16,9 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            {/* UPDATED: Logo 2/3 size, links to homepage */}
-            <Link href="/" className="inline-block mb-4 hover:opacity-80 transition">
-              <div className="bg-white rounded-lg p-2 inline-block border-2 border-gray-200 shadow-md">
-                <Image src="/FomoGeo.png" alt="FomoGeo" width={93} height={32} className="h-8 w-auto" />
-              </div>
-            </Link>
+            <div className="bg-white rounded-lg p-3 inline-block border-2 border-gray-200 shadow-md mb-4">
+              <Image src="/FomoGeo.png" alt="FomoGeo" width={140} height={48} className="h-10 w-auto" />
+            </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-4">
               Your trusted source for <span className="text-cyan-400 font-semibold">verified deals</span> from around the world. Discover trending products and <span className="text-orange-400 font-semibold">exclusive discounts</span> daily.
             </p>
@@ -34,6 +31,7 @@ export default function Footer() {
               <a href="https://www.facebook.com/profile.php?id=61587989941776" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition">
                 <Facebook className="h-5 w-5" />
               </a>
+              {/* ISSUE 2: Pinterest icon added */}
               <a href="https://uk.pinterest.com/fomogeo/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-400 transition">
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
@@ -68,8 +66,7 @@ export default function Footer() {
           <div>
             <h3 className="text-base font-bold mb-4 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Stay Updated</h3>
             <p className="text-sm mb-4 text-gray-400">Get <span className="text-green-400 font-semibold">exclusive deals</span> delivered to your inbox</p>
-            {/* UPDATED: Smaller button */}
-            <Link href="/#email-signup" className="btn-primary inline-flex items-center gap-2 px-4 py-2 text-sm">
+            <Link href="/#email-signup" className="btn-primary inline-flex items-center gap-2 px-5 py-3 text-sm">
               <Mail className="h-4 w-4" />
               Subscribe Free
             </Link>

@@ -7,16 +7,14 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
   const categories = showAll ? CATEGORIES : getTrendingCategories().slice(0, limit)
 
   return (
-    <section className={showAll ? "py-16 section-dark" : ""}>
+    <section className="py-16 section-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!showAll && (
           <div className="text-center mb-12">
-            {/* BIGGER TITLE + COLORED SUBTITLE */}
-            <h2 className="text-5xl sm:text-6xl font-bold mb-4">
-              <span className="text-white">Trending </span>
-              <span className="text-cyan-400">Categories</span>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
+              Trending <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Categories</span>
             </h2>
-            <p className="text-cyan-300 text-xl font-semibold">
+            <p className="text-gray-300 text-lg">
               Shop the hottest product categories with verified deals
             </p>
           </div>
@@ -29,6 +27,7 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
               href={`/category/${category.slug}`} 
               className="deal-card group p-4 text-center relative"
             >
+              {/* ISSUE 7: Fire icon always visible on showAll page */}
               {category.trending && (
                 <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 border border-orange-300 ${showAll ? '' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}>
                   🔥
@@ -55,7 +54,7 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
 
         {!showAll && (
           <div className="text-center">
-            <Link href="/categories" className="btn-primary px-8 py-4 font-bold text-lg">
+            <Link href="/categories" className="btn-primary px-8 py-4 font-bold">
               View All 30 Categories →
             </Link>
           </div>

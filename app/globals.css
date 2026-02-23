@@ -2,198 +2,236 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Google Fonts ─────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --fg-navy:   #071828;
-  --fg-dark:   #0B1E30;
-  --fg-card:   #0D2840;
-  --fg-border: #1A3A55;
-  --fg-teal:   #00D4C8;
-  --fg-cyan:   #00E5FF;
-  --fg-gold:   #FFB300;
-  --fg-amber:  #FF8F00;
-  --fg-orange: #FF6B00;
-  --fg-green:  #00C853;
-  --fg-text:   #E8F4FD;
-  --fg-muted:  #7EB8D8;
+  /* LIGHTER blues & teals (several shades lighter) */
+  --primary-blue: #5E92F3;
+  --ocean-blue: #4A90E2;
+  --teal: #4DD0E1;
+  --light-teal: #80DEEA;
+  --sky-blue: #64B5F6;
+  
+  --geo-orange: #FB8C00;
+  --bright-orange: #FF6D00;
+  --gold: #FFC107;
+  
+  --verified-green: #00C853;
+  --mint: #4DB6AC;
+  
+  /* Softer dark backgrounds (less harsh contrast) */
+  --bg-dark: #1A2332;
+  --bg-card: #2A3F54;
+  --bg-card-hover: #345066;
+  
+  /* Light text for dark backgrounds */
+  --text-white: #FFFFFF;
+  --text-light: #E0E7EF;
+  --text-dim: #B0BEC5;
+  
+  --shadow-glow: rgba(77, 208, 225, 0.3);
 }
 
-* { box-sizing: border-box; padding: 0; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: var(--fg-navy);
-  color: var(--fg-text);
-  font-family: 'Barlow', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  font-family: 'Inter', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Barlow Condensed', 'Rajdhani', sans-serif;
-  letter-spacing: 0.02em;
+  font-family: 'Outfit', 'Poppins', sans-serif;
+  color: var(--text-white);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 a { color: inherit; text-decoration: none; }
 html { scroll-behavior: smooth; }
 
 ::selection {
-  background: rgba(0, 212, 200, 0.3);
-  color: #fff;
+  background: var(--teal);
+  color: white;
 }
 
-/* ── Scrollbar ───────────────────────────────── */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--fg-navy); }
-::-webkit-scrollbar-thumb { background: var(--fg-border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--fg-teal); }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-blue); }
 
-/* ── Deal Card ───────────────────────────────── */
+/* Full-width hero */
+.hero-section {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: linear-gradient(135deg, #4A90E2 0%, #4DD0E1 100%);
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(77, 208, 225, 0.2) 0%, transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(251, 140, 0, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Softer section backgrounds */
+.section-dark { background: var(--bg-dark); }
+.section-card { background: #253447; }
+.section-blue { background: linear-gradient(135deg, #4A90E2 0%, #5E92F3 100%); }
+.section-teal { background: linear-gradient(135deg, #4DB6AC 0%, #4DD0E1 100%); }
+.section-green { background: linear-gradient(135deg, #66BB6A 0%, #00C853 100%); }
+
+/* Softer cards - less harsh contrast */
 .deal-card {
-  @apply rounded-2xl overflow-hidden transition-all duration-300 border;
-  background: linear-gradient(135deg, #0D2840 0%, #091E30 100%);
-  border-color: #1A3A55;
+  @apply rounded-xl overflow-hidden transition-all duration-300 border;
+  background: var(--bg-card);
+  border-color: rgba(77, 208, 225, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 .deal-card:hover {
-  border-color: var(--fg-teal);
-  box-shadow: 0 0 30px rgba(0,212,200,0.15), 0 20px 60px rgba(0,0,0,0.4);
+  border-color: var(--teal);
+  box-shadow: 0 8px 30px var(--shadow-glow);
   transform: translateY(-4px);
 }
 
-/* ── Discount Badge ──────────────────────────── */
 .discount-badge {
-  @apply absolute top-3 right-3 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg z-10;
-  background: linear-gradient(135deg, #FF6B00, #FFB300);
+  @apply absolute top-3 right-3 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg z-10;
+  background: linear-gradient(135deg, var(--bright-orange), var(--geo-orange));
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* ── Gold Shimmer Text ───────────────────────── */
-.text-shimmer {
-  background: linear-gradient(90deg, #FFB300, #FFFFFF, #FF8F00, #FFB300);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 3s linear infinite;
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 109, 0, 0.6); }
+  50% { box-shadow: 0 0 30px rgba(255, 109, 0, 0.8); }
 }
 
-@keyframes shimmer {
-  to { background-position: 200% center; }
+/* Buttons with lighter colors */
+.btn-primary {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 inline-flex items-center gap-2;
+  background: linear-gradient(135deg, var(--teal), var(--primary-blue));
+  color: white;
+  box-shadow: 0 4px 15px rgba(77, 208, 225, 0.4);
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 25px rgba(77, 208, 225, 0.6);
+  transform: translateY(-2px);
 }
 
-/* ── Teal Glow Border ────────────────────────── */
-.glow-border {
-  border: 1px solid rgba(0,212,200,0.4);
-  box-shadow: 0 0 20px rgba(0,212,200,0.1), inset 0 0 20px rgba(0,212,200,0.05);
+.btn-orange {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 inline-flex items-center gap-2;
+  background: linear-gradient(135deg, var(--bright-orange), var(--gold));
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.4);
 }
-.glow-border:hover {
-  border-color: rgba(0,212,200,0.8);
-  box-shadow: 0 0 30px rgba(0,212,200,0.25);
-}
-
-/* ── CTA Buttons ─────────────────────────────── */
-.btn-gold {
-  @apply font-bold rounded-xl transition-all duration-200 shadow-lg;
-  background: linear-gradient(135deg, #FFB300, #FF8F00);
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-  box-shadow: 0 4px 20px rgba(255,143,0,0.4);
-}
-.btn-gold:hover {
-  background: linear-gradient(135deg, #FFC400, #FF9F00);
-  box-shadow: 0 6px 30px rgba(255,179,0,0.6);
-  transform: translateY(-1px);
+.btn-orange:hover {
+  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.6);
+  transform: translateY(-2px);
 }
 
-.btn-teal {
-  @apply font-bold rounded-xl transition-all duration-200;
-  background: linear-gradient(135deg, #00D4C8, #00E5FF);
-  color: var(--fg-navy);
-  box-shadow: 0 4px 20px rgba(0,212,200,0.4);
+.btn-green {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 inline-flex items-center gap-2;
+  background: linear-gradient(135deg, #66BB6A, var(--verified-green));
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
 }
-.btn-teal:hover {
-  box-shadow: 0 6px 30px rgba(0,212,200,0.6);
-  transform: translateY(-1px);
-}
-
-/* ── Section background variants ────────────── */
-.section-dark    { background: var(--fg-navy); }
-.section-darker  { background: var(--fg-dark); }
-.section-card    { background: var(--fg-card); }
-
-/* ── Starfield subtle bg pattern ─────────────── */
-.starfield {
-  background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 30% 60%, rgba(0,212,200,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 30%, rgba(255,179,0,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.1) 0%, transparent 100%),
-    radial-gradient(2px 2px at 50% 10%, rgba(0,229,255,0.2) 0%, transparent 100%);
+.btn-green:hover {
+  box-shadow: 0 8px 25px rgba(0, 200, 83, 0.6);
+  transform: translateY(-2px);
 }
 
-/* ── Prose override for dark mode blog ───────── */
-.prose-dark {
-  color: var(--fg-text);
+.card-light {
+  @apply rounded-xl p-6 transition-all duration-300 border;
+  background: var(--bg-card);
+  border-color: rgba(77, 208, 225, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
-.prose-dark h1, .prose-dark h2, .prose-dark h3 {
-  color: #fff;
-  font-family: 'Barlow Condensed', sans-serif;
-}
-.prose-dark a { color: var(--fg-teal); }
-.prose-dark strong { color: var(--fg-gold); }
-.prose-dark code {
-  background: rgba(0,212,200,0.1);
-  border: 1px solid rgba(0,212,200,0.2);
-  border-radius: 4px;
-  padding: 2px 6px;
-  color: var(--fg-cyan);
-}
-.prose-dark blockquote {
-  border-left: 4px solid var(--fg-gold);
-  background: rgba(255,179,0,0.05);
-  padding: 12px 20px;
-  border-radius: 0 8px 8px 0;
+.card-light:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  border-color: var(--teal);
 }
 
-/* ── Hover colour utilities (CSS-only, works in server components) ── */
-.fg-nav-link       { color: #7EB8D8; transition: color 0.2s; }
-.fg-nav-link:hover { color: #00D4C8; }
+.badge-trending {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+  background: linear-gradient(135deg, #FF6D00, #FFC107);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.5);
+}
 
-.fg-footer-link-teal       { color: #7EB8D8; transition: color 0.2s; }
-.fg-footer-link-teal:hover { color: #00D4C8; }
+.badge-verified {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+  background: linear-gradient(135deg, #66BB6A, var(--verified-green));
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 200, 83, 0.5);
+}
 
-.fg-footer-link-gold       { color: #7EB8D8; transition: color 0.2s; }
-.fg-footer-link-gold:hover { color: #FFB300; }
+.badge-best-seller {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+  background: linear-gradient(135deg, #FFC107, #FFD54F);
+  color: #1A2332;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.5);
+}
 
-.fg-close-btn       { color: #4A7A9B; transition: color 0.2s; }
-.fg-close-btn:hover { color: #E8F4FD; }
+.link-primary {
+  color: var(--light-teal);
+  transition: color 0.2s;
+}
+.link-primary:hover {
+  color: var(--teal);
+  text-decoration: underline;
+}
 
-/* Blog card hover — border + title */
-.fg-blog-card {
-  background: linear-gradient(135deg, #0D2840, #091E30);
-  border: 1px solid #1A3A55;
-  border-radius: 1rem;
+input[type="email"], input[type="text"], input[type="number"], select, textarea {
+  @apply w-full px-4 py-3 rounded-lg border transition-all outline-none;
+  background: var(--bg-card);
+  border-color: rgba(77, 208, 225, 0.3);
+  color: var(--text-white);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.2);
+}
+
+.page-header {
+  @apply py-16 relative;
+  background: linear-gradient(135deg, #4A90E2 0%, #4DD0E1 100%);
+  position: relative;
   overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s;
 }
-.fg-blog-card:hover              { border-color: rgba(0,212,200,0.5); transform: translateY(-4px); }
-.fg-blog-card .fg-card-title     { color: #E8F4FD; transition: color 0.2s; }
-.fg-blog-card:hover .fg-card-title { color: #00D4C8; }
 
-/* Category card hover */
-.fg-cat-card {
-  background: linear-gradient(135deg, #0D2840, #091E30);
-  border: 1px solid rgba(0,212,200,0.2);
-  border-radius: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  display: block;
-  padding: 1.25rem;
-  text-align: center;
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 40%, rgba(77, 208, 225, 0.15) 0%, transparent 60%),
+              radial-gradient(circle at 70% 70%, rgba(251, 140, 0, 0.1) 0%, transparent 60%);
+  pointer-events: none;
 }
-.fg-cat-card:hover {
-  border-color: rgba(0,212,200,0.7);
-  box-shadow: 0 8px 30px rgba(0,212,200,0.15);
-  transform: translateY(-8px);
+
+.prose {
+  color: var(--text-light);
+  max-width: none;
 }
-.fg-cat-card .fg-cat-icon    { display: inline-block; transition: transform 0.3s; }
-.fg-cat-card:hover .fg-cat-icon { transform: scale(1.15); }
+.prose h1, .prose h2, .prose h3 {
+  color: var(--text-white);
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.prose a {
+  color: var(--light-teal);
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+}
