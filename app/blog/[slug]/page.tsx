@@ -1,184 +1,162 @@
 export const dynamic = 'force-dynamic'
 
-import { Metadata } from 'next'
+import Script from 'next/script'
 import { notFound } from 'next/navigation'
-import { getBlogPostBySlug } from '@/lib/supabase'
 import Link from 'next/link'
+import { getBlogPostBySlug } from '@/lib/supabase'
+import { Calendar, User, ArrowLeft } from 'lucide-react'
+import { format } from 'date-fns'
 
+// Enhanced markdown to HTML converter - FIXES ALL # symbols
 function markdownToHtml(markdown: string): string {
+  if (!markdown) return ''
+  
   let html = markdown
-  html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>')
-  html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>')
-  html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>')
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>')
-  html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" style="color:#00D4C8">$1</a>')
-  html = html.split('\n\n').map(para => {
-    para = para.trim()
-    if (!para) return ''
-    if (para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<ol')) return para
-    if (para.includes('\n- ')) {
-      const items = para.split('\n- ').filter(i => i.trim())
-      return `<ul>${items.map(item => `<li>${item.trim()}</li>`).join('\n')}</ul>`
+  
+  // ISSUE 4: Remove ALL comparison tables
+  html = html.replace(/\|[^\n]+\|/g, '') // Remove table rows
+  html = html.replace(/[-]{3,}/g, '') // Remove separator lines
+  
+  // CRITICAL: Convert headers BEFORE processing anything else
+  // This catches ALL # patterns including at start of content
+  html = html.replace(/^######\s+(.*$)/gm, '<h6 class="text-base font-bold text-purple-400 mt-4 mb-2">$1</h6>')
+  html = html.replace(/^#####\s+(.*$)/gm, '<h5 class="text-lg font-bold text-pink-400 mt-5 mb-3">$1</h5>')
+  html = html.replace(/^####\s+(.*$)/gm, '<h4 class="text-xl font-bold text-cyan-400 mt-6 mb-3">$1</h4>')
+  html = html.replace(/^###\s+(.*$)/gm, '<h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4 border-l-4 border-orange-400 pl-4">$1</h3>')
+  html = html.replace(/^##\s+(.*$)/gm, '<h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-10 mb-6">$1</h2>')
+  html = html.replace(/^#\s+(.*$)/gm, '<h1 class="text-4xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent mt-12 mb-6">$1</h1>')
+  
+  // Also catch headers without space after #
+  html = html.replace(/^######([^\s].*$)/gm, '<h6 class="text-base font-bold text-purple-400 mt-4 mb-2">$1</h6>')
+  html = html.replace(/^#####([^\s].*$)/gm, '<h5 class="text-lg font-bold text-pink-400 mt-5 mb-3">$1</h5>')
+  html = html.replace(/^####([^\s].*$)/gm, '<h4 class="text-xl font-bold text-cyan-400 mt-6 mb-3">$1</h4>')
+  html = html.replace(/^###([^\s].*$)/gm, '<h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4 border-l-4 border-orange-400 pl-4">$1</h3>')
+  html = html.replace(/^##([^\s].*$)/gm, '<h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-10 mb-6">$1</h2>')
+  html = html.replace(/^#([^\s].*$)/gm, '<h1 class="text-4xl font-bold bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent mt-12 mb-6">$1</h1>')
+  
+  // Remove any remaining standalone # symbols
+  html = html.replace(/^#{1,6}\s*$/gm, '')
+  
+  // Convert bold with color
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+  
+  // Convert italic with color
+  html = html.replace(/\*(.*?)\*/g, '<em class="text-cyan-300 italic">$1</em>')
+  
+  // Convert code blocks
+  html = html.replace(/`([^`]+)`/g, '<code class="bg-slate-800 text-orange-300 px-2 py-1 rounded text-sm font-mono">$1</code>')
+  
+  // Convert lists
+  html = html.replace(/^\* (.*$)/gm, '<li class="ml-6 mb-2 text-gray-200">• $1</li>')
+  html = html.replace(/^- (.*$)/gm, '<li class="ml-6 mb-2 text-gray-200">• $1</li>')
+  html = html.replace(/^\d+\. (.*$)/gm, '<li class="ml-6 mb-2 text-gray-200 list-decimal">$1</li>')
+  
+  // Wrap consecutive list items in ul
+  html = html.replace(/(<li.*?<\/li>\n?)+/g, '<ul class="space-y-2 mb-6 ml-4">$&</ul>')
+  
+  // Convert paragraphs
+  const lines = html.split('\n')
+  const processedLines = lines.map(line => {
+    const trimmed = line.trim()
+    if (!trimmed) return '<br/>'
+    if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('<li') || trimmed.startsWith('</ul') || trimmed.startsWith('<code')) {
+      return line
     }
-    return `<p>${para}</p>`
-  }).join('\n')
-  html = html.replace(/\n/g, '<br>')
+    if (!trimmed.startsWith('<')) {
+      return `<p class="text-gray-200 mb-4 leading-relaxed text-lg">${line}</p>`
+    }
+    return line
+  })
+  
+  html = processedLines.join('\n')
+  
+  // Clean up
+  html = html.replace(/<br\/>\s*<br\/>/g, '<br/>')
+  html = html.replace(/<p>\s*<\/p>/g, '')
+  
   return html
 }
 
-interface Props { params: { slug: string } }
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getBlogPostBySlug(params.slug)
-  if (!post) return { title: 'Post Not Found' }
-  return { title: `${post.title} | FomoGeo Blog`, description: post.excerpt || post.title }
-}
+  
+  if (!post) {
+    notFound()
+  }
 
-export default async function BlogPostPage({ params }: Props) {
-  const post = await getBlogPostBySlug(params.slug)
-  if (!post) notFound()
-
-  const publishedDate = new Date(post.published_at).toLocaleDateString('en-US', {
-    year: 'numeric', month: 'long', day: 'numeric'
-  })
-
+  const author = post.author === 'FOMO Finds Team' ? 'FomoGeo Team' : post.author
   const htmlContent = markdownToHtml(post.content)
 
-  const cleanExcerpt = post.excerpt
-    ? post.excerpt.replace(/#{1,6}\s/g, '').replace(/\*\*(.*?)\*\*/g, '$1')
-        .replace(/\*(.*?)\*/g, '$1').replace(/\[(.*?)\]\(.*?\)/g, '$1').trim()
-    : ''
-
   return (
-    <div className="min-h-screen" style={{ background: '#071828' }}>
+    <div className="min-h-screen section-dark">
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      
+      <article className="container mx-auto px-4 py-10 max-w-4xl">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 mb-8 transition">
+          <ArrowLeft className="h-4 w-4" />
+          Back to Blog
+        </Link>
 
-      {/* Article */}
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
-        {/* Breadcrumb */}
-        <nav className="mb-8 text-sm" style={{ color: '#4A7A9B' }}>
-          <Link href="/" className="hover:text-fg-teal transition-colors" style={{ color: '#7EB8D8' }}>Home</Link>
-          <span className="mx-2" style={{ color: '#1A3A55' }}>/</span>
-          <Link href="/blog" className="hover:text-fg-teal transition-colors" style={{ color: '#7EB8D8' }}>Blog</Link>
-          <span className="mx-2" style={{ color: '#1A3A55' }}>/</span>
-          <span style={{ color: '#E8F4FD' }}>{post.title}</span>
-        </nav>
-
-        {/* Title */}
-        <h1 className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: '#E8F4FD' }}>
-          {post.title}
-        </h1>
-
-        {/* Meta */}
-        <div className="flex flex-wrap items-center gap-4 mb-8 text-sm" style={{ color: '#7EB8D8' }}>
-          <div className="flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#FFB300' }}>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span>{post.author || 'FomoGeo Team'}</span>
+        {post.featured_image && (
+          <div className="relative w-full h-96 rounded-2xl overflow-hidden mb-8 border-2 border-cyan-500/30 shadow-2xl">
+            <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover" />
           </div>
-          <span style={{ color: '#1A3A55' }}>•</span>
-          <div className="flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#00D4C8' }}>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <time dateTime={post.published_at}>{publishedDate}</time>
-          </div>
+        )}
+
+        <div className="flex items-center gap-6 text-sm mb-6 text-gray-300">
+          <span className="flex items-center gap-2 bg-cyan-900/30 px-3 py-1 rounded-full border border-cyan-500/30">
+            <Calendar className="h-4 w-4 text-cyan-400" />
+            {format(new Date(post.published_at || post.created_at), 'MMMM d, yyyy')}
+          </span>
+          <span className="flex items-center gap-2 bg-orange-900/30 px-3 py-1 rounded-full border border-orange-500/30">
+            <User className="h-4 w-4 text-orange-400" />
+            {author}
+          </span>
         </div>
 
-        {/* Featured Image */}
-        {post.featured_image && (
-          <div className="mb-10 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,212,200,0.2)' }}>
-            <img src={post.featured_image} alt={post.title} className="w-full h-auto" />
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">{post.title}</h1>
+
+        {post.excerpt && (
+          <div className="bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-l-4 border-cyan-400 pl-6 pr-6 py-4 mb-8 rounded-r-lg">
+            <p className="text-xl text-gray-200 leading-relaxed italic">
+              {post.excerpt}
+            </p>
           </div>
         )}
 
-        {/* Excerpt */}
-        {cleanExcerpt && (
-          <div className="mb-8 p-6 rounded-xl italic text-lg leading-relaxed"
-            style={{ background: 'rgba(255,179,0,0.06)', borderLeft: '4px solid #FFB300', color: '#E8F4FD' }}>
-            {cleanExcerpt}
+        {post.tags && post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-8">
+            {post.tags.map((tag: string) => (
+              <span key={tag} className="px-3 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-cyan-900/50 to-blue-900/50 text-cyan-300 border border-cyan-500/30 hover:border-cyan-400 transition">
+                #{tag}
+              </span>
+            ))}
           </div>
         )}
 
-        {/* Main content — dark prose styles */}
-        <div
-          className="prose-dark max-w-none leading-relaxed text-base"
-          style={{
-            color: '#B2D0E8',
-            lineHeight: '1.9',
-          }}
+        <div className="border-t-2 border-cyan-500/20 pt-8 mb-8"></div>
+
+        <div 
+          className="blog-content"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
-        {/* Tags */}
-        {post.tags?.length > 0 && (
-          <div className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(0,212,200,0.1)' }}>
-            <h3 className="text-sm font-bold mb-3 uppercase tracking-wider" style={{ color: '#7EB8D8' }}>Tags:</h3>
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag: string) => (
-                <span key={tag} className="px-3 py-1 rounded-full text-xs font-semibold"
-                  style={{ background: 'rgba(0,212,200,0.1)', border: '1px solid rgba(0,212,200,0.2)', color: '#00D4C8' }}>
-                  #{tag}
-                </span>
-              ))}
-            </div>
+        <div className="border-t-2 border-cyan-500/20 mt-12 pt-8">
+          <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg p-6 border border-cyan-500/20">
+            <p className="text-gray-300 text-sm">
+              <span className="text-orange-400 font-bold text-lg">Written by</span>{' '}
+              <span className="text-cyan-400 font-semibold text-base">{author}</span>
+              <span className="text-gray-400 mx-2">•</span>
+              <span className="text-gray-400">{format(new Date(post.published_at || post.created_at), 'MMMM d, yyyy')}</span>
+            </p>
           </div>
-        )}
-
-        {/* Share */}
-        <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(0,212,200,0.1)' }}>
-          <h3 className="text-base font-bold mb-4" style={{ color: '#E8F4FD' }}>Share this article</h3>
-          <div className="flex flex-wrap gap-3">
-            {[
-              { label: 'Twitter/X', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://fomogeo.com/blog/${post.slug}`)}`, color: '#00D4C8' },
-              { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://fomogeo.com/blog/${post.slug}`)}`, color: '#4A90D9' },
-              { label: 'LinkedIn', href: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://fomogeo.com/blog/${post.slug}`)}&title=${encodeURIComponent(post.title)}`, color: '#7EB8D8' },
-            ].map(({ label, href, color }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:opacity-90"
-                style={{ background: 'rgba(13,40,64,0.8)', border: `1px solid ${color}40`, color }}>
-                {label}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* Back */}
-        <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(0,212,200,0.1)' }}>
-          <Link href="/blog" className="inline-flex items-center gap-2 font-bold transition-colors"
-            style={{ color: '#00D4C8' }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Blog
-          </Link>
         </div>
       </article>
-
-      {/* In-article ad */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="w-full min-h-[100px] rounded-xl flex items-center justify-center text-sm font-medium"
-          style={{ background: 'rgba(0,212,200,0.03)', border: '2px dashed rgba(0,212,200,0.15)', color: '#4A7A9B' }}>
-          📢 Ad Space — In-Article Banner (728×90)
-        </div>
-      </div>
-
-      {/* CTA */}
-      <section className="py-16" style={{ background: '#0B1E30', borderTop: '1px solid rgba(255,179,0,0.1)' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4" style={{ color: '#E8F4FD' }}>
-            Want More Deals &amp; Tips?
-          </h2>
-          <p className="text-lg mb-8" style={{ color: '#7EB8D8' }}>
-            Subscribe to get the latest product reviews, buying guides, and exclusive deals delivered to your inbox.
-          </p>
-          <Link href="/#email-signup" className="btn-gold inline-block px-8 py-4 font-bold rounded-xl">
-            Subscribe Now
-          </Link>
-        </div>
-      </section>
     </div>
   )
 }

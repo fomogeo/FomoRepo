@@ -17,14 +17,14 @@ export const supabaseAdmin = createClient(
   }
 )
 
-// Types
+// Types - FIXED: Changed ?: to | null for compatibility
 export interface Product {
   id: string
   name: string
-  description: string
+  description: string | null
   price: number
-  original_price?: number
-  discount_percentage?: number
+  original_price: number | null
+  discount_percentage: number | null
   image_url: string
   category: string
   tags: string[]
@@ -108,14 +108,14 @@ export async function getProducts(options: {
     return []
   }
 
-  return data as Product[]
+  return data || []
 }
 
-export async function getProductBySlug(slug: string) {
+export async function getProductById(id: string) {
   const { data, error } = await supabase
     .from('products')
     .select('*, affiliate_links(*)')
-    .eq('id', slug)
+    .eq('id', id)
     .single()
 
   if (error) {
@@ -123,75 +123,7 @@ export async function getProductBySlug(slug: string) {
     return null
   }
 
-  return data as Product
-}
-
-// Email subscription functions - use supabaseAdmin to bypass RLS
-export async function subscribeEmail(email: string) {
-  // First check if already subscribed
-  const { data: existing } = await supabaseAdmin
-    .from('email_subscribers')
-    .select('id, is_subscribed')
-    .eq('email', email)
-    .single()
-
-  if (existing) {
-    if (existing.is_subscribed) {
-      return { success: true, already: true }
-    }
-    // Re-subscribe if previously unsubscribed
-    const { error } = await supabaseAdmin
-      .from('email_subscribers')
-      .update({ is_subscribed: true, subscribed_at: new Date().toISOString(), unsubscribed_at: null })
-      .eq('email', email)
-    if (error) return { success: false, error: error.message }
-    return { success: true }
-  }
-
-  // New subscriber
-  const { error } = await supabaseAdmin
-    .from('email_subscribers')
-    .insert([{ email, is_subscribed: true, subscribed_at: new Date().toISOString() }])
-
-  if (error) {
-    console.error('Error subscribing email:', error)
-    return { success: false, error: error.message }
-  }
-
-  return { success: true }
-}
-
-export async function unsubscribeEmail(email: string) {
-  const { error } = await supabaseAdmin
-    .from('email_subscribers')
-    .update({
-      is_subscribed: false,
-      unsubscribed_at: new Date().toISOString(),
-    })
-    .eq('email', email)
-
-  if (error) {
-    console.error('Error unsubscribing email:', error)
-    return { success: false, error: error.message }
-  }
-
-  return { success: true }
-}
-
-// Coupon functions
-export async function getActiveCoupons() {
-  const { data, error } = await supabase
-    .from('coupons')
-    .select('*')
-    .eq('is_active', true)
-    .gte('expires_at', new Date().toISOString())
-
-  if (error) {
-    console.error('Error fetching coupons:', error)
-    return []
-  }
-
-  return data as Coupon[]
+  return data
 }
 
 // Blog functions
@@ -208,7 +140,7 @@ export async function getBlogPosts(limit = 10) {
     return []
   }
 
-  return data as BlogPost[]
+  return data || []
 }
 
 export async function getBlogPostBySlug(slug: string) {
@@ -224,5 +156,94 @@ export async function getBlogPostBySlug(slug: string) {
     return null
   }
 
-  return data as BlogPost
+  return data
+}
+
+// Email subscription functions
+export async function subscribeEmail(email: string): Promise<{ success: boolean; already: boolean; error?: string }> {
+  try {
+    // Check if already subscribed
+    const { data: existing } = await supabase
+      .from('email_subscribers')
+      .select('*')
+      .eq('email', email)
+      .single()
+
+    if (existing) {
+      if (existing.is_subscribed) {
+        return { success: true, already: true }
+      }
+      // Re-subscribe
+      const { error } = await supabaseAdmin
+        .from('email_subscribers')
+        .update({ is_subscribed: true, unsubscribed_at: null })
+        .eq('email', email)
+
+      if (error) {
+        return { success: false, already: false, error: error.message }
+      }
+      return { success: true, already: false }
+    }
+
+    // New subscriber
+    const { error } = await supabaseAdmin
+      .from('email_subscribers')
+      .insert([{ email, is_subscribed: true }])
+
+    if (error) {
+      return { success: false, already: false, error: error.message }
+    }
+    return { success: true, already: false }
+  } catch (error) {
+    return { success: false, already: false, error: 'Failed to subscribe' }
+  }
+}
+
+export async function unsubscribeEmail(email: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { error } = await supabaseAdmin
+      .from('email_subscribers')
+      .update({ 
+        is_subscribed: false,
+        unsubscribed_at: new Date().toISOString()
+      })
+      .eq('email', email)
+
+    if (error) {
+      return { success: false, error: error.message }
+    }
+    return { success: true }
+  } catch (error) {
+    return { success: false, error: 'Failed to unsubscribe' }
+  }
+}
+
+// Coupon functions
+export async function getActiveCoupons(productId?: string) {
+  let query = supabase
+    .from('coupons')
+    .select('*')
+    .eq('is_active', true)
+    .gte('expires_at', new Date().toISOString())
+
+  if (productId) {
+    query = query.or(`product_id.eq.${productId},product_id.is.null`)
+  } else {
+    query = query.is('product_id', null)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('Error fetching coupons:', error)
+    return []
+  }
+
+  return data || []
+}
+
+export async function getProductBySlug(slug: string) {
+  // For now, slug is the same as ID
+  // If you want actual slugs, add a slug column to products table
+  return getProductById(slug)
 }

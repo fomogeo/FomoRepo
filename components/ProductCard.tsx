@@ -1,84 +1,85 @@
-'use client'
-
-import Image from 'next/image'
 import Link from 'next/link'
-import { Tag, TrendingUp, Star, ExternalLink } from 'lucide-react'
-import { Product } from '@/lib/supabase'
-import { useState } from 'react'
+import Image from 'next/image'
+import { TrendingUp, Star } from 'lucide-react'
 
-export default function ProductCard({ product }: { product: Product }) {
-  const [imageError, setImageError] = useState(false)
-  const hasDiscount = product.discount_percentage && product.discount_percentage > 0
+interface ProductCardProps {
+  product: {
+    id: string
+    name: string
+    price: number
+    original_price: number | null
+    image_url: string
+    category: string
+    discount_percentage: number | null
+    is_trending?: boolean
+    is_best_seller?: boolean
+  }
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  const discount = product.discount_percentage || 
+    (product.original_price ? Math.round(((product.original_price - product.price) / product.original_price) * 100) : 0)
 
   return (
-    <div className="deal-card group relative rounded-2xl overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #0D2840, #091E30)', border: '1px solid #1A3A55' }}
-    >
-      {/* Image */}
-      <div className="relative h-56" style={{ background: '#0B1E30' }}>
-        {!imageError ? (
-          <Image
-            src={product.image_url || '/placeholder-product.jpg'}
-            alt={product.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className="h-full flex items-center justify-center">
-            <Tag className="h-16 w-16" style={{ color: '#1A3A55' }} />
+    <Link href={`/products/${product.id}`} className="deal-card group">
+      {/* Image with ALWAYS VISIBLE badges */}
+      <div className="relative aspect-square bg-slate-800 overflow-hidden">
+        <Image
+          src={product.image_url}
+          alt={product.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        
+        {/* Discount badge - ALWAYS VISIBLE */}
+        {discount > 0 && (
+          <div className="discount-badge">
+            -{discount}%
           </div>
         )}
-
-        {/* Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1.5">
-          {product.is_trending && (
-            <span className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold"
-              style={{ background: 'rgba(255,107,0,0.9)', color: '#fff' }}>
-              <TrendingUp className="h-3 w-3" /> Trending
-            </span>
-          )}
-          {hasDiscount && (
-            <span className="px-2 py-1 rounded-full text-xs font-bold"
-              style={{ background: 'linear-gradient(135deg, #FFB300, #FF6B00)', color: '#fff' }}>
-              {product.discount_percentage}% OFF
-            </span>
-          )}
-        </div>
-
+        
+        {/* Trending badge - ALWAYS VISIBLE */}
+        {product.is_trending && (
+          <div className="absolute top-3 left-3 badge-trending z-10">
+            <TrendingUp className="h-3 w-3" /> Trending
+          </div>
+        )}
+        
+        {/* Best Seller badge - ALWAYS VISIBLE */}
         {product.is_best_seller && (
-          <div className="absolute top-2 right-2">
-            <Star className="h-6 w-6" style={{ color: '#FFB300', filter: 'drop-shadow(0 0 6px rgba(255,179,0,0.8))' }} fill="#FFB300" />
+          <div className="absolute top-3 left-3 badge-best-seller z-10">
+            <Star className="h-3 w-3 fill-current" /> Best Seller
           </div>
         )}
       </div>
 
-      {/* Content */}
+      {/* Content - ALWAYS VISIBLE with white text */}
       <div className="p-4">
-        <h3 className="font-semibold line-clamp-2 mb-2 transition-colors" style={{ color: '#E8F4FD' }}>
+        <p className="text-xs text-cyan-400 mb-2 font-semibold uppercase tracking-wide">
+          {product.category}
+        </p>
+        
+        <h3 className="text-base font-bold mb-3 line-clamp-2 text-white group-hover:text-cyan-400 transition">
           {product.name}
         </h3>
-        <p className="text-sm line-clamp-2 mb-3" style={{ color: '#7EB8D8' }}>
-          {product.description}
-        </p>
 
-        {/* Price */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl font-bold" style={{ color: '#FFB300' }}>
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
             ${product.price.toFixed(2)}
           </span>
-          {product.original_price && product.original_price > product.price && (
-            <span className="text-sm line-through" style={{ color: '#4A7A9B' }}>
+          {product.original_price && (
+            <span className="text-sm text-gray-400 line-through">
               ${product.original_price.toFixed(2)}
             </span>
           )}
         </div>
 
-        <Link href={`/products/${product.id}`}
-          className="btn-gold w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold">
-          View Deal <ExternalLink className="h-4 w-4" />
-        </Link>
+        {product.original_price && (
+          <p className="text-xs text-green-400 mt-1 font-semibold">
+            Save ${(product.original_price - product.price).toFixed(2)}
+          </p>
+        )}
       </div>
-    </div>
+    </Link>
   )
 }

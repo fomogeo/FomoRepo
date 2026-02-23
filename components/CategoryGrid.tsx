@@ -7,41 +7,46 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
   const categories = showAll ? CATEGORIES : getTrendingCategories().slice(0, limit)
 
   return (
-    <section className="py-16" id="categories" style={{ background: '#071828' }}>
+    <section className={showAll ? "py-16 section-dark" : ""}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4" style={{ color: '#E8F4FD' }}>
-            {showAll ? 'All ' : 'Trending '}
-            <span style={{ color: '#00D4C8' }}>Categories</span>
-          </h2>
-          <p style={{ color: '#7EB8D8' }}>
-            {showAll
-              ? 'Explore all 30 product categories and find the perfect deals'
-              : 'Shop the hottest product categories with verified deals'}
-          </p>
-        </div>
+        {!showAll && (
+          <div className="text-center mb-12">
+            {/* BIGGER TITLE + COLORED SUBTITLE */}
+            <h2 className="text-5xl sm:text-6xl font-bold mb-4">
+              <span className="text-white">Trending </span>
+              <span className="text-cyan-400">Categories</span>
+            </h2>
+            <p className="text-cyan-300 text-xl font-semibold">
+              Shop the hottest product categories with verified deals
+            </p>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
           {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/category/${category.slug}`}
-              className="fg-cat-card relative"
+            <Link 
+              key={category.id} 
+              href={`/category/${category.slug}`} 
+              className="deal-card group p-4 text-center relative"
             >
               {category.trending && (
-                <div className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: 'rgba(255,179,0,0.2)', color: '#FFB300', border: '1px solid rgba(255,179,0,0.3)' }}>
+                <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 border border-orange-300 ${showAll ? '' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}>
                   🔥
                 </div>
               )}
-              <span className="fg-cat-icon text-4xl mb-3 block"
-                style={{ filter: `drop-shadow(0 0 12px ${category.color || '#00D4C8'}60)` }}>
+              
+              <span 
+                className="text-4xl mb-3 block group-hover:scale-110 transition-transform" 
+                style={{filter: `drop-shadow(0 0 8px ${category.color || '#4DD0E1'}60)`}}
+              >
                 {category.icon}
               </span>
-              <h3 className="text-sm font-bold mb-1" style={{ color: '#E8F4FD' }}>
+              
+              <h3 className="text-sm font-bold mb-1 text-white group-hover:text-cyan-400 transition">
                 {category.name}
               </h3>
-              <p className="text-xs line-clamp-2" style={{ color: '#4A7A9B' }}>
+              
+              <p className="text-xs line-clamp-2 text-gray-300">
                 {category.description.split(',')[0]}
               </p>
             </Link>
@@ -50,11 +55,8 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
 
         {!showAll && (
           <div className="text-center">
-            <Link href="/categories" className="btn-gold inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl">
-              <span>View All 30 Categories</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+            <Link href="/categories" className="btn-primary px-8 py-4 font-bold text-lg">
+              View All 30 Categories →
             </Link>
           </div>
         )}

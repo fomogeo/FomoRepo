@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getProductBySlug } from '@/lib/supabase'
+import { getProductBySlug, AffiliateLink } from '@/lib/supabase'
 import { getUserCountry, getAffiliateLink, trackAffiliateClick } from '@/lib/affiliateRouter'
 
 export async function GET(request: NextRequest) {
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
     // Track the click (optional - for analytics)
     const affiliateLink = product.affiliate_links.find(
-      link => link.affiliate_url === affiliateUrl
+      (link: AffiliateLink) => link.affiliate_url === affiliateUrl
     )
     
     if (affiliateLink) {

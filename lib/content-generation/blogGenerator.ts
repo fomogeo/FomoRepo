@@ -40,15 +40,40 @@ export async function generateBlogPost(config: BlogPostConfig) {
   let prompt = ''
   let title = ''
 
+  // Add variety to titles - weekly, monthly, seasonal, themed
+  const now = new Date()
+  const month = now.toLocaleDateString('en', { month: 'long' })
+  const year = now.getFullYear()
+  const weekNumber = Math.ceil((now.getDate() + new Date(year, now.getMonth(), 1).getDay()) / 7)
+  const season = ['Winter', 'Winter', 'Spring', 'Spring', 'Spring', 'Summer', 'Summer', 'Summer', 'Fall', 'Fall', 'Fall', 'Winter'][now.getMonth()]
+  const quarter = `Q${Math.floor(now.getMonth() / 3) + 1}`
+
   switch (type) {
     case 'top-10':
+      // Randomly select variation for uniqueness
+      const top10Options = [
+        `Top 10 ${category} Products This Week (Week ${weekNumber})`,
+        `Best ${category} Products of ${month} ${year}`,
+        `Top ${category} Picks for ${season} ${year}`,
+        `Best ${category} Products ${quarter} ${year}`,
+        `Top 10 Budget-Friendly ${category} Products`,
+        `Best Premium ${category} Products Worth the Money`,
+        `10 Trending ${category} Products Everyone's Buying`,
+      ]
+      title = top10Options[Math.floor(Math.random() * top10Options.length)]
       prompt = await generateTop10Prompt(category, products, keywords)
-      title = `Top 10 ${category} Products of ${new Date().getFullYear()}`
       break
 
     case 'buying-guide':
+      const buyingGuideOptions = [
+        `${category} Buying Guide for ${season} ${year}`,
+        `How to Choose ${category} on a Budget`,
+        `Premium ${category} Buying Guide: What to Look For`,
+        `${category} for Beginners: Complete Buying Guide`,
+        `Expert's Guide to Choosing ${category}`,
+      ]
+      title = buyingGuideOptions[Math.floor(Math.random() * buyingGuideOptions.length)]
       prompt = await generateBuyingGuidePrompt(category, keywords)
-      title = `${category} Buying Guide: How to Choose the Best One`
       break
 
     case 'comparison':
@@ -58,12 +83,24 @@ export async function generateBlogPost(config: BlogPostConfig) {
 
     case 'product-review':
       prompt = await generateProductReviewPrompt(products?.[0], keywords)
-      title = `${products?.[0]?.name} Review: Is It Worth Buying?`
+      // Add variety to review titles
+      const reviewOptions = [
+        `${products?.[0]?.name} Review: Is It Worth Buying?`,
+        `${products?.[0]?.name}: Honest Review & Pros/Cons`,
+        `Is ${products?.[0]?.name} Worth the Hype? Our Review`,
+        `${products?.[0]?.name} Review (${month} ${year})`,
+      ]
+      title = reviewOptions[Math.floor(Math.random() * reviewOptions.length)]
       break
 
     case 'how-to':
+      const howToOptions = [
+        `How to Choose ${category} for ${season}`,
+        `How to Find Quality ${category} Without Breaking the Bank`,
+        `How to Compare ${category}: Key Features to Consider`,
+      ]
+      title = howToOptions[Math.floor(Math.random() * howToOptions.length)]
       prompt = await generateHowToPrompt(category, keywords)
-      title = `How to Choose the Perfect ${category}: Complete Guide`
       break
 
     default:
@@ -73,8 +110,32 @@ export async function generateBlogPost(config: BlogPostConfig) {
   // Call OpenAI API
   const content = await callOpenAI(prompt, minWords)
 
-  // Generate excerpt
-  const excerpt = content.substring(0, 200) + '...'
+  // ISSUE 3 FIXED: Generate excerpt - strip ALL markdown before creating excerpt
+  const stripMarkdown = (text: string): string => {
+    return text
+      // Remove headers (all # symbols)
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/^#{1,6}/gm, '')
+      // Remove bold/italic
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      .replace(/__([^_]+)__/g, '$1')
+      .replace(/_([^_]+)_/g, '$1')
+      // Remove links
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Remove code blocks
+      .replace(/`([^`]+)`/g, '$1')
+      // Remove tables
+      .replace(/\|[^\n]+\|/g, '')
+      .replace(/[-]{3,}/g, '')
+      // Clean up whitespace
+      .replace(/\n\n+/g, ' ')
+      .replace(/\n/g, ' ')
+      .trim()
+  }
+  
+  const cleanContent = stripMarkdown(content)
+  const excerpt = cleanContent.substring(0, 200) + '...'
 
   // Generate slug
   const slug = title
