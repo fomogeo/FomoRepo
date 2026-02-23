@@ -22,16 +22,24 @@ export default async function Home() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      <Hero />
-      <CategoryGrid />
       
-      <section className="py-16 section-card">
+      {/* Hero Banner - ONLY on homepage */}
+      <Hero />
+      
+      {/* Trending Categories - Dark navy/teal background */}
+      <section className="py-16 bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900">
+        <CategoryGrid />
+      </section>
+      
+      {/* Trending Now - Deep blue background */}
+      <section className="py-16 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 border-y border-blue-900/30">
         <div className="container mx-auto px-4">
           <TrendingSection products={products.filter(p => p.is_trending)} />
         </div>
       </section>
       
-      <section className="py-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-y border-slate-700">
+      {/* Latest Deals - Dark slate background */}
+      <section className="py-16 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border-y border-slate-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
@@ -51,15 +59,20 @@ export default async function Home() {
         </div>
       </section>
 
-      <WeatherWidget />
+      {/* Weather - Blue/cyan background */}
+      <section className="py-12 bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950 border-y border-cyan-900/30">
+        <WeatherWidget />
+      </section>
       
-      <section className="py-16 section-teal">
+      {/* Email Signup - Teal/emerald background */}
+      <section className="py-16 bg-gradient-to-br from-teal-950 via-emerald-950 to-teal-950 border-y border-teal-900/30">
         <div className="container mx-auto px-4">
           <EmailSignup />
         </div>
       </section>
 
-      <section className="py-12 section-dark border-t border-cyan-500/30">
+      {/* Stats - Dark background */}
+      <section className="py-12 bg-gradient-to-br from-slate-950 to-slate-900 border-t border-cyan-500/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>

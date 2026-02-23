@@ -23,11 +23,8 @@ export default async function BlogPage() {
         strategy="afterInteractive"
       />
       
-      <div className="w-full">
-        <img src="/hero-light.png" alt="Blog" className="w-full h-auto" />
-      </div>
-
-      <div className="py-12 text-center">
+      {/* NO BANNER - Just title section */}
+      <div className="py-16 text-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
         <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
           Deal Hunter's <span className="bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text text-transparent">Blog</span>
         </h1>
@@ -59,16 +56,14 @@ export default async function BlogPage() {
         <div className="my-8"><AdSpace size="leaderboard" /></div>
       </div>
 
-      {/* Dark theme subscribe section matching homepage */}
-      <section className="py-16 section-teal border-y border-cyan-500/30">
+      {/* Dark theme subscribe section */}
+      <section className="py-16 bg-gradient-to-br from-teal-950 via-emerald-950 to-teal-950 border-y border-teal-900/30">
         <div className="container mx-auto px-4 text-center max-w-2xl">
-          {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-500/50 rounded-full px-4 py-2 mb-6">
             <span className="text-2xl">💎</span>
             <span className="text-orange-400 font-bold text-sm">Exclusive Subscriber Benefits</span>
           </div>
 
-          {/* Heading */}
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="text-white">Never Miss a </span>
             <span className="text-orange-400">Deal!</span>
@@ -77,7 +72,6 @@ export default async function BlogPage() {
             Subscribe to get expert buying guides and exclusive deals delivered to your inbox
           </p>
           
-          {/* Subscribe Button */}
           <Link href="/#email-signup" className="btn-orange px-8 py-4 font-bold inline-block">
             Subscribe Now
           </Link>
