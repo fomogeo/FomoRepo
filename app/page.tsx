@@ -42,10 +42,11 @@ export default async function Home() {
       <section className="py-16 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border-y border-slate-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
+            {/* BIGGER TITLE + COLORED SUBTITLE */}
+            <h2 className="text-5xl sm:text-6xl font-bold mb-4 text-white">
               <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Latest</span> Deals
             </h2>
-            <p className="text-gray-300 text-lg">Fresh deals added daily from trusted sellers worldwide</p>
+            <p className="text-cyan-300 text-xl font-semibold">Fresh deals added daily from trusted sellers worldwide</p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-3">

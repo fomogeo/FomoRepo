@@ -7,16 +7,16 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
   const categories = showAll ? CATEGORIES : getTrendingCategories().slice(0, limit)
 
   return (
-    <section className="py-16 section-dark">
+    <section className={showAll ? "py-16 section-dark" : ""}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!showAll && (
           <div className="text-center mb-12">
-            {/* OLD STYLE: Trending Categories */}
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            {/* BIGGER TITLE + COLORED SUBTITLE */}
+            <h2 className="text-5xl sm:text-6xl font-bold mb-4">
               <span className="text-white">Trending </span>
               <span className="text-cyan-400">Categories</span>
             </h2>
-            <p className="text-gray-300 text-base">
+            <p className="text-cyan-300 text-xl font-semibold">
               Shop the hottest product categories with verified deals
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function CategoryGrid({ showAll = false, limit = 12 }: CategoryGr
 
         {!showAll && (
           <div className="text-center">
-            <Link href="/categories" className="btn-primary px-8 py-4 font-bold">
+            <Link href="/categories" className="btn-primary px-8 py-4 font-bold text-lg">
               View All 30 Categories →
             </Link>
           </div>

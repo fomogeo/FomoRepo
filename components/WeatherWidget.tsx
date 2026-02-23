@@ -30,14 +30,16 @@ export default function WeatherWidget() {
 
   return (
     <div className="container mx-auto px-4">
-      {/* Delivery Weather Forecast heading */}
+      {/* BIGGER TITLE + COLORED SUBTITLE */}
       <div className="text-center mb-8">
-        <h3 className="text-2xl md:text-3xl font-bold mb-2">
-          <span className="text-2xl mr-2">☀️</span>
+        <h3 className="text-4xl sm:text-5xl font-bold mb-4">
+          <span className="text-3xl mr-2">☀️</span>
           <span className="text-white">Delivery </span>
           <span className="text-cyan-400">Weather Forecast</span>
         </h3>
-        <p className="text-gray-400 text-sm">Know the weather at your location before your order arrives</p>
+        <p className="text-cyan-300 text-lg font-semibold">
+          Know the weather at your location before your order arrives
+        </p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">

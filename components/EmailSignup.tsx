@@ -46,12 +46,12 @@ export default function EmailSignup() {
         <span className="text-orange-400 font-bold text-sm">Exclusive Subscriber Benefits</span>
       </div>
 
-      {/* Main Heading */}
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+      {/* BIGGER TITLE + COLORED SUBTITLE */}
+      <h2 className="text-5xl sm:text-6xl font-bold mb-4">
         <span className="text-white">Get the Best Deals </span>
         <span className="text-orange-400">First!</span>
       </h2>
-      <p className="text-gray-300 mb-8">
+      <p className="text-orange-300 text-xl font-semibold mb-8">
         Join thousands of smart shoppers who never miss a deal
       </p>
       
