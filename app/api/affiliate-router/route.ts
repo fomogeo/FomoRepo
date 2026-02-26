@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     const userCountry = getUserCountry(request.headers)
 
     // Get the best affiliate link for this user
-    const affiliateUrl = getAffiliateLink(product.affiliate_links, userCountry)
+	const affiliateUrl = getAffiliateLink(product, userCountry)
 
     if (!affiliateUrl) {
       return NextResponse.json(
