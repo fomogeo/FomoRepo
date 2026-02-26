@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-800 border border-cyan-500/30">
             <Image
-              src={product.image_url}
+              src={product.image_url || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Crect width="400" height="400" fill="%23334155"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%2394a3b8" font-size="20" font-family="sans-serif"%3ENo Image%3C/text%3E%3C/svg%3E'}
               alt={product.name}
               fill
               className="object-cover"
