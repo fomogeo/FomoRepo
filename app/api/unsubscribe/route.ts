@@ -5,31 +5,37 @@ import { unsubscribeEmail } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json()
+    const body = await request.json()
+    const { email } = body
 
-    // Validate email
-    if (!email || !email.includes('@')) {
+    if (!email) {
+      return NextResponse.json(
+        { success: false, error: 'Email is required' },
+        { status: 400 }
+      )
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
       return NextResponse.json(
         { success: false, error: 'Invalid email address' },
         { status: 400 }
       )
     }
 
-    // Unsubscribe email
-    const result = await unsubscribeEmail(email)
+    // Unsubscribe the email
+    await unsubscribeEmail(email)
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Successfully unsubscribed!' 
+    })
 
-    if (result.success) {
-      return NextResponse.json({ success: true })
-    } else {
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 400 }
-      )
-    }
   } catch (error) {
     console.error('Unsubscribe error:', error)
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
+      { success: false, error: 'Failed to unsubscribe. Please try again.' },
       { status: 500 }
     )
   }
