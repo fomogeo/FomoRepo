@@ -45,3 +45,4 @@ export async function POST(request: NextRequest) {
     error: 'Failed to subscribe. Please try again.' 
   }, { status: 500 })
 }
+}
