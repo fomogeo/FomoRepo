@@ -1,145 +1,116 @@
 'use client'
 
 import { useState } from 'react'
-import { Target, Mail, Gift, CheckCircle, RefreshCw, Globe } from 'lucide-react'
 
 export default function EmailSignup() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'already' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setStatus('loading')
     
+    if (!email) {
+      setStatus('error')
+      setMessage('Please enter your email address')
+      return
+    }
+
+    setStatus('loading')
+    setMessage('')
+
     try {
-      const res = await fetch('/api/subscribe', {
+      const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email }),
       })
-      
-      const data = await res.json()
-      
-      if (data.success && data.already) {
-        setStatus('already')
-        setMessage('You are already subscribed!')
-      } else if (data.success) {
+
+      const data = await response.json()
+
+      if (data.success) {
         setStatus('success')
-        setMessage('Successfully subscribed! Check your inbox.')
+        setMessage(data.message || 'Successfully subscribed! Check your inbox.')
         setEmail('')
       } else {
         setStatus('error')
-        setMessage(data.error || 'Something went wrong')
+        setMessage(data.error || 'Something went wrong. Please try again.')
       }
     } catch (error) {
       setStatus('error')
-      setMessage('Failed to subscribe. Please try again.')
+      setMessage('Failed to subscribe. Please try again later.')
     }
   }
 
   return (
-    <div id="email-signup" className="text-center max-w-4xl mx-auto">
-      {/* Exclusive Subscriber Benefits Badge */}
-      <div className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-500/50 rounded-full px-4 py-2 mb-6">
-        <span className="text-2xl">💎</span>
-        <span className="text-orange-400 font-bold text-sm">Exclusive Subscriber Benefits</span>
-      </div>
-
-      {/* BIGGER TITLE + COLORED SUBTITLE */}
-      <h2 className="text-5xl sm:text-6xl font-bold mb-4">
-        <span className="text-white">Get the Best Deals </span>
-        <span className="text-orange-400">First!</span>
-      </h2>
-      <p className="text-orange-300 text-xl font-semibold mb-8">
-        Join thousands of smart shoppers who never miss a deal
-      </p>
-      
-      {/* Email Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-4">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email address"
-          className="flex-1 bg-slate-800/50 border border-cyan-500/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400"
-          required
-          disabled={status === 'loading'}
-        />
-        <button 
-          type="submit" 
-          className="btn-orange px-8 py-3 whitespace-nowrap font-bold"
-          disabled={status === 'loading'}
-        >
-          {status === 'loading' ? 'Subscribing...' : 'Subscribe Free'}
-        </button>
-      </form>
-      
-      {/* Privacy Message */}
-      <p className="text-xs text-gray-400 mb-8 flex items-center justify-center gap-2">
-        <span>🔒</span>
-        We respect your privacy. Unsubscribe anytime. No spam, ever.
-      </p>
-
-      {message && (
-        <p className={`mb-8 text-sm ${status === 'success' || status === 'already' ? 'text-green-400' : 'text-red-400'}`}>
-          {message}
-        </p>
-      )}
-
-      {/* Benefits Grid - 3 columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-slate-800/50 border border-cyan-500/30 rounded-xl p-6 text-center hover:border-cyan-400 transition">
-          <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Target className="h-6 w-6 text-red-400" />
+    <section id="email-signup" className="section bg-gradient-to-br from-violet-950 via-purple-950 to-fuchsia-950 texture-noise py-20">
+      <div className="container-custom max-w-4xl">
+        <div className="card-glass p-12 text-center">
+          <div className="badge badge-orange mb-6 text-base inline-flex">
+            💎 Exclusive Subscriber Benefits
           </div>
-          <h3 className="text-yellow-400 font-bold mb-2">Early Access</h3>
-          <p className="text-gray-400 text-sm">Get deals before they go public</p>
-        </div>
 
-        <div className="bg-slate-800/50 border border-cyan-500/30 rounded-xl p-6 text-center hover:border-cyan-400 transition">
-          <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="h-6 w-6 text-cyan-400" />
-          </div>
-          <h3 className="text-yellow-400 font-bold mb-2">Weekly Roundup</h3>
-          <p className="text-gray-400 text-sm">Best deals curated just for you</p>
-        </div>
+          <h2 className="text-heading mb-4">
+            <span className="text-white">Get the Best Deals </span>
+            <span className="heading-gradient-orange">First!</span>
+          </h2>
 
-        <div className="bg-slate-800/50 border border-cyan-500/30 rounded-xl p-6 text-center hover:border-cyan-400 transition">
-          <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Gift className="h-6 w-6 text-orange-400" />
+          <p className="text-xl text-purple-200 font-semibold mb-8">
+            Join thousands of smart shoppers who never miss a deal
+          </p>
+
+          {/* Email Form */}
+          <form onSubmit={handleSubmit} className="max-w-lg mx-auto mb-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                disabled={status === 'loading'}
+                className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/50 transition disabled:opacity-50"
+              />
+              <button 
+                type="submit" 
+                disabled={status === 'loading'}
+                className="btn btn-secondary px-8 py-4 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === 'loading' ? 'Subscribing...' : 'Subscribe Free'}
+              </button>
+            </div>
+
+            {/* Status Messages */}
+            {message && (
+              <div className={`mt-4 p-4 rounded-lg ${
+                status === 'success' 
+                  ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-200' 
+                  : 'bg-rose-500/20 border border-rose-500/50 text-rose-200'
+              }`}>
+                {message}
+              </div>
+            )}
+          </form>
+
+          <p className="text-sm text-purple-300 mb-8">
+            🔒 We respect your privacy. Unsubscribe anytime. No spam, ever.
+          </p>
+
+          {/* Benefits Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            {[
+              { icon: '🎯', title: 'Early Access', desc: 'Get deals before anyone else' },
+              { icon: '📧', title: 'Weekly Roundup', desc: 'Best deals curated for you' },
+              { icon: '🎁', title: 'Exclusive Codes', desc: 'Subscriber-only discounts' },
+            ].map((benefit, i) => (
+              <div key={i} className="card p-6">
+                <div className="text-4xl mb-3">{benefit.icon}</div>
+                <h4 className="font-bold heading-gradient-orange mb-2">{benefit.title}</h4>
+                <p className="text-sm text-slate-300">{benefit.desc}</p>
+              </div>
+            ))}
           </div>
-          <h3 className="text-yellow-400 font-bold mb-2">Exclusive Codes</h3>
-          <p className="text-gray-400 text-sm">Subscriber-only discount codes</p>
         </div>
       </div>
-
-      {/* Features Grid - 3 columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 text-center">
-          <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="h-6 w-6 text-green-400" />
-          </div>
-          <h3 className="text-green-400 font-bold mb-2">Verified Deals</h3>
-          <p className="text-gray-400 text-sm">Every deal checked and verified for accuracy</p>
-        </div>
-
-        <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 text-center">
-          <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <RefreshCw className="h-6 w-6 text-cyan-400" />
-          </div>
-          <h3 className="text-cyan-400 font-bold mb-2">Updated Daily</h3>
-          <p className="text-gray-400 text-sm">Fresh deals added every single day</p>
-        </div>
-
-        <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 text-center">
-          <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Globe className="h-6 w-6 text-yellow-400" />
-          </div>
-          <h3 className="text-yellow-400 font-bold mb-2">Worldwide Shipping</h3>
-          <p className="text-gray-400 text-sm">Deals available in your country</p>
-        </div>
-      </div>
-    </div>
+    </section>
   )
 }
