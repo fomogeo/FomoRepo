@@ -1,9 +1,14 @@
 // Affiliate link routing and tracking
 
-export function getAffiliateLink(product: any): string {
+export function getAffiliateLink(product: any, countryCode?: string): string {
   if (!product) return '#'
   
   const baseUrl = product.affiliate_url || product.url || '#'
+  
+  // If country code provided, use localized link
+  if (countryCode) {
+    return getLocalizedAffiliateLink(product, countryCode)
+  }
   
   // Add affiliate tags based on network
   if (baseUrl.includes('amazon')) {
@@ -35,7 +40,20 @@ export function trackAffiliateClick(productId: string, affiliateNetwork: string)
   }
 }
 
-export async function getUserCountry(): Promise<string> {
+export async function getUserCountry(headers?: Headers | any): Promise<string> {
+  // Try to get country from headers first (Vercel provides this)
+  if (headers) {
+    const country = headers.get?.('x-vercel-ip-country') || 
+                   headers.get?.('cf-ipcountry') || // Cloudflare
+                   headers['x-vercel-ip-country'] ||
+                   headers['cf-ipcountry']
+    
+    if (country && country !== 'XX') {
+      return country
+    }
+  }
+  
+  // Fallback to IP API
   try {
     const response = await fetch('https://ipapi.co/json/')
     const data = await response.json()
@@ -69,10 +87,14 @@ export function getLocalizedAffiliateLink(product: any, countryCode: string): st
     const domain = amazonDomains[countryCode] || 'amazon.com'
     
     // Replace domain in URL
-    const url = new URL(baseUrl)
-    url.hostname = domain
-    
-    return `${url.toString()}${url.search ? '&' : '?'}tag=fomogeo-20`
+    try {
+      const url = new URL(baseUrl)
+      url.hostname = domain
+      return `${url.toString()}${url.search ? '&' : '?'}tag=fomogeo-20`
+    } catch (error) {
+      console.error('Error parsing URL:', error)
+      return baseUrl
+    }
   }
   
   return getAffiliateLink(product)
