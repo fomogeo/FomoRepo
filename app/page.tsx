@@ -6,8 +6,12 @@ import TrendingSection from '@/components/TrendingSection'
 import EmailSignup from '@/components/EmailSignup'
 import WeatherWidget from '@/components/WeatherWidget'
 import ColorfulDivider from '@/components/ColorfulDivider'
+import { getProducts } from '@/lib/supabase'
 
 export default async function LegendaryHomepage() {
+  // Fetch trending products
+  const trendingProducts = await getProducts({ trending: true, limit: 4 })
+
   return (
     <>
       <Script
@@ -71,7 +75,7 @@ export default async function LegendaryHomepage() {
           TRENDING NOW
           ═══════════════════════════════════════════ */}
       <section id="trending" className="section bg-gradient-to-br from-orange-950 via-amber-950 to-yellow-950 texture-noise py-20">
-        <TrendingSection />
+        <TrendingSection products={trendingProducts} />
       </section>
 
       {/* ═══════════════════════════════════════════
