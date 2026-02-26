@@ -23,6 +23,7 @@ export interface Product {
   affiliate_url: string
   image_url?: string
   is_trending?: boolean
+  is_best_seller?: boolean
   created_at?: string
   updated_at?: string
 }
