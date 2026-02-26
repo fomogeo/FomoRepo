@@ -1,28 +1,37 @@
-import Link from 'next/link'
+import { getProducts } from '@/lib/supabase'
 import ProductCard from './ProductCard'
 
-export default function TrendingSection({ products }: { products: any[] }) {
-  if (products.length === 0) return null
+export default async function TrendingSection() {
+  const trendingProducts = await getProducts({ category: 'trending', limit: 10 })
+
+  if (!trendingProducts || trendingProducts.length === 0) return null
 
   return (
-    <div>
-      {/* BIGGER TITLE + COLORED SUBTITLE */}
-      <div className="text-center mb-12">
-        <h2 className="text-5xl sm:text-6xl font-bold mb-4">
-          <span className="text-4xl mr-2">🔥</span>
-          <span className="text-white">Trending </span>
-          <span className="text-orange-400">Now</span>
-        </h2>
-        <p className="text-orange-300 text-xl font-semibold">
-          Hot deals everyone is buying right now
-        </p>
+    <section className="py-16" style={{ background: '#0B1E30', borderTop: '1px solid rgba(0,212,200,0.08)' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-3" style={{ color: '#E8F4FD' }}>
+            🔥 Trending <span style={{ color: '#FF6B00' }}>Now</span>
+          </h2>
+          <p style={{ color: '#7EB8D8' }}>Hot deals everyone is buying right now</p>
+        </div>
+
+        <div className="overflow-x-auto pb-4">
+          <div className="flex space-x-6 min-w-max px-4">
+            {trendingProducts.map((product) => (
+              <div key={product.id} className="w-80 flex-shrink-0">
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="text-center mt-8">
+          <a href="/deals?category=trending" className="btn-gold inline-block px-6 py-3 font-bold rounded-xl">
+            View All Trending Deals →
+          </a>
+        </div>
       </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.slice(0, 4).map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
+    </section>
   )
 }

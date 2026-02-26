@@ -1,8 +1,7 @@
 'use client'
 
-import Script from 'next/script'
 import { useState } from 'react'
-import { Mail } from 'lucide-react'
+import { Mail, Check } from 'lucide-react'
 
 export default function UnsubscribePage() {
   const [email, setEmail] = useState('')
@@ -12,72 +11,96 @@ export default function UnsubscribePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
+
     try {
-      const res = await fetch('/api/unsubscribe', {
+      const response = await fetch('/api/unsubscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email }),
       })
-      const data = await res.json()
-      
+
+      const data = await response.json()
+
       if (data.success) {
         setStatus('success')
-        setMessage('Successfully unsubscribed. Sorry to see you go!')
-        setEmail('')
+        setMessage('You have been successfully unsubscribed.')
       } else {
         setStatus('error')
-        setMessage(data.error || 'Something went wrong')
+        setMessage(data.error || 'Something went wrong. Please try again.')
       }
     } catch (error) {
       setStatus('error')
-      setMessage('Failed to unsubscribe. Please try again.')
+      setMessage('Something went wrong. Please try again.')
     }
   }
 
   return (
-    <div className="min-h-screen section-dark">
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
-      
-      {/* NO BANNER - Just title section */}
-      <div className="py-16 text-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Unsubscribe</h1>
-        <p className="text-cyan-300">Manage your email preferences</p>
-      </div>
-
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
-        <div className="card-light p-8 text-center">
-          <Mail className="h-12 w-12 mx-auto mb-4 text-orange-400" />
-          <h2 className="text-2xl font-bold mb-4 text-white">Unsubscribe from our mailing list</h2>
-          <p className="text-gray-300 mb-6">
-            Enter your email address to unsubscribe from receiving deal alerts and newsletters.
-          </p>
-          
-          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full mb-4"
-              required
-              disabled={status === 'loading'}
-            />
-            <button type="submit" className="btn-primary w-full" disabled={status === 'loading'}>
-              {status === 'loading' ? 'Processing...' : 'Unsubscribe'}
-            </button>
-          </form>
-          
-          {message && (
-            <p className={`mt-4 text-sm ${status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+    <div className="container mx-auto px-4 py-12">
+      <div className="max-w-md mx-auto">
+        {status === 'success' ? (
+          <div className="text-center">
+            <div className="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+              <Check className="h-10 w-10 text-green-600" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Unsubscribed Successfully
+            </h1>
+            <p className="text-gray-600 mb-6">
               {message}
             </p>
-          )}
-        </div>
+            <p className="text-gray-600">
+              You won't receive any more emails from us. We're sorry to see you go!
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="text-center mb-8">
+              <div className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                <Mail className="h-10 w-10 text-gray-600" />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                Unsubscribe from Emails
+              </h1>
+              <p className="text-gray-600">
+                We're sorry to see you go. Enter your email address below to unsubscribe from our mailing list.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  disabled={status === 'loading'}
+                />
+              </div>
+
+              {status === 'error' && (
+                <p className="text-sm text-red-600">{message}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50"
+              >
+                {status === 'loading' ? 'Unsubscribing...' : 'Unsubscribe'}
+              </button>
+            </form>
+
+            <p className="text-xs text-gray-500 text-center mt-6">
+              Changed your mind? You can always resubscribe later.
+            </p>
+          </>
+        )}
       </div>
     </div>
   )

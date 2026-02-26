@@ -2,115 +2,104 @@
 
 import { useState } from 'react'
 
+function isValidEmail(email: string): boolean {
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email) && email.length <= 254
+}
+function sanitizeEmail(email: string): string {
+  return email.trim().toLowerCase().replace(/['";\\\*<>]/g, '').slice(0, 254)
+}
+
 export default function EmailSignup() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'already' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!email) {
+    const sanitized = sanitizeEmail(email)
+    if (!isValidEmail(sanitized)) {
       setStatus('error')
-      setMessage('Please enter your email address')
+      setMessage('Please enter a valid email address.')
       return
     }
-
     setStatus('loading')
-    setMessage('')
-
     try {
-      const response = await fetch('/api/subscribe', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: sanitized }),
       })
-
-      const data = await response.json()
-
-      if (data.success) {
+      const data = await res.json()
+      if (data.already) {
+        setStatus('already')
+        setMessage("You're already on our mailing list! 🎉 Check your inbox for deals.")
+      } else if (data.success) {
         setStatus('success')
-        setMessage(data.message || 'Successfully subscribed! Check your inbox.')
+        setMessage('🎉 Welcome aboard! Check your inbox for exclusive deals.')
         setEmail('')
       } else {
         setStatus('error')
         setMessage(data.error || 'Something went wrong. Please try again.')
       }
-    } catch (error) {
+    } catch {
       setStatus('error')
-      setMessage('Failed to subscribe. Please try again later.')
+      setMessage('Something went wrong. Please try again.')
     }
   }
 
+  const msgColor: Record<string, string> = {
+    success: '#00C853',
+    already: '#00D4C8',
+    error:   '#FF6B00',
+  }
+
   return (
-    <section id="email-signup" className="section bg-gradient-to-br from-violet-950 via-purple-950 to-fuchsia-950 texture-noise py-20">
-      <div className="container-custom max-w-4xl">
-        <div className="card-glass p-12 text-center">
-          <div className="badge badge-orange mb-6 text-base inline-flex">
-            💎 Exclusive Subscriber Benefits
-          </div>
-
-          <h2 className="text-heading mb-4">
-            <span className="text-white">Get the Best Deals </span>
-            <span className="heading-gradient-orange">First!</span>
-          </h2>
-
-          <p className="text-xl text-purple-200 font-semibold mb-8">
-            Join thousands of smart shoppers who never miss a deal
-          </p>
-
-          {/* Email Form */}
-          <form onSubmit={handleSubmit} className="max-w-lg mx-auto mb-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                disabled={status === 'loading'}
-                className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/50 transition disabled:opacity-50"
-              />
-              <button 
-                type="submit" 
-                disabled={status === 'loading'}
-                className="btn btn-secondary px-8 py-4 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {status === 'loading' ? 'Subscribing...' : 'Subscribe Free'}
-              </button>
-            </div>
-
-            {/* Status Messages */}
-            {message && (
-              <div className={`mt-4 p-4 rounded-lg ${
-                status === 'success' 
-                  ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-200' 
-                  : 'bg-rose-500/20 border border-rose-500/50 text-rose-200'
-              }`}>
-                {message}
-              </div>
-            )}
-          </form>
-
-          <p className="text-sm text-purple-300 mb-8">
-            🔒 We respect your privacy. Unsubscribe anytime. No spam, ever.
-          </p>
-
-          {/* Benefits Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-            {[
-              { icon: '🎯', title: 'Early Access', desc: 'Get deals before anyone else' },
-              { icon: '📧', title: 'Weekly Roundup', desc: 'Best deals curated for you' },
-              { icon: '🎁', title: 'Exclusive Codes', desc: 'Subscriber-only discounts' },
-            ].map((benefit, i) => (
-              <div key={i} className="card p-6">
-                <div className="text-4xl mb-3">{benefit.icon}</div>
-                <h4 className="font-bold heading-gradient-orange mb-2">{benefit.title}</h4>
-                <p className="text-sm text-slate-300">{benefit.desc}</p>
-              </div>
-            ))}
-          </div>
+    <div className="text-center max-w-2xl mx-auto px-4">
+      <form onSubmit={handleSubmit} noValidate className="max-w-lg mx-auto">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Enter your email address"
+            required
+            maxLength={254}
+            autoComplete="email"
+            disabled={status === 'loading' || status === 'success' || status === 'already'}
+            className="flex-1 px-5 py-4 rounded-xl font-medium outline-none"
+            style={{
+              background: 'rgba(7, 24, 40, 0.9)',
+              border: '1px solid rgba(0,212,200,0.4)',
+              color: '#E8F4FD',
+              boxShadow: 'inset 0 0 20px rgba(0,212,200,0.05)',
+            }}
+            onFocus={e => (e.currentTarget.style.borderColor = '#00D4C8')}
+            onBlur={e => (e.currentTarget.style.borderColor = 'rgba(0,212,200,0.4)')}
+          />
+          <button
+            type="submit"
+            disabled={status === 'loading' || status === 'success' || status === 'already'}
+            className="btn-gold px-8 py-4 whitespace-nowrap disabled:opacity-60"
+          >
+            {status === 'loading' ? 'Subscribing...' : status === 'success' || status === 'already' ? '✓ Subscribed' : 'Subscribe Free →'}
+          </button>
         </div>
-      </div>
-    </section>
+        {message && (
+          <p className="mt-4 text-sm font-semibold py-3 px-5 rounded-xl"
+            style={{
+              color: msgColor[status] || '#E8F4FD',
+              background: 'rgba(0,0,0,0.3)',
+              border: `1px solid ${msgColor[status] || 'rgba(255,255,255,0.1)'}30`,
+            }}
+          >
+            {message}
+          </p>
+        )}
+      </form>
+      <p className="text-sm mt-4 flex items-center justify-center gap-2" style={{ color: '#4A7A9B' }}>
+        <span>🔒</span>
+        <span>We respect your privacy. Unsubscribe anytime. No spam, ever.</span>
+      </p>
+    </div>
   )
 }

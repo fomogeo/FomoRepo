@@ -1,185 +1,138 @@
 export const dynamic = 'force-dynamic'
 
-import Script from 'next/script'
-import CategoryGrid from '@/components/CategoryGrid'
+import { getProducts } from '@/lib/supabase'
+import Hero from '@/components/Hero'
 import TrendingSection from '@/components/TrendingSection'
+import ProductGrid from '@/components/ProductGrid'
+import CategoryGrid from '@/components/CategoryGrid'
 import EmailSignup from '@/components/EmailSignup'
 import WeatherWidget from '@/components/WeatherWidget'
-import ColorfulDivider from '@/components/ColorfulDivider'
-import { getProducts } from '@/lib/supabase'
+import AdSpace from '@/components/AdSpace'
 
-export default async function LegendaryHomepage() {
-  // Fetch trending products
-  const trendingProducts = await getProducts({ trending: true, limit: 4 })
+export default async function Home() {
+  const products = await getProducts()
 
   return (
-    <>
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317381401188026"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
+    <main className="min-h-screen" style={{ background: '#071828' }}>
 
-      {/* ═══════════════════════════════════════════
-          HERO SECTION - Light Overlay for Visibility
-          ═══════════════════════════════════════════ */}
-      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/hero-light.png" 
-            alt="FomoGeo" 
-            className="w-full h-full object-cover"
-          />
-          {/* LIGHTER Gradient Overlay - So banner is visible */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-teal-900/30 to-emerald-900/40"></div>
-        </div>
+      {/* Hero — full-width image */}
+      <Hero />
 
-        {/* Hero Content */}
-        <div className="relative z-10 container-custom text-center px-4 py-20">
-          <div className="badge badge-teal mb-6 text-lg animate-pulse-glow">
-            🔥 Trending Deals Updated Daily
-          </div>
-          
-          <h1 className="text-display font-bold mb-6 animate-fade-in drop-shadow-lg">
-            Discover the <span className="text-shimmer">Best Deals</span>
-            <br />
-            <span className="heading-gradient-teal">Around the World</span>
-          </h1>
-          
-          <p className="text-xl text-white max-w-3xl mx-auto mb-8 animate-fade-in drop-shadow-md">
-            FomoGeo curates verified deals from trusted sellers worldwide. 
-            Never miss out on the hottest products and exclusive discounts.
-          </p>
+      {/* Top leaderboard ad */}
+      <div className="container mx-auto px-4 py-4">
+        <AdSpace size="leaderboard" />
+      </div>
 
-          <div className="flex flex-wrap gap-4 justify-center animate-fade-in">
-            <a href="#categories" className="btn btn-primary text-lg px-8 py-4">
-              Browse Categories
-            </a>
-            <a href="#trending" className="btn btn-secondary text-lg px-8 py-4">
-              🔥 See Trending Now
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* Category Grid */}
+      <CategoryGrid />
 
-      {/* ═══════════════════════════════════════════
-          TRENDING CATEGORIES
-          ═══════════════════════════════════════════ */}
-      <section id="categories" className="section bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 texture-noise py-20">
-        <CategoryGrid />
-      </section>
+      {/* Trending Products */}
+      <TrendingSection />
 
-      {/* ═══════════════════════════════════════════
-          TRENDING NOW
-          ═══════════════════════════════════════════ */}
-      <section id="trending" className="section bg-gradient-to-br from-orange-950 via-amber-950 to-yellow-950 texture-noise py-20">
-        <TrendingSection products={trendingProducts} />
-      </section>
-
-      {/* ═══════════════════════════════════════════
-          LATEST DEALS
-          ═══════════════════════════════════════════ */}
-      <section className="section-dark texture-dots py-20">
-        <div className="container-custom">
+      {/* Products + sidebar */}
+      <section className="py-16 starfield" style={{ background: '#0B1E30' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-heading mb-4">
-              <span className="heading-gradient-teal">Latest</span>
-              <span className="text-white"> Deals</span>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-3" style={{ color: '#E8F4FD' }}>
+              Today&apos;s Best <span className="text-shimmer">Deals</span>
             </h2>
-            <p className="text-xl text-slate-400 font-semibold">
-              Fresh deals added daily from trusted sellers
-            </p>
+            <p style={{ color: '#7EB8D8' }}>Hand-picked deals updated daily</p>
           </div>
 
-          {/* AdSense Leaderboard */}
-          <div className="mb-10">
-            <div className="card-glass p-4 text-center min-h-[90px] flex items-center justify-center">
-              <p className="text-sm text-slate-500">Advertisement - 728×90</p>
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex-1">
+              <ProductGrid products={products || []} />
+            </div>
+            <div className="lg:w-72 flex flex-col gap-6">
+              <AdSpace size="rectangle" label="Sidebar Ad" />
+              <AdSpace size="rectangle" label="Sidebar Ad 2" />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Main Content - 3 columns */}
-            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div key={item} className="card hover-lift">
-                  <img
-                    src={`https://via.placeholder.com/300x200?text=Deal+${item}`}
-                    alt={`Deal ${item}`}
-                    className="w-full h-40 object-cover rounded-lg mb-3"
-                  />
-                  <h4 className="font-semibold mb-2 text-white">Product Deal {item}</h4>
-                  <p className="text-sm text-slate-400 mb-3">Great value product</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-lg heading-gradient-teal">
-                      ${49 + item * 5}
-                    </span>
-                    <span className="badge badge-emerald">New</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Sidebar - Ads */}
-            <div className="space-y-6">
-              <div className="card-glass p-4 text-center min-h-[300px] flex items-center justify-center">
-                <div>
-                  <p className="text-sm text-slate-500 mb-2">Advertisement</p>
-                  <p className="text-xs text-slate-600">300×250</p>
-                </div>
-              </div>
-              <div className="card-glass p-4 text-center min-h-[300px] flex items-center justify-center">
-                <div>
-                  <p className="text-sm text-slate-500 mb-2">Advertisement</p>
-                  <p className="text-xs text-slate-600">300×250</p>
-                </div>
-              </div>
-            </div>
+          <div className="mt-12">
+            <AdSpace size="wide" />
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          WEATHER WIDGET
-          ═══════════════════════════════════════════ */}
-      <section className="section bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950 texture-noise py-20">
-        <WeatherWidget />
+      {/* Weather Widget */}
+      <section className="py-14" style={{ background: '#071828' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-2" style={{ color: '#E8F4FD' }}>
+              🌤️ Delivery <span style={{ color: '#00D4C8' }}>Weather Forecast</span>
+            </h2>
+            <p style={{ color: '#7EB8D8' }}>Know the weather at your location before your order arrives</p>
+          </div>
+          <WeatherWidget />
+        </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          EMAIL SIGNUP
-          ═══════════════════════════════════════════ */}
-      <EmailSignup />
+      {/* Email Signup */}
+      <section id="email-signup" className="py-20 relative overflow-hidden" style={{ background: '#0B1E30' }}>
+        {/* Decorative glows */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,179,0,0.08) 0%, transparent 70%)', transform: 'translate(-50%, -50%)' }} />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)', transform: 'translate(50%, 50%)' }} />
 
-      {/* ═══════════════════════════════════════════
-          STATS SECTION
-          ═══════════════════════════════════════════ */}
-      <section className="section-dark py-20">
-        <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="relative container mx-auto px-4 text-center mb-10">
+          <div className="inline-block px-5 py-2 rounded-full text-sm font-bold mb-5"
+            style={{ background: 'rgba(255,179,0,0.1)', border: '1px solid rgba(255,179,0,0.3)', color: '#FFB300' }}>
+            💰 Exclusive Subscriber Benefits
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#E8F4FD' }}>
+            Get the Best Deals <span className="text-shimmer">First!</span>
+          </h2>
+          <p className="text-lg max-w-2xl mx-auto mb-2" style={{ color: '#7EB8D8' }}>
+            Join thousands of smart shoppers who never miss a deal
+          </p>
+        </div>
+
+        <EmailSignup />
+
+        {/* Benefits */}
+        <div className="container mx-auto px-4 mt-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
-              { value: '10k+', label: 'Products', gradient: 'heading-gradient-teal' },
-              { value: '30', label: 'Categories', gradient: 'heading-gradient-orange' },
-              { value: '50k+', label: 'Happy Customers', gradient: 'heading-gradient-emerald' },
-              { value: '24/7', label: 'Deal Updates', gradient: 'text-shimmer' },
-            ].map((stat, i) => (
-              <div key={i}>
-                <div className={`text-5xl font-bold ${stat.gradient} mb-2`}>
-                  {stat.value}
-                </div>
-                <p className="text-slate-400">{stat.label}</p>
+              { emoji: '🎯', title: 'Early Access', text: 'Get deals before they go public', color: '#FFB300' },
+              { emoji: '📧', title: 'Weekly Roundup', text: 'Best deals curated just for you', color: '#00D4C8' },
+              { emoji: '🎁', title: 'Exclusive Codes', text: 'Subscriber-only discount codes', color: '#00C853' },
+            ].map(({ emoji, title, text, color }) => (
+              <div key={title} className="rounded-xl p-6 text-center glow-border"
+                style={{ background: 'rgba(13,40,64,0.5)' }}
+              >
+                <div className="text-4xl mb-3">{emoji}</div>
+                <h3 className="font-bold mb-2" style={{ color }}>{title}</h3>
+                <p className="text-sm" style={{ color: '#7EB8D8' }}>{text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          RAINBOW DIVIDER
-          ═══════════════════════════════════════════ */}
-      <ColorfulDivider />
-    </>
+      {/* Trust strip */}
+      <section className="py-14" style={{ background: '#071828', borderTop: '1px solid rgba(0,212,200,0.08)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: '✓', title: 'Verified Deals', text: 'Every deal checked and verified for accuracy', color: '#00C853' },
+              { icon: '🔄', title: 'Updated Daily', text: 'Fresh deals added every single day', color: '#00D4C8' },
+              { icon: '🌍', title: 'Worldwide Shipping', text: 'Deals available in your country', color: '#FFB300' },
+            ].map(({ icon, title, text, color }) => (
+              <div key={title} className="text-center p-8 rounded-2xl glow-border" style={{ background: 'rgba(13,40,64,0.4)' }}>
+                <div className="text-5xl mb-4" style={{ filter: `drop-shadow(0 0 15px ${color})` }}>{icon}</div>
+                <h3 className="text-xl font-bold mb-2" style={{ color }}>{title}</h3>
+                <p style={{ color: '#7EB8D8' }}>{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom ad */}
+      <div className="container mx-auto px-4 pb-10" style={{ background: '#071828' }}>
+        <AdSpace size="leaderboard" label="Bottom Leaderboard" />
+      </div>
+
+    </main>
   )
 }

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getProductBySlug, AffiliateLink } from '@/lib/supabase'
+import { getProductBySlug } from '@/lib/supabase'
 import { getUserCountry, getAffiliateLink, trackAffiliateClick } from '@/lib/affiliateRouter'
 
 export async function GET(request: NextRequest) {
@@ -27,10 +27,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user's country
-    const userCountry = await getUserCountry(request.headers)
+    const userCountry = getUserCountry(request.headers)
 
     // Get the best affiliate link for this user
-	const affiliateUrl = getAffiliateLink(product, userCountry)
+    const affiliateUrl = getAffiliateLink(product.affiliate_links, userCountry)
 
     if (!affiliateUrl) {
       return NextResponse.json(
@@ -39,8 +39,14 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Track the click
-	  trackAffiliateClick(product.id, 'direct')
+    // Track the click (optional - for analytics)
+    const affiliateLink = product.affiliate_links.find(
+      link => link.affiliate_url === affiliateUrl
+    )
+    
+    if (affiliateLink) {
+      await trackAffiliateClick(product.id, affiliateLink.id, userCountry)
+    }
 
     // Redirect to affiliate link
     return NextResponse.redirect(affiliateUrl)
