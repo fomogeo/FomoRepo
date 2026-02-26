@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
+import LiveClock from '@/components/LiveClock'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -119,27 +120,6 @@ function Header() {
   )
 }
 
-function LiveClock() {
-  const [time, setTime] = React.useState('')
-  
-  React.useEffect(() => {
-    const updateTime = () => {
-      const now = new Date()
-      setTime(now.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false 
-      }))
-    }
-    updateTime()
-    const interval = setInterval(updateTime, 1000)
-    return () => clearInterval(interval)
-  }, [])
-  
-  return <span>{time}</span>
-}
-
 function Footer() {
   const currentYear = new Date().getFullYear()
 
@@ -220,6 +200,3 @@ function Footer() {
     </footer>
   )
 }
-
-// Add React import for hooks
-import React from 'react'
