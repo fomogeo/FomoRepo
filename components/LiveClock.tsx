@@ -1,28 +1,76 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function LiveClock() {
-  const [time, setTime] = useState('')
-  const [date, setDate] = useState('')
+  const [time, setTime] = useState<string>('')
+  const [date, setDate] = useState<string>('')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    function tick() {
+    setMounted(true)
+    
+    const updateTime = () => {
       const now = new Date()
-      setTime(now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }))
-      setDate(now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }))
+      
+      // Format time: HH:MM:SS
+      const hours = now.getHours().toString().padStart(2, '0')
+      const minutes = now.getMinutes().toString().padStart(2, '0')
+      const seconds = now.getSeconds().toString().padStart(2, '0')
+      setTime(`${hours}:${minutes}:${seconds}`)
+      
+      // Format date: Day, DD Mon
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const dayName = days[now.getDay()]
+      const day = now.getDate()
+      const month = months[now.getMonth()]
+      setDate(`${dayName}, ${day} ${month}`)
     }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
+
+    updateTime()
+    const interval = setInterval(updateTime, 1000)
+
+    return () => clearInterval(interval)
   }, [])
 
-  if (!time) return null
+  // Show placeholder while loading
+  if (!mounted) {
+    return (
+      <div 
+        className="flex items-center gap-2 font-mono text-sm"
+        style={{ 
+          color: '#7EB8D8',
+          minWidth: '180px',
+          display: 'flex !important',
+          visibility: 'visible !important'
+        }}
+      >
+        <span>--:--:--</span>
+        <span>|</span>
+        <span>---, -- ---</span>
+      </div>
+    )
+  }
 
   return (
-    <div className="hidden md:flex flex-col items-center leading-tight text-xs font-medium">
-      <span className="font-mono font-bold text-sm" style={{ color: '#00D4C8', textShadow: '0 0 10px rgba(0,212,200,0.5)' }}>{time}</span>
-      <span style={{ color: '#7EB8D8' }}>{date}</span>
+    <div 
+      className="flex items-center gap-2 font-mono text-sm font-semibold"
+      style={{ 
+        color: '#00D4C8',
+        minWidth: '180px',
+        display: 'flex !important',
+        visibility: 'visible !important',
+        opacity: '1 !important'
+      }}
+    >
+      <span className="font-bold" style={{ color: '#00D4C8' }}>
+        {time}
+      </span>
+      <span style={{ color: '#7EB8D8' }}>|</span>
+      <span style={{ color: '#7EB8D8' }}>
+        {date}
+      </span>
     </div>
   )
 }

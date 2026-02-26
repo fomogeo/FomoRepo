@@ -7,10 +7,11 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    unoptimized: true, // Temporary fix for development
   },
   env: {
-    NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME || 'FOMO Finds',
-    NEXT_PUBLIC_SITE_TAGLINE: process.env.NEXT_PUBLIC_SITE_TAGLINE || "Don't Miss What Everyone Is Buying",
+    NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME || 'FomoGeo',
+    NEXT_PUBLIC_SITE_TAGLINE: process.env.NEXT_PUBLIC_SITE_TAGLINE || "Verified Deals from Around the World",
   },
 }
 

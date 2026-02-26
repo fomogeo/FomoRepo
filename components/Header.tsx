@@ -6,7 +6,6 @@ import LiveClock from './LiveClock'
 export default function Header() {
   return (
     <header
-
       className="sticky top-0 z-50"
       style={{
         background: 'rgba(7, 24, 40, 0.95)',
@@ -17,13 +16,27 @@ export default function Header() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 gap-4">
-
+          
+          {/* Logo */}
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity shrink-0">
             <Image src="/logo.png" alt="FomoGeo" width={200} height={65} className="h-11 w-auto" priority />
           </Link>
-
-          <LiveClock />
-
+          
+          {/* CLOCK - FORCE VISIBLE */}
+          <div 
+            className="flex items-center"
+            style={{
+              display: 'flex !important',
+              visibility: 'visible !important',
+              opacity: '1 !important',
+              minWidth: '180px',
+              flex: '0 0 auto'
+            }}
+          >
+            <LiveClock />
+          </div>
+          
+          {/* Navigation */}
           <nav className="flex items-center space-x-2 md:space-x-4 shrink-0">
             <Link href="/categories" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
               <Grid3x3 className="h-4 w-4" />
