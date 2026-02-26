@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -8,10 +9,9 @@ export default function Footer() {
           
           {/* Brand Section */}
           <div className="space-y-4">
-            {/* Logo - Links to Homepage */}
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <span className="text-2xl font-bold" style={{ color: '#00D4C8' }}>Fomo</span>
-              <span className="text-2xl font-bold" style={{ color: '#FFB300' }}>Geo</span>
+            {/* Logo - Original version */}
+            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+              <Image src="/logo.png" alt="FomoGeo" width={200} height={65} className="h-11 w-auto" />
             </Link>
             
             <p className="text-sm" style={{ color: '#7EB8D8' }}>
