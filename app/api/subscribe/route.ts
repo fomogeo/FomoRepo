@@ -24,17 +24,24 @@ export async function POST(request: NextRequest) {
 
     const result = await subscribeEmail(email)
 
-    // Already subscribed
-    if (result.already) {
-      return NextResponse.json({ success: true, already: true })
-    }
-
-    if (!result.success) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 400 })
-    }
-
-    return NextResponse.json({ success: true })
-  } catch {
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
+    try {
+  const result = await subscribeEmail(email)
+  
+  if (result.already) {
+    return NextResponse.json({ 
+      success: true, 
+      message: 'You are already subscribed!' 
+    })
   }
+  
+  return NextResponse.json({ 
+    success: true, 
+    message: 'Successfully subscribed!' 
+  })
+} catch (error) {
+  console.error('Subscribe error:', error)
+  return NextResponse.json({ 
+    success: false, 
+    error: 'Failed to subscribe. Please try again.' 
+  }, { status: 500 })
 }
