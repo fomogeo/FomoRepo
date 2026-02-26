@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user's country
-    const userCountry = getUserCountry(request.headers)
+    const userCountry = await getUserCountry(request.headers)
 
     // Get the best affiliate link for this user
 	const affiliateUrl = getAffiliateLink(product, userCountry)
