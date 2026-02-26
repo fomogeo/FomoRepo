@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Tag, FileText, Grid3x3 } from 'lucide-react'
+import { Tag, FileText, Grid } from 'lucide-react'
 import LiveClock from './LiveClock'
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
           {/* Right: Navigation */}
           <nav className="flex items-center space-x-2 md:space-x-4 shrink-0">
             <Link href="/categories" className="text-gray-300 hover:text-cyan-400 flex items-center space-x-1 font-semibold text-sm px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-              <Grid3x3 className="h-4 w-4" />
+              <Grid className="h-4 w-4" />
               <span className="hidden sm:inline">Categories</span>
             </Link>
             <Link href="/deals" className="text-gray-300 hover:text-cyan-400 flex items-center space-x-1 font-semibold text-sm px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
