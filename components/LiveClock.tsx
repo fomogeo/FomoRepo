@@ -41,9 +41,7 @@ export default function LiveClock() {
         className="flex items-center gap-2 font-mono text-sm"
         style={{ 
           color: '#7EB8D8',
-          minWidth: '180px',
-          display: 'flex !important',
-          visibility: 'visible !important'
+          minWidth: '180px'
         }}
       >
         <span>--:--:--</span>
@@ -58,10 +56,7 @@ export default function LiveClock() {
       className="flex items-center gap-2 font-mono text-sm font-semibold"
       style={{ 
         color: '#00D4C8',
-        minWidth: '180px',
-        display: 'flex !important',
-        visibility: 'visible !important',
-        opacity: '1 !important'
+        minWidth: '180px'
       }}
     >
       <span className="font-bold" style={{ color: '#00D4C8' }}>

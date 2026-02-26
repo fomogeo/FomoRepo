@@ -22,13 +22,10 @@ export default function Header() {
             <Image src="/logo.png" alt="FomoGeo" width={200} height={65} className="h-11 w-auto" priority />
           </Link>
           
-          {/* CLOCK - FORCE VISIBLE */}
+          {/* CLOCK - Always visible */}
           <div 
-            className="flex items-center"
+            className="flex items-center clock-container"
             style={{
-              display: 'flex !important',
-              visibility: 'visible !important',
-              opacity: '1 !important',
               minWidth: '180px',
               flex: '0 0 auto'
             }}

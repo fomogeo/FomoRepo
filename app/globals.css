@@ -197,3 +197,15 @@ html { scroll-behavior: smooth; }
 }
 .fg-cat-card .fg-cat-icon    { display: inline-block; transition: transform 0.3s; }
 .fg-cat-card:hover .fg-cat-icon { transform: scale(1.15); }
+
+/* Force clock visibility - CSS approach instead of inline !important */
+.clock-container {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.clock-container > * {
+  display: flex !important;
+  visibility: visible !important;
+}
