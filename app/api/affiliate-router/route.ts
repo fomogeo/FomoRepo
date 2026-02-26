@@ -39,14 +39,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Track the click (optional - for analytics)
-    const affiliateLink = product.affiliate_links.find(
-      (link: AffiliateLink) => link.affiliate_url === affiliateUrl
-    )
-    
-    if (affiliateLink) {
-      await trackAffiliateClick(product.id, affiliateLink.id, userCountry)
-    }
+    // Track the click
+	  trackAffiliateClick(product.id, 'direct')
 
     // Redirect to affiliate link
     return NextResponse.redirect(affiliateUrl)
