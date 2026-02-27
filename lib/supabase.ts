@@ -104,6 +104,23 @@ export async function getProductById(id: string) {
   return data as Product
 }
 
+export async function getProductBySlug(slug: string) {
+  // For now, treating slug as ID since products use ID in URL
+  // If you have a separate slug field, change 'id' to 'slug'
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', slug)
+    .single()
+
+  if (error) {
+    console.error('Error fetching product by slug:', error)
+    return null
+  }
+
+  return data as Product
+}
+
 export async function getTrendingProducts(limit = 10) {
   const { data, error } = await supabase
     .from('products')
@@ -214,6 +231,11 @@ export async function addEmailSubscriber(email: string) {
   }
 
   return { success: true, data }
+}
+
+// Alias for addEmailSubscriber (for compatibility)
+export async function subscribeEmail(email: string) {
+  return await addEmailSubscriber(email)
 }
 
 export async function unsubscribeEmail(email: string) {
