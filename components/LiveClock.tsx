@@ -20,7 +20,7 @@ export default function LiveClock() {
 
   if (!mounted || !time) {
     return (
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8' }}>
+      <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8' }}>
         <Clock className="h-4 w-4" />
         <span className="font-mono">Loading...</span>
       </div>
@@ -41,16 +41,9 @@ export default function LiveClock() {
   })
 
   return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8' }}>
-      <Clock className="h-4 w-4 flex-shrink-0" />
-      
-      {/* Mobile: Date only */}
-      <span className="font-mono md:hidden">
-        {dateString}
-      </span>
-
-      {/* Desktop: Time and Date */}
-      <span className="font-mono hidden md:inline">
+    <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8' }}>
+      <Clock className="h-4 w-4" />
+      <span className="font-mono">
         {timeString} | {dateString}
       </span>
     </div>
