@@ -2,13 +2,13 @@ export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen py-16" style={{ background: '#071828' }}>
       <div className="container mx-auto px-4 max-w-4xl">
-        <div className="bg-white rounded-xl shadow-2xl p-8 md:p-12">
-          <h1 className="text-4xl font-bold mb-2" style={{ color: '#071828' }}>Terms of Service</h1>
-          <p className="text-sm text-gray-500 mb-8">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+        <div className="rounded-xl shadow-2xl p-8 md:p-12" style={{ background: '#0D2840', border: '1px solid rgba(0,212,200,0.2)' }}>
+          <h1 className="text-4xl font-bold mb-2" style={{ color: '#E8F4FD' }}>Terms of Service</h1>
+          <p className="text-sm mb-8" style={{ color: '#7EB8D8' }}>Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
 
-          <div className="prose prose-lg max-w-none space-y-8" style={{ color: '#2C3E50' }}>
+          <div className="prose prose-lg max-w-none space-y-8" style={{ color: '#B8D4E8' }}>
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>1. Agreement to Terms</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>1. Agreement to Terms</h2>
               <p>
                 By accessing or using FomoGeo ("the Website," "we," "us," or "our"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these Terms, you may not access the Website.
               </p>
@@ -18,7 +18,7 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>2. Description of Service</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>2. Description of Service</h2>
               <p>
                 FomoGeo is a deals and product discovery platform that:
               </p>
@@ -35,9 +35,9 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>3. Affiliate Relationships</h2>
-              <p>
-                <strong className="text-orange-600">IMPORTANT DISCLOSURE:</strong> FomoGeo participates in affiliate marketing programs. This means we earn commissions from qualifying purchases made through our affiliate links.
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>3. Affiliate Relationships</h2>
+              <p className="font-semibold" style={{ color: '#FF6B00' }}>
+                IMPORTANT DISCLOSURE: FomoGeo participates in affiliate marketing programs. This means we earn commissions from qualifying purchases made through our affiliate links.
               </p>
               <p className="mt-3">
                 We are a participant in the following affiliate programs (but not limited to):
@@ -54,14 +54,14 @@ export default function TermsOfServicePage() {
                 <strong>Our Promise:</strong> We only recommend products we believe will provide value to our users. Our affiliate relationships do not influence our editorial independence or the products we feature.
               </p>
               <p className="mt-3">
-                For complete details, see our <a href="/legal/disclosure" className="text-blue-600 hover:underline font-semibold">Affiliate Disclosure</a>.
+                For complete details, see our <a href="/legal/disclosure" className="hover:underline" style={{ color: '#00E5FF' }}>Affiliate Disclosure</a>.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>4. Use of the Website</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>4. Use of the Website</h2>
               
-              <h3 className="text-xl font-semibold mb-3" style={{ color: '#00D4C8' }}>Acceptable Use</h3>
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Acceptable Use</h3>
               <p>You may use the Website for lawful purposes only. You agree not to:</p>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Violate any applicable local, state, national, or international law</li>
@@ -76,7 +76,7 @@ export default function TermsOfServicePage() {
                 <li>Attempt to impersonate another user or person</li>
               </ul>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>Account Responsibilities</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Account Responsibilities</h3>
               <p>
                 If you create an account or subscribe to our services, you are responsible for:
               </p>
@@ -89,9 +89,9 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>5. Product Information and Pricing</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>5. Product Information and Pricing</h2>
               
-              <h3 className="text-xl font-semibold mb-3" style={{ color: '#00D4C8' }}>Accuracy of Information</h3>
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Accuracy of Information</h3>
               <p>
                 We strive to provide accurate product information, prices, and availability. However:
               </p>
@@ -103,7 +103,7 @@ export default function TermsOfServicePage() {
                 <li>Images may not exactly reflect the actual product</li>
               </ul>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>No Guarantees</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>No Guarantees</h3>
               <p>
                 We do not guarantee:
               </p>
@@ -113,13 +113,13 @@ export default function TermsOfServicePage() {
                 <li>That products will meet your specific requirements</li>
                 <li>That product descriptions or reviews are completely accurate</li>
               </ul>
-              <p className="mt-4">
-                <strong>Always verify prices, availability, and product details directly with the retailer before making a purchase.</strong>
+              <p className="mt-4 font-semibold">
+                Always verify prices, availability, and product details directly with the retailer before making a purchase.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>6. Third-Party Websites and Retailers</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>6. Third-Party Websites and Retailers</h2>
               <p>
                 The Website contains links to third-party websites and retailers. We are not responsible for:
               </p>
@@ -131,15 +131,15 @@ export default function TermsOfServicePage() {
                 <li>The quality, safety, or legality of products sold by third parties</li>
                 <li>Shipping, returns, refunds, or customer service from third parties</li>
               </ul>
-              <p className="mt-4">
-                <strong>Your interactions with third-party retailers are solely between you and them.</strong> Review their terms, privacy policies, and return policies before making purchases.
+              <p className="mt-4 font-semibold">
+                Your interactions with third-party retailers are solely between you and them. Review their terms, privacy policies, and return policies before making purchases.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>7. Intellectual Property Rights</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>7. Intellectual Property Rights</h2>
               
-              <h3 className="text-xl font-semibold mb-3" style={{ color: '#00D4C8' }}>Our Content</h3>
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Our Content</h3>
               <p>
                 All content on the Website, including but not limited to text, graphics, logos, images, videos, and software, is the property of FomoGeo or its content suppliers and is protected by copyright, trademark, and other intellectual property laws.
               </p>
@@ -154,14 +154,14 @@ export default function TermsOfServicePage() {
                 <li>Use our content for commercial purposes without a license</li>
               </ul>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>User-Generated Content</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>User-Generated Content</h3>
               <p>
                 If you submit any content (comments, reviews, emails, etc.), you grant us a non-exclusive, royalty-free, perpetual, worldwide license to use, reproduce, modify, and display that content in connection with the Website.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>8. Email Communications</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>8. Email Communications</h2>
               <p>
                 By subscribing to our email newsletter, you consent to receive:
               </p>
@@ -176,15 +176,15 @@ export default function TermsOfServicePage() {
               </p>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Clicking the "Unsubscribe" link in any email</li>
-                <li>Visiting our <a href="/legal/unsubscribe" className="text-blue-600 hover:underline">Unsubscribe page</a></li>
+                <li>Visiting our <a href="/legal/unsubscribe" className="hover:underline" style={{ color: '#00E5FF' }}>Unsubscribe page</a></li>
                 <li>Contacting us directly</li>
               </ul>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>9. Disclaimers and Limitations of Liability</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>9. Disclaimers and Limitations of Liability</h2>
               
-              <h3 className="text-xl font-semibold mb-3" style={{ color: '#00D4C8' }}>Disclaimer of Warranties</h3>
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Disclaimer of Warranties</h3>
               <p className="font-semibold">
                 THE WEBSITE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT ANY WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.
               </p>
@@ -200,7 +200,7 @@ export default function TermsOfServicePage() {
                 <li>Security of the Website or your data</li>
               </ul>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>Limitation of Liability</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Limitation of Liability</h3>
               <p className="font-semibold">
                 TO THE FULLEST EXTENT PERMITTED BY LAW, FOMOGEO SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES.
               </p>
@@ -222,7 +222,7 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>10. Indemnification</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>10. Indemnification</h2>
               <p>
                 You agree to indemnify, defend, and hold harmless FomoGeo and its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including attorneys' fees) arising from:
               </p>
@@ -236,14 +236,14 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>11. Governing Law and Dispute Resolution</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>11. Governing Law and Dispute Resolution</h2>
               
-              <h3 className="text-xl font-semibold mb-3" style={{ color: '#00D4C8' }}>Governing Law</h3>
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Governing Law</h3>
               <p>
-                These Terms shall be governed by and construed in accordance with the laws of [Your State/Country], without regard to its conflict of law provisions.
+                These Terms shall be governed by and construed in accordance with the laws of your jurisdiction, without regard to its conflict of law provisions.
               </p>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>Dispute Resolution</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Dispute Resolution</h3>
               <p>
                 Any disputes arising from these Terms or your use of the Website shall be resolved through:
               </p>
@@ -257,7 +257,7 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>12. Termination</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>12. Termination</h2>
               <p>
                 We may terminate or suspend your access to the Website immediately, without prior notice or liability, for any reason, including:
               </p>
@@ -273,7 +273,7 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>13. Changes to Terms</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>13. Changes to Terms</h2>
               <p>
                 We reserve the right to modify these Terms at any time. We will notify users of material changes by:
               </p>
@@ -288,25 +288,25 @@ export default function TermsOfServicePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>14. Severability</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>14. Severability</h2>
               <p>
                 If any provision of these Terms is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>15. Contact Information</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>15. Contact Information</h2>
               <p>
                 For questions about these Terms, please contact us at:
               </p>
-              <div className="mt-4 p-6 rounded-lg" style={{ background: '#F5F5F5' }}>
-                <p className="font-semibold">FomoGeo</p>
-                <p>Email: legal@fomogeo.com</p>
-                <p>Website: <a href="/" className="text-blue-600 hover:underline">fomogeo.com</a></p>
+              <div className="mt-4 p-6 rounded-lg" style={{ background: 'rgba(0,212,200,0.1)', border: '1px solid rgba(0,212,200,0.3)' }}>
+                <p className="font-semibold" style={{ color: '#E8F4FD' }}>FomoGeo</p>
+                <p style={{ color: '#B8D4E8' }}>Email: support@fomogeo.com</p>
+                <p style={{ color: '#B8D4E8' }}>Website: <a href="/" className="hover:underline" style={{ color: '#00E5FF' }}>fomogeo.com</a></p>
               </div>
             </section>
 
-            <section className="mt-12 p-6 rounded-lg" style={{ background: '#FFF3E0', border: '2px solid #FFB300' }}>
+            <section className="mt-12 p-6 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '2px solid rgba(255,107,0,0.3)' }}>
               <p className="font-bold text-lg mb-2" style={{ color: '#FF6B00' }}>
                 ⚠️ Important Notice
               </p>

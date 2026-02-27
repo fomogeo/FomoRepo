@@ -1,208 +1,148 @@
 export const dynamic = 'force-dynamic'
-
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import { getProductBySlug, getActiveCoupons } from '@/lib/supabase'
-import { ExternalLink, Tag, Star, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
+import { getProductById } from '@/lib/supabase'
+import { Tag, ExternalLink, Clock } from 'lucide-react'
 
-interface ProductPageProps {
-  params: {
-    id: string
-  }
-}
+export default async function ProductDetailPage({ params }: { params: { id: string } }) {
+  const product = await getProductById(params.id)
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const product = await getProductBySlug(params.id)
-  
   if (!product) {
     notFound()
   }
 
-  const coupons = await getActiveCoupons()
-  const productCoupons = coupons.filter(c => !c.product_id || c.product_id === product.id)
-
-  const discount = product.discount_percentage
-  const hasDiscount = discount && discount > 0
+  const hasDiscount = product.discount_percentage && product.discount_percentage > 0
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-6xl mx-auto">
-        {/* Breadcrumb */}
-        <div className="mb-6 text-sm text-gray-600">
-          <Link href="/" className="hover:text-primary-600">Home</Link>
-          <span className="mx-2">/</span>
-          <Link href="/deals" className="hover:text-primary-600">Deals</Link>
-          <span className="mx-2">/</span>
-          <span>{product.name}</span>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image */}
-          <div className="relative">
-            <div className="relative h-96 lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden">
-              <Image
-                src={product.image_url || '/placeholder-product.jpg'}
-                alt={product.name}
-                fill
-                className="object-contain"
-                priority
-              />
+    <div className="min-h-screen py-16" style={{ background: '#071828' }}>
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          {/* Product Card with Background */}
+          <div className="rounded-xl shadow-2xl overflow-hidden" style={{ background: '#0D2840', border: '1px solid rgba(0,212,200,0.2)' }}>
+            <div className="grid md:grid-cols-2 gap-8 p-8">
               
-              {/* Badges */}
-              <div className="absolute top-4 left-4 flex flex-col gap-2">
-                {product.is_trending && (
-                  <span className="fomo-badge flex items-center space-x-1">
-                    <TrendingUp className="h-4 w-4" />
-                    <span>Trending</span>
-                  </span>
-                )}
-                {hasDiscount && (
-                  <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    {discount}% OFF
-                  </span>
-                )}
-              </div>
-
-              {product.is_best_seller && (
-                <div className="absolute top-4 right-4">
-                  <Star className="h-8 w-8 text-yellow-400 fill-yellow-400" />
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Product Info */}
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {product.name}
-            </h1>
-
-            {/* Tags */}
-            {product.tags && product.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                {product.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {/* Price */}
-            <div className="mb-8">
-              <div className="flex items-baseline space-x-3 mb-2">
-                <span className="text-5xl font-bold text-gray-900">
-                  ${product.price.toFixed(2)}
-                </span>
-                {product.original_price && product.original_price > product.price && (
-                  <span className="text-2xl text-gray-500 line-through">
-                    ${product.original_price.toFixed(2)}
-                  </span>
-                )}
-              </div>
-              {hasDiscount && (
-                <p className="text-green-600 font-semibold">
-                  You save ${(product.original_price! - product.price).toFixed(2)} ({discount}%)
-                </p>
-              )}
-            </div>
-
-            {/* Description */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">About This Product</h2>
-              <p className="text-gray-700 leading-relaxed">
-                {product.description}
-              </p>
-            </div>
-
-            {/* Coupons */}
-            {productCoupons.length > 0 && (
-              <div className="mb-8 bg-yellow-50 border-2 border-yellow-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                  <Tag className="h-5 w-5 mr-2 text-yellow-600" />
-                  Available Coupons
-                </h3>
-                <div className="space-y-2">
-                  {productCoupons.map((coupon) => (
-                    <div key={coupon.id} className="flex items-center justify-between bg-white p-3 rounded">
-                      <div>
-                        <code className="bg-gray-100 px-2 py-1 rounded font-mono font-semibold">
-                          {coupon.code}
-                        </code>
-                        <p className="text-sm text-gray-600 mt-1">{coupon.description}</p>
-                      </div>
-                      <span className="text-green-600 font-semibold">
-                        {coupon.discount_type === 'percentage' 
-                          ? `${coupon.discount_value}% OFF`
-                          : `$${coupon.discount_value} OFF`
-                        }
-                      </span>
-                    </div>
-                  ))}
+              {/* Product Image */}
+              <div className="relative aspect-square rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.3)' }}>
+                <Image
+                  src={product.image_url || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600'}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                
+                {/* Badges */}
+                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                  {hasDiscount && (
+                    <span className="px-3 py-1 rounded-full text-sm font-bold" style={{ background: '#FF6B00', color: '#fff' }}>
+                      -{product.discount_percentage}% OFF
+                    </span>
+                  )}
+                  {product.is_trending && (
+                    <span className="px-3 py-1 rounded-full text-sm font-bold" style={{ background: '#FF6B00', color: '#fff' }}>
+                      🔥 Trending
+                    </span>
+                  )}
+                  {product.is_best_seller && (
+                    <span className="px-3 py-1 rounded-full text-sm font-bold" style={{ background: '#FFB300', color: '#071828' }}>
+                      ⭐ Best Seller
+                    </span>
+                  )}
                 </div>
               </div>
-            )}
 
-            {/* CTA Button */}
-            <div className="space-y-4">
-              <Link
-                href={`/api/affiliate-router?productId=${product.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-button w-full flex items-center justify-center space-x-2 text-lg py-4"
-              >
-                <span>View This Deal</span>
-                <ExternalLink className="h-5 w-5" />
-              </Link>
+              {/* Product Details */}
+              <div className="flex flex-col justify-between">
+                {/* Category */}
+                <div className="mb-4">
+                  <Link href={`/category/${product.category}`} className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity" style={{ color: '#00D4C8' }}>
+                    <Tag className="h-4 w-4" />
+                    {product.category}
+                  </Link>
+                </div>
 
-              <p className="text-xs text-gray-500 text-center">
-                This is an affiliate link. We may earn a commission if you make a purchase.
-                <Link href="/legal/disclosure" className="text-primary-600 hover:underline ml-1">
-                  Learn more
+                {/* Product Name */}
+                <h1 className="text-4xl font-bold mb-4" style={{ color: '#E8F4FD' }}>
+                  {product.name}
+                </h1>
+
+                {/* Description */}
+                {product.description && (
+                  <p className="text-lg mb-6 leading-relaxed" style={{ color: '#B8D4E8' }}>
+                    {product.description}
+                  </p>
+                )}
+
+                {/* Price Section */}
+                <div className="mb-6 p-6 rounded-lg" style={{ background: 'rgba(0,212,200,0.1)', border: '1px solid rgba(0,212,200,0.3)' }}>
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <span className="text-4xl font-bold" style={{ color: '#FFB300' }}>
+                      ${product.price.toFixed(2)}
+                    </span>
+                    {product.original_price && product.original_price > product.price && (
+                      <>
+                        <span className="text-xl line-through" style={{ color: '#7EB8D8' }}>
+                          ${product.original_price.toFixed(2)}
+                        </span>
+                        <span className="text-lg font-semibold px-3 py-1 rounded-full" style={{ background: '#00C853', color: '#fff' }}>
+                          Save ${(product.original_price - product.price).toFixed(2)}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  {hasDiscount && (
+                    <p className="text-sm" style={{ color: '#7EB8D8' }}>
+                      <Clock className="inline h-4 w-4 mr-1" />
+                      Limited time deal - save {product.discount_percentage}% now!
+                    </p>
+                  )}
+                </div>
+
+                {/* CTA Button */}
+                <Link
+                  href={`/api/affiliate-router?productId=${product.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-gold w-full text-center py-4 px-6 rounded-lg font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105"
+                >
+                  View Deal <ExternalLink className="h-5 w-5" />
                 </Link>
-              </p>
+
+                {/* Trust Signal */}
+                <p className="text-xs text-center mt-4" style={{ color: '#7EB8D8' }}>
+                  ✓ Price verified today | ✓ Secure checkout | ✓ Free returns
+                </p>
+              </div>
             </div>
 
-            {/* Additional Info */}
-            <div className="mt-8 border-t pt-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Details</h3>
-              <dl className="space-y-3">
-                <div className="flex justify-between">
-                  <dt className="text-gray-600">Category:</dt>
-                  <dd className="font-semibold">{product.category}</dd>
+            {/* Additional Info Section */}
+            {product.tags && product.tags.length > 0 && (
+              <div className="px-8 pb-8">
+                <div className="p-6 rounded-lg" style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(0,212,200,0.2)' }}>
+                  <h2 className="text-lg font-bold mb-3" style={{ color: '#00D4C8' }}>Product Tags</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {product.tags.map((tag: string, index: number) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 rounded-full text-sm font-semibold"
+                        style={{ background: 'rgba(0,212,200,0.2)', color: '#00E5FF', border: '1px solid rgba(0,212,200,0.3)' }}
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                {product.is_trending && (
-                  <div className="flex justify-between">
-                    <dt className="text-gray-600">Status:</dt>
-                    <dd className="font-semibold text-primary-600">🔥 Trending Now</dd>
-                  </div>
-                )}
-                {product.is_best_seller && (
-                  <div className="flex justify-between">
-                    <dt className="text-gray-600">Recognition:</dt>
-                    <dd className="font-semibold text-yellow-600">⭐ Best Seller</dd>
-                  </div>
-                )}
-              </dl>
-            </div>
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Legal Disclaimer */}
-        <div className="mt-12 bg-gray-50 rounded-lg p-6 text-sm text-gray-600">
-          <p className="mb-2">
-            <strong>Disclaimer:</strong> Prices and availability are subject to change. 
-            We make every effort to provide accurate information, but please verify on 
-            the merchant's website before making a purchase.
-          </p>
-          <p>
-            We are a participant in various affiliate programs and may earn commissions 
-            from qualifying purchases made through our links, at no additional cost to you.
-          </p>
+          {/* Back to Deals Button */}
+          <div className="mt-8 text-center">
+            <Link href="/deals" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold hover:opacity-80 transition-opacity" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8', border: '1px solid rgba(0,212,200,0.3)' }}>
+              ← Back to All Deals
+            </Link>
+          </div>
         </div>
       </div>
     </div>

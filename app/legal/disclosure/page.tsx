@@ -2,14 +2,14 @@ export default function AffiliateDisclosurePage() {
   return (
     <div className="min-h-screen py-16" style={{ background: '#071828' }}>
       <div className="container mx-auto px-4 max-w-4xl">
-        <div className="bg-white rounded-xl shadow-2xl p-8 md:p-12">
-          <h1 className="text-4xl font-bold mb-2" style={{ color: '#071828' }}>Affiliate Disclosure</h1>
-          <p className="text-sm text-gray-500 mb-8">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+        <div className="rounded-xl shadow-2xl p-8 md:p-12" style={{ background: '#0D2840', border: '1px solid rgba(0,212,200,0.2)' }}>
+          <h1 className="text-4xl font-bold mb-2" style={{ color: '#E8F4FD' }}>Affiliate Disclosure</h1>
+          <p className="text-sm mb-8" style={{ color: '#7EB8D8' }}>Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
 
-          <div className="prose prose-lg max-w-none space-y-8" style={{ color: '#2C3E50' }}>
+          <div className="prose prose-lg max-w-none space-y-8" style={{ color: '#B8D4E8' }}>
             
             {/* FTC Compliance Notice */}
-            <section className="p-6 rounded-lg" style={{ background: '#FFF3E0', border: '2px solid #FFB300' }}>
+            <section className="p-6 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '2px solid rgba(255,107,0,0.3)' }}>
               <h2 className="text-xl font-bold mb-3" style={{ color: '#FF6B00' }}>
                 ⚠️ Important FTC Disclosure
               </h2>
@@ -19,7 +19,7 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>What Are Affiliate Links?</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>What Are Affiliate Links?</h2>
               <p>
                 Affiliate links are special tracking links that allow us to earn a commission when you make a purchase after clicking on them. These links contain unique tracking codes that identify traffic coming from FomoGeo.
               </p>
@@ -31,7 +31,7 @@ export default function AffiliateDisclosurePage() {
                 <li>You're redirected to the retailer's website (Amazon, etc.)</li>
                 <li>A cookie is placed in your browser to track your visit</li>
                 <li>If you make a purchase, we earn a small commission</li>
-                <li><strong className="text-green-600">You pay the same price</strong> - there is no extra cost to you</li>
+                <li><strong style={{ color: '#00C853' }}>You pay the same price</strong> - there is no extra cost to you</li>
               </ol>
               <p className="mt-4 font-semibold" style={{ color: '#00C853' }}>
                 ✓ Using our affiliate links does NOT increase the price you pay. The commission comes from the retailer's marketing budget, not your wallet.
@@ -39,20 +39,20 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Affiliate Programs We Participate In</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Affiliate Programs We Participate In</h2>
               <p>
                 We are a participant in multiple affiliate programs. Here's a comprehensive list:
               </p>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>Amazon Associates Program</h3>
-              <div className="p-4 rounded-lg" style={{ background: '#E8F5E9', border: '1px solid #00C853' }}>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Amazon Associates Program</h3>
+              <div className="p-4 rounded-lg" style={{ background: 'rgba(0,197,83,0.1)', border: '1px solid rgba(0,197,83,0.3)' }}>
                 <p className="font-semibold mb-2">Official Amazon Associates Disclosure:</p>
                 <p className="text-sm italic">
                   "FomoGeo is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com, Amazon.co.uk, Amazon.ca, Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.co.jp, Amazon.com.au, Amazon.in, and other Amazon stores worldwide."
                 </p>
               </div>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>Other Affiliate Networks</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Other Affiliate Networks</h3>
               <p>
                 We also participate in the following affiliate networks and programs:
               </p>
@@ -69,12 +69,12 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>How We Earn Commissions</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>How We Earn Commissions</h2>
               <p>
                 We earn affiliate commissions in several ways:
               </p>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>1. Product Link Clicks</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>1. Product Link Clicks</h3>
               <p>
                 When you click on a product link and make a purchase, we earn a commission. Commission rates vary by:
               </p>
@@ -85,7 +85,7 @@ export default function AffiliateDisclosurePage() {
                 <li><strong>Promotional periods:</strong> Special events may offer bonus commissions</li>
               </ul>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>2. Cookie Duration</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>2. Cookie Duration</h3>
               <p>
                 After clicking our affiliate link, a cookie is stored in your browser for a limited time:
               </p>
@@ -97,7 +97,7 @@ export default function AffiliateDisclosurePage() {
                 This means if you make a purchase within the cookie duration, we may earn a commission even if you don't buy immediately.
               </p>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>3. Display Advertising</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>3. Display Advertising</h3>
               <p>
                 We may also earn revenue from:
               </p>
@@ -109,12 +109,12 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Our Editorial Policy</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Our Editorial Policy</h2>
               <p className="font-semibold text-lg mb-4">
                 Our affiliate relationships do NOT influence our editorial independence.
               </p>
 
-              <h3 className="text-xl font-semibold mb-3" style={{ color: '#00D4C8' }}>What This Means:</h3>
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>What This Means:</h3>
               <ul className="list-disc pl-6 space-y-3">
                 <li>
                   <strong>We only recommend products we believe in:</strong> Our recommendations are based on research, testing, user reviews, and our honest assessment of value.
@@ -133,7 +133,7 @@ export default function AffiliateDisclosurePage() {
                 </li>
               </ul>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#00D4C8' }}>What We DON'T Do:</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>What We DON'T Do:</h3>
               <ul className="list-disc pl-6 space-y-3">
                 <li>❌ Recommend products solely because they pay high commissions</li>
                 <li>❌ Hide negative reviews or known issues</li>
@@ -144,9 +144,9 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Price and Availability</h2>
-              <div className="p-4 rounded-lg" style={{ background: '#FFEBEE', border: '1px solid #FF6B00' }}>
-                <p className="font-semibold mb-2" style={{ color: '#C62828' }}>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Price and Availability</h2>
+              <div className="p-4 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.3)' }}>
+                <p className="font-semibold mb-2" style={{ color: '#FF6B00' }}>
                   ⚠️ Important Notice About Pricing:
                 </p>
                 <p>
@@ -167,7 +167,7 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Your Purchases and Returns</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Your Purchases and Returns</h2>
               <p className="font-semibold mb-3">
                 We are NOT the seller. All purchases are made directly with third-party retailers.
               </p>
@@ -187,7 +187,7 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Reviews and Recommendations</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Reviews and Recommendations</h2>
               <p>
                 Our product reviews and recommendations are based on:
               </p>
@@ -205,7 +205,7 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>International Affiliate Links</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>International Affiliate Links</h2>
               <p>
                 We use geo-targeting to show you the most relevant affiliate links based on your location. This means:
               </p>
@@ -220,7 +220,7 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Sponsored Content</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Sponsored Content</h2>
               <p>
                 Occasionally, we may publish sponsored content or paid partnerships. These will ALWAYS be clearly labeled with:
               </p>
@@ -235,27 +235,27 @@ export default function AffiliateDisclosurePage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Updates to This Disclosure</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Updates to This Disclosure</h2>
               <p>
                 We may update this disclosure as we add new affiliate partnerships or change our monetization strategies. Check this page periodically for updates.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#071828' }}>Questions About Our Affiliate Relationships?</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Questions About Our Affiliate Relationships?</h2>
               <p>
                 If you have questions about our affiliate relationships, commissions, or editorial policy, please contact us:
               </p>
-              <div className="mt-4 p-6 rounded-lg" style={{ background: '#F5F5F5' }}>
-                <p className="font-semibold">FomoGeo</p>
-                <p>Email: affiliate@fomogeo.com</p>
-                <p>Website: <a href="/" className="text-blue-600 hover:underline">fomogeo.com</a></p>
+              <div className="mt-4 p-6 rounded-lg" style={{ background: 'rgba(0,212,200,0.1)', border: '1px solid rgba(0,212,200,0.3)' }}>
+                <p className="font-semibold" style={{ color: '#E8F4FD' }}>FomoGeo</p>
+                <p style={{ color: '#B8D4E8' }}>Email: support@fomogeo.com</p>
+                <p style={{ color: '#B8D4E8' }}>Website: <a href="/" className="hover:underline" style={{ color: '#00E5FF' }}>fomogeo.com</a></p>
               </div>
             </section>
 
             {/* Final Notice */}
-            <section className="mt-12 p-6 rounded-lg" style={{ background: '#E3F2FD', border: '2px solid #00D4C8' }}>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#071828' }}>
+            <section className="mt-12 p-6 rounded-lg" style={{ background: 'rgba(0,212,200,0.1)', border: '2px solid rgba(0,212,200,0.3)' }}>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#E8F4FD' }}>
                 Summary
               </h2>
               <p className="font-semibold mb-3">

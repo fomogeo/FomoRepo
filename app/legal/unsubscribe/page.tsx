@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Mail, Check } from 'lucide-react'
+import Link from 'next/link'
 
 export default function UnsubscribePage() {
   const [email, setEmail] = useState('')
@@ -37,7 +38,7 @@ export default function UnsubscribePage() {
   return (
     <div className="min-h-screen py-16" style={{ background: '#071828' }}>
       <div className="container mx-auto px-4">
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-2xl p-8">
+        <div className="max-w-md mx-auto rounded-xl shadow-2xl p-8" style={{ background: '#0D2840', border: '1px solid rgba(0,212,200,0.2)' }}>
           {status === 'success' ? (
             <div className="text-center">
               <div 
@@ -46,29 +47,29 @@ export default function UnsubscribePage() {
               >
                 <Check className="h-10 w-10 text-white" />
               </div>
-              <h1 className="text-3xl font-bold mb-4" style={{ color: '#071828' }}>
+              <h1 className="text-3xl font-bold mb-4" style={{ color: '#E8F4FD' }}>
                 Unsubscribed Successfully
               </h1>
-              <p className="text-gray-600 mb-6">
+              <p className="mb-6" style={{ color: '#B8D4E8' }}>
                 {message}
               </p>
-              <p className="text-gray-600">
+              <p style={{ color: '#B8D4E8' }}>
                 You won't receive any more emails from us. We're sorry to see you go!
               </p>
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-500 mb-4">
+              <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(0,212,200,0.2)' }}>
+                <p className="text-sm mb-4" style={{ color: '#7EB8D8' }}>
                   Changed your mind?
                 </p>
-                <a 
+                <Link 
                   href="/#email-signup" 
-                  className="inline-block px-6 py-2 rounded-lg font-semibold text-sm transition-all hover:scale-105"
+                  className="inline-block px-6 py-3 rounded-lg font-semibold text-sm transition-all hover:scale-105"
                   style={{ 
                     background: 'linear-gradient(135deg, #00D4C8, #00E5FF)',
                     color: '#fff'
                   }}
                 >
                   Resubscribe
-                </a>
+                </Link>
               </div>
             </div>
           ) : (
@@ -80,10 +81,10 @@ export default function UnsubscribePage() {
                 >
                   <Mail className="h-10 w-10 text-white" />
                 </div>
-                <h1 className="text-3xl font-bold mb-4" style={{ color: '#071828' }}>
+                <h1 className="text-3xl font-bold mb-4" style={{ color: '#E8F4FD' }}>
                   Unsubscribe from Emails
                 </h1>
-                <p className="text-gray-600">
+                <p style={{ color: '#B8D4E8' }}>
                   We're sorry to see you go. Enter your email address below to unsubscribe from our mailing list.
                 </p>
               </div>
@@ -93,7 +94,7 @@ export default function UnsubscribePage() {
                   <label 
                     htmlFor="email" 
                     className="block text-sm font-semibold mb-2"
-                    style={{ color: '#071828' }}
+                    style={{ color: '#E8F4FD' }}
                   >
                     Email Address
                   </label>
@@ -104,8 +105,11 @@ export default function UnsubscribePage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:border-orange-400 transition-colors"
-                    style={{ borderColor: '#E0E0E0' }}
+                    className="w-full px-4 py-3 rounded-lg focus:outline-none transition-colors text-white"
+                    style={{ 
+                      background: 'rgba(0,0,0,0.3)', 
+                      border: '2px solid rgba(0,212,200,0.3)',
+                    }}
                     disabled={status === 'loading'}
                   />
                 </div>
@@ -113,7 +117,7 @@ export default function UnsubscribePage() {
                 {status === 'error' && (
                   <div 
                     className="p-4 rounded-lg text-sm"
-                    style={{ background: '#FFEBEE', color: '#C62828' }}
+                    style={{ background: 'rgba(255,107,0,0.2)', color: '#FF6B00', border: '1px solid rgba(255,107,0,0.3)' }}
                   >
                     {message}
                   </div>
@@ -133,10 +137,19 @@ export default function UnsubscribePage() {
                 </button>
               </form>
 
-              <p className="text-xs text-gray-500 text-center mt-6">
+              <p className="text-xs text-center mt-6" style={{ color: '#7EB8D8' }}>
                 Changed your mind? You can always resubscribe later from our{' '}
-                <a href="/" className="underline hover:text-gray-700">homepage</a>.
+                <a href="/" className="underline hover:opacity-80">homepage</a>.
               </p>
+
+              <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(0,212,200,0.2)' }}>
+                <p className="text-sm mb-2" style={{ color: '#7EB8D8' }}>
+                  Need help?
+                </p>
+                <p className="text-sm" style={{ color: '#B8D4E8' }}>
+                  Contact us at <a href="mailto:support@fomogeo.com" className="hover:underline" style={{ color: '#00E5FF' }}>support@fomogeo.com</a>
+                </p>
+              </div>
             </>
           )}
         </div>
