@@ -5,32 +5,25 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// Server-side client with service role key
+// Admin client for server-side operations
 export const supabaseAdmin = createClient(
   supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 // Types
 export interface Product {
   id: string
   name: string
-  description: string
+  description: string | null
   price: number
-  original_price?: number
-  discount_percentage?: number
-  image_url: string
+  original_price: number | null
+  discount_percentage: number | null
+  image_url: string | null
   category: string
-  tags: string[]
+  tags: string[] | null
   is_trending: boolean
   is_best_seller: boolean
-  affiliate_links: AffiliateLink[]
   created_at: string
   updated_at: string
 }
@@ -45,16 +38,19 @@ export interface AffiliateLink {
   created_at: string
 }
 
-export interface Coupon {
+export interface BlogPost {
   id: string
-  code: string
-  description: string
-  discount_type: 'percentage' | 'fixed'
-  discount_value: number
-  expires_at: string
-  product_id?: string
-  is_active: boolean
+  title: string
+  slug: string
+  content: string
+  excerpt: string | null
+  author: string
+  published_at: string | null
+  is_published: boolean
+  featured_image: string | null
+  tags: string[] | null
   created_at: string
+  updated_at: string
 }
 
 export interface EmailSubscriber {
@@ -62,46 +58,28 @@ export interface EmailSubscriber {
   email: string
   is_subscribed: boolean
   subscribed_at: string
-  unsubscribed_at?: string
+  unsubscribed_at: string | null
 }
 
-export interface BlogPost {
+export interface Coupon {
   id: string
-  title: string
-  slug: string
-  content: string
-  excerpt: string
-  author: string
-  published_at: string
-  is_published: boolean
-  featured_image?: string
-  tags: string[]
+  code: string
+  description: string | null
+  discount_type: 'percentage' | 'fixed'
+  discount_value: number
+  expires_at: string
+  product_id: string | null
+  is_active: boolean
   created_at: string
 }
 
-// Product functions
-export async function getProducts(options: {
-  category?: string
-  limit?: number
-  offset?: number
-} = {}) {
-  const { category, limit = 10, offset = 0 } = options
-
-  let query = supabase
+// Products
+export async function getProducts(limit = 50) {
+  const { data, error } = await supabase
     .from('products')
-    .select('*, affiliate_links(*)')
+    .select('*')
     .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1)
-
-  if (category === 'trending') {
-    query = query.eq('is_trending', true)
-  } else if (category === 'best-sellers') {
-    query = query.eq('is_best_seller', true)
-  } else if (category) {
-    query = query.eq('category', category)
-  }
-
-  const { data, error } = await query
+    .limit(limit)
 
   if (error) {
     console.error('Error fetching products:', error)
@@ -111,11 +89,11 @@ export async function getProducts(options: {
   return data as Product[]
 }
 
-export async function getProductBySlug(slug: string) {
+export async function getProductById(id: string) {
   const { data, error } = await supabase
     .from('products')
-    .select('*, affiliate_links(*)')
-    .eq('id', slug)
+    .select('*')
+    .eq('id', id)
     .single()
 
   if (error) {
@@ -126,76 +104,72 @@ export async function getProductBySlug(slug: string) {
   return data as Product
 }
 
-// Email subscription functions - use supabaseAdmin to bypass RLS
-export async function subscribeEmail(email: string) {
-  // First check if already subscribed
-  const { data: existing } = await supabaseAdmin
-    .from('email_subscribers')
-    .select('id, is_subscribed')
-    .eq('email', email)
-    .single()
-
-  if (existing) {
-    if (existing.is_subscribed) {
-      return { success: true, already: true }
-    }
-    // Re-subscribe if previously unsubscribed
-    const { error } = await supabaseAdmin
-      .from('email_subscribers')
-      .update({ is_subscribed: true, subscribed_at: new Date().toISOString(), unsubscribed_at: null })
-      .eq('email', email)
-    if (error) return { success: false, error: error.message }
-    return { success: true }
-  }
-
-  // New subscriber
-  const { error } = await supabaseAdmin
-    .from('email_subscribers')
-    .insert([{ email, is_subscribed: true, subscribed_at: new Date().toISOString() }])
-
-  if (error) {
-    console.error('Error subscribing email:', error)
-    return { success: false, error: error.message }
-  }
-
-  return { success: true }
-}
-
-export async function unsubscribeEmail(email: string) {
-  const { error } = await supabaseAdmin
-    .from('email_subscribers')
-    .update({
-      is_subscribed: false,
-      unsubscribed_at: new Date().toISOString(),
-    })
-    .eq('email', email)
-
-  if (error) {
-    console.error('Error unsubscribing email:', error)
-    return { success: false, error: error.message }
-  }
-
-  return { success: true }
-}
-
-// Coupon functions
-export async function getActiveCoupons() {
+export async function getTrendingProducts(limit = 10) {
   const { data, error } = await supabase
-    .from('coupons')
+    .from('products')
     .select('*')
-    .eq('is_active', true)
-    .gte('expires_at', new Date().toISOString())
+    .eq('is_trending', true)
+    .order('created_at', { ascending: false })
+    .limit(limit)
 
   if (error) {
-    console.error('Error fetching coupons:', error)
+    console.error('Error fetching trending products:', error)
     return []
   }
 
-  return data as Coupon[]
+  return data as Product[]
 }
 
-// Blog functions
-export async function getBlogPosts(limit = 10) {
+export async function getBestSellers(limit = 10) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('is_best_seller', true)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error('Error fetching best sellers:', error)
+    return []
+  }
+
+  return data as Product[]
+}
+
+export async function getProductsByCategory(category: string, limit = 50) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category', category)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error('Error fetching products by category:', error)
+    return []
+  }
+
+  return data as Product[]
+}
+
+// Affiliate Links
+export async function getAffiliateLinks(productId: string) {
+  const { data, error } = await supabase
+    .from('affiliate_links')
+    .select('*')
+    .eq('product_id', productId)
+    .order('priority', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching affiliate links:', error)
+    return []
+  }
+
+  return data as AffiliateLink[]
+}
+
+// Blog Posts
+export async function getBlogPosts(limit = 20) {
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')
@@ -216,7 +190,6 @@ export async function getBlogPostBySlug(slug: string) {
     .from('blog_posts')
     .select('*')
     .eq('slug', slug)
-    .eq('is_published', true)
     .single()
 
   if (error) {
@@ -225,4 +198,84 @@ export async function getBlogPostBySlug(slug: string) {
   }
 
   return data as BlogPost
+}
+
+// Email Subscribers
+export async function addEmailSubscriber(email: string) {
+  const { data, error } = await supabaseAdmin
+    .from('email_subscribers')
+    .insert([{ email, is_subscribed: true }])
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error adding email subscriber:', error)
+    return { success: false, error: error.message }
+  }
+
+  return { success: true, data }
+}
+
+export async function unsubscribeEmail(email: string) {
+  const { data, error } = await supabaseAdmin
+    .from('email_subscribers')
+    .update({ is_subscribed: false, unsubscribed_at: new Date().toISOString() })
+    .eq('email', email)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error unsubscribing email:', error)
+    return { success: false, error: error.message }
+  }
+
+  return { success: true, data }
+}
+
+export async function checkEmailExists(email: string) {
+  const { data, error } = await supabase
+    .from('email_subscribers')
+    .select('*')
+    .eq('email', email)
+    .single()
+
+  if (error) {
+    return { exists: false }
+  }
+
+  return { exists: true, isSubscribed: data.is_subscribed }
+}
+
+// Coupons
+export async function getActiveCoupons() {
+  const { data, error } = await supabase
+    .from('coupons')
+    .select('*')
+    .eq('is_active', true)
+    .gte('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching coupons:', error)
+    return []
+  }
+
+  return data as Coupon[]
+}
+
+export async function getCouponsByProduct(productId: string) {
+  const { data, error } = await supabase
+    .from('coupons')
+    .select('*')
+    .eq('product_id', productId)
+    .eq('is_active', true)
+    .gte('expires_at', new Date().toISOString())
+    .order('discount_value', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching product coupons:', error)
+    return []
+  }
+
+  return data as Coupon[]
 }
