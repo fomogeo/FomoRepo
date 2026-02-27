@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic'
-
 import { NextRequest, NextResponse } from 'next/server'
-import { getProductBySlug } from '@/lib/supabase'
+import { getProductBySlug, getAffiliateLinks } from '@/lib/supabase'
 import { getUserCountry, getAffiliateLink, trackAffiliateClick } from '@/lib/affiliateRouter'
 
 export async function GET(request: NextRequest) {
@@ -16,7 +15,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Get product with affiliate links
+    // Get the product
     const product = await getProductBySlug(productId)
 
     if (!product) {
@@ -26,11 +25,21 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Get user's country
+    // Get affiliate links for this product
+    const affiliateLinks = await getAffiliateLinks(product.id)
+
+    if (!affiliateLinks || affiliateLinks.length === 0) {
+      return NextResponse.json(
+        { error: 'No affiliate links available for this product' },
+        { status: 404 }
+      )
+    }
+
+    // Get user's country from headers
     const userCountry = getUserCountry(request.headers)
 
     // Get the best affiliate link for this user
-    const affiliateUrl = getAffiliateLink(product.affiliate_links, userCountry)
+    const affiliateUrl = getAffiliateLink(affiliateLinks, userCountry)
 
     if (!affiliateUrl) {
       return NextResponse.json(
@@ -40,18 +49,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Track the click (optional - for analytics)
-    const affiliateLink = product.affiliate_links.find(
-      link => link.affiliate_url === affiliateUrl
-    )
-    
-    if (affiliateLink) {
-      await trackAffiliateClick(product.id, affiliateLink.id, userCountry)
+    const affiliateLinkId = affiliateLinks.find(link => link.affiliate_url === affiliateUrl)?.id
+    if (affiliateLinkId) {
+      await trackAffiliateClick(product.id, affiliateLinkId, userCountry)
     }
 
-    // Redirect to affiliate link
+    // Redirect to the affiliate URL
     return NextResponse.redirect(affiliateUrl)
   } catch (error) {
-    console.error('Affiliate routing error:', error)
+    console.error('Affiliate router error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
