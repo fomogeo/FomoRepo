@@ -22,6 +22,7 @@ import { generateBlogPostWithImages, getTrendingTopics } from '@/lib/content-gen
  * - Auto-includes product links
  * - Auto-finds relevant images
  * - Varies content types (reviews, guides, comparisons)
+ * - PERMANENT image storage (never expires!)
  */
 
 export async function GET(request: NextRequest) {
@@ -92,7 +93,7 @@ export async function GET(request: NextRequest) {
       minWords: 1500,
     })
 
-    // Save to database
+    // Save to database (WITHOUT featured_image - we'll add permanent one next)
     const { data: savedPost, error: saveError } = await supabaseAdmin
       .from('blog_posts')
       .insert([{
@@ -102,8 +103,8 @@ export async function GET(request: NextRequest) {
         excerpt: blogPost.excerpt,
         author: 'FomoGeo Team',
         published_at: new Date().toISOString(),
-        is_published: true, // Auto-publish, or set to false for review
-        featured_image: blogPost.featured_image,
+        is_published: true,
+        featured_image: null, // Will be set after we save it permanently
         tags: blogPost.tags,
       }])
       .select()
@@ -113,11 +114,66 @@ export async function GET(request: NextRequest) {
       throw saveError
     }
 
-    console.log(`Blog post created: ${blogPost.title}`)
+    console.log(`✅ Blog post created: ${blogPost.title}`)
+
+    // NEW: Download temporary image and save permanently to Supabase Storage
+    let permanentImageUrl = null
+    
+    if (blogPost.featured_image) {
+      try {
+        console.log('[Image] Downloading temporary image from OpenAI...')
+        
+        // Download the image from OpenAI's temporary URL
+        const imageResponse = await fetch(blogPost.featured_image)
+        
+        if (imageResponse.ok) {
+          const imageBuffer = await imageResponse.arrayBuffer()
+          
+          // Upload to Supabase Storage (PERMANENT!)
+          const fileName = `blog-${savedPost.id}-${Date.now()}.png`
+          
+          console.log('[Image] Uploading to Supabase Storage...')
+          const { error: uploadError } = await supabaseAdmin.storage
+            .from('blog-images')
+            .upload(fileName, imageBuffer, {
+              contentType: 'image/png',
+              cacheControl: '31536000', // Cache for 1 year
+              upsert: false,
+            })
+
+          if (!uploadError) {
+            // Get permanent public URL
+            const { data: { publicUrl } } = supabaseAdmin.storage
+              .from('blog-images')
+              .getPublicUrl(fileName)
+
+            permanentImageUrl = publicUrl
+            
+            // Update blog post with permanent URL
+            await supabaseAdmin
+              .from('blog_posts')
+              .update({ featured_image: publicUrl })
+              .eq('id', savedPost.id)
+
+            console.log(`✅ Permanent image saved: ${publicUrl}`)
+          } else {
+            console.error('[Image] Upload error:', uploadError)
+          }
+        } else {
+          console.error('[Image] Failed to download from OpenAI')
+        }
+      } catch (imageError) {
+        console.error('[Image] Error saving permanent image:', imageError)
+        // Don't fail the whole cron - post was created successfully
+      }
+    }
 
     // Schedule social media posts about this blog
     if (savedPost) {
-      await scheduleSocialMediaPosts(savedPost)
+      await scheduleSocialMediaPosts({
+        ...savedPost,
+        featured_image: permanentImageUrl || savedPost.featured_image
+      })
     }
 
     return NextResponse.json({
@@ -128,6 +184,8 @@ export async function GET(request: NextRequest) {
         title: blogPost.title,
         slug: blogPost.slug,
         wordCount: blogPost.content.split(' ').length,
+        imageUrl: permanentImageUrl || 'No image',
+        imageType: permanentImageUrl ? 'permanent' : 'none',
       },
       timestamp: new Date().toISOString(),
     })
