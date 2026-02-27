@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Tag, FileText, Grid3x3 } from 'lucide-react'
 import LiveClock from './LiveClock'
 
@@ -16,24 +17,23 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 gap-4">
           
-          {/* Logo - Links to Homepage */}
-          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity shrink-0">
-            {/* Text logo as fallback if image doesn't load */}
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold" style={{ color: '#00D4C8' }}>Fomo</span>
-              <span className="text-2xl font-bold" style={{ color: '#FFB300' }}>Geo</span>
+          {/* Left Section: Logo + Clock */}
+          <div className="flex items-center gap-6 shrink-0">
+            {/* Logo - Links to Homepage */}
+            <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
+              <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-11 w-auto" priority />
+            </Link>
+            
+            {/* CLOCK - Left aligned next to logo */}
+            <div 
+              className="flex items-center clock-container"
+              style={{
+                minWidth: '180px',
+                flex: '0 0 auto'
+              }}
+            >
+              <LiveClock />
             </div>
-          </Link>
-          
-          {/* CLOCK - Always visible */}
-          <div 
-            className="flex items-center clock-container"
-            style={{
-              minWidth: '180px',
-              flex: '0 0 auto'
-            }}
-          >
-            <LiveClock />
           </div>
           
           {/* Navigation */}
