@@ -52,13 +52,12 @@ export default async function BlogPage() {
                   }}
                 >
                   {/* Featured Image */}
-                  <div className="relative w-full h-48 overflow-hidden" style={{ background: 'rgba(0,0,0,0.3)' }}>
+                  <div className="relative w-full h-56 overflow-hidden" style={{ background: 'rgba(0,0,0,0.3)' }}>
                     {post.featured_image ? (
-                      <Image
+                      <img
                         src={post.featured_image}
                         alt={post.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0A1929 0%, #071828 100%)' }}>
@@ -68,7 +67,7 @@ export default async function BlogPage() {
                     
                     {/* Gradient Overlay */}
                     <div 
-                      className="absolute bottom-0 left-0 right-0 h-16"
+                      className="absolute bottom-0 left-0 right-0 h-20"
                       style={{ background: 'linear-gradient(to top, #0D2840, transparent)' }}
                     />
                   </div>
