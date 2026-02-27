@@ -189,7 +189,7 @@ export async function getAffiliateLinks(productId: string) {
 export async function getBlogPosts(limit = 20) {
   const { data, error } = await supabase
     .from('blog_posts')
-    .select('*')
+    .select('id, title, slug, content, excerpt, author, published_at, is_published, featured_image, tags, created_at, updated_at')
     .eq('is_published', true)
     .order('published_at', { ascending: false })
     .limit(limit)
@@ -205,7 +205,7 @@ export async function getBlogPosts(limit = 20) {
 export async function getBlogPostBySlug(slug: string) {
   const { data, error } = await supabase
     .from('blog_posts')
-    .select('*')
+    .select('id, title, slug, content, excerpt, author, published_at, is_published, featured_image, tags, created_at, updated_at')
     .eq('slug', slug)
     .single()
 
