@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Mail, Twitter, Facebook, Instagram } from 'lucide-react'
+import { Mail, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -14,19 +14,28 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-12 w-auto mb-4" />
+            <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
+              <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-12 w-auto mb-4" />
+            </Link>
             <p className="text-sm leading-relaxed" style={{ color: '#7EB8D8' }}>
               Your trusted source for verified deals from around the world.
               Discover trending products and exclusive discounts daily.
             </p>
             <div className="flex space-x-4 mt-5">
-              <a href="https://twitter.com/fomogeo" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110">
-                <Twitter className="h-5 w-5" />
+              {/* X (Twitter) Icon */}
+              <a href="https://x.com/fomogeo_" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110" aria-label="X (Twitter)">
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
               </a>
-              <a href="https://facebook.com/fomogeo" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110">
+              
+              {/* Facebook Icon */}
+              <a href="https://www.facebook.com/profile.php?id=61587989941776" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110" aria-label="Facebook">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="https://instagram.com/fomogeo" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110">
+              
+              {/* Instagram Icon */}
+              <a href="https://instagram.com/fomogeo" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
             </div>
@@ -57,7 +66,7 @@ export default function Footer() {
                 ['/legal/unsubscribe', 'Unsubscribe'],
               ].map(([href, label]) => (
                 <li key={href}>
-                  <Link href={href} className="fg-footer-link-gold">
+                  <Link href={href} className="fg-footer-link-gold inline-flex items-center gap-1">
                     <span style={{ color: '#FFB300' }}>›</span> {label}
                   </Link>
                 </li>
