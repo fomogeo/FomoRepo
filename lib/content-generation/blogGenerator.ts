@@ -10,6 +10,7 @@
  * - Comparison articles
  * - Buying guides
  * - Seasonal content
+ * - AI-generated custom images with DALL-E
  */
 
 import { supabaseAdmin } from '@/lib/supabase'
@@ -91,15 +92,13 @@ export async function generateBlogPost(config: BlogPostConfig) {
   }
 }
 
-/**
- * Generate "Top 10" article prompt
- */
+// ... [Keep all the existing prompt generation functions exactly as they are] ...
+
 async function generateTop10Prompt(
   category: string = 'Electronics',
   products: any[] = [],
   keywords: string[] = []
 ): Promise<string> {
-  // If no products provided, fetch from database
   if (products.length === 0) {
     const { data } = await supabaseAdmin
       .from('products')
@@ -141,9 +140,6 @@ Requirements:
 Write in a friendly, authoritative tone. Make it genuinely useful for readers making a purchase decision.`
 }
 
-/**
- * Generate buying guide prompt
- */
 async function generateBuyingGuidePrompt(
   category: string = 'Electronics',
   keywords: string[] = []
@@ -191,9 +187,6 @@ Requirements:
 Write in a friendly, expert tone that builds trust.`
 }
 
-/**
- * Generate product comparison prompt
- */
 async function generateComparisonPrompt(
   products: any[] = [],
   keywords: string[] = []
@@ -259,9 +252,6 @@ Requirements:
 Be fair to both products. Help readers choose based on their needs.`
 }
 
-/**
- * Generate product review prompt
- */
 async function generateProductReviewPrompt(
   product: any,
   keywords: string[] = []
@@ -327,9 +317,6 @@ Requirements:
 Write as if you've actually used the product. Be specific and honest.`
 }
 
-/**
- * Generate how-to guide prompt
- */
 async function generateHowToPrompt(
   category: string = 'Electronics',
   keywords: string[] = []
@@ -380,9 +367,6 @@ Requirements:
 Make it practical and easy to follow.`
 }
 
-/**
- * Call OpenAI API to generate content
- */
 async function callOpenAI(prompt: string, minWords: number = 1500): Promise<string> {
   const apiKey = process.env.OPENAI_API_KEY
 
@@ -398,7 +382,7 @@ async function callOpenAI(prompt: string, minWords: number = 1500): Promise<stri
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o', // or 'gpt-4' or 'gpt-3.5-turbo'
+        model: 'gpt-4o',
         messages: [
           {
             role: 'system',
@@ -409,7 +393,7 @@ async function callOpenAI(prompt: string, minWords: number = 1500): Promise<stri
             content: prompt
           }
         ],
-        max_tokens: Math.ceil(minWords * 1.5), // Rough estimate
+        max_tokens: Math.ceil(minWords * 1.5),
         temperature: 0.7,
       }),
     })
@@ -427,84 +411,72 @@ async function callOpenAI(prompt: string, minWords: number = 1500): Promise<stri
 }
 
 /**
- * Generate blog post with images
+ * Generate blog post with AI-generated DALL-E image
+ * UPDATED: Now uses DALL-E instead of Unsplash for custom AI images
  */
 export async function generateBlogPostWithImages(config: BlogPostConfig) {
   // Generate the blog post content
   const post = await generateBlogPost(config)
 
-  // Find relevant images for the post
-  const images = await findRelevantImages(post.title, config.category)
-
-  // Insert images into content at appropriate places
-  const contentWithImages = insertImagesIntoContent(post.content, images)
+  // Generate custom AI image with DALL-E
+  const aiImage = await generateAIImage(post.title, config.category)
 
   return {
     ...post,
-    content: contentWithImages,
-    featured_image: images[0]?.url || null,
+    content: post.content, // Keep content as-is (no inline images)
+    featured_image: aiImage?.url || null,
   }
 }
 
 /**
- * Find relevant images from Unsplash
+ * Generate custom AI image using DALL-E
+ * Replaces the old Unsplash search
  */
-async function findRelevantImages(query: string, category?: string): Promise<any[]> {
-  const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY
+async function generateAIImage(title: string, category?: string): Promise<{ url: string } | null> {
+  const apiKey = process.env.OPENAI_API_KEY
 
-  if (!unsplashAccessKey) {
-    return []
+  if (!apiKey) {
+    console.log('[Blog Generator] No OpenAI API key - skipping image generation')
+    return null
   }
 
   try {
-    const searchQuery = category || query.split(':')[0]
-    const response = await fetch(
-      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchQuery)}&per_page=5`,
-      {
-        headers: {
-          'Authorization': `Client-ID ${unsplashAccessKey}`
-        }
-      }
-    )
+    // Create image prompt based on blog title and category
+    const prompt = `Create a professional, modern, eye-catching blog header image for an article titled: "${title}". ${category ? `The article is about ${category} products and deals.` : ''} Style: clean, professional, tech/business aesthetic, vibrant colors, no text in image.`
+
+    console.log('[Blog Generator] Generating AI image with DALL-E...')
+    
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'dall-e-3',
+        prompt: prompt,
+        n: 1,
+        size: '1792x1024',
+        quality: 'standard',
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      console.error('[Blog Generator] DALL-E error:', error)
+      return null
+    }
 
     const data = await response.json()
+    const imageUrl = data.data[0].url
+
+    console.log('[Blog Generator] ✅ AI image generated (temporary URL)')
     
-    return data.results?.map((img: any) => ({
-      url: img.urls.regular,
-      alt: img.alt_description || searchQuery,
-      photographer: img.user.name,
-      photographer_url: img.user.links.html,
-    })) || []
+    return { url: imageUrl }
   } catch (error) {
-    console.error('Failed to fetch images:', error)
-    return []
+    console.error('[Blog Generator] Failed to generate AI image:', error)
+    return null
   }
-}
-
-/**
- * Insert images into content at natural break points
- */
-function insertImagesIntoContent(content: string, images: any[]): string {
-  if (images.length === 0) return content
-
-  const paragraphs = content.split('\n\n')
-  const insertPoints = [
-    Math.floor(paragraphs.length * 0.2),
-    Math.floor(paragraphs.length * 0.5),
-    Math.floor(paragraphs.length * 0.8),
-  ]
-
-  let imageIndex = 0
-  insertPoints.forEach((point, i) => {
-    if (imageIndex < images.length && point < paragraphs.length) {
-      const image = images[imageIndex]
-      const imageHtml = `\n\n![${image.alt}](${image.url})\n*Photo by [${image.photographer}](${image.photographer_url}) on Unsplash*\n\n`
-      paragraphs[point] += imageHtml
-      imageIndex++
-    }
-  })
-
-  return paragraphs.join('\n\n')
 }
 
 /**
