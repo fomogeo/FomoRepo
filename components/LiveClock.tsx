@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Clock } from 'lucide-react'
 
 export default function LiveClock() {
   const [time, setTime] = useState<Date | null>(null)
@@ -19,12 +18,7 @@ export default function LiveClock() {
   }, [])
 
   if (!mounted || !time) {
-    return (
-      <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8' }}>
-        <Clock className="h-4 w-4" />
-        <span className="font-mono">Loading...</span>
-      </div>
-    )
+    return null // Return null instead of showing loading on mobile
   }
 
   const timeString = time.toLocaleTimeString('en-US', {
@@ -41,10 +35,13 @@ export default function LiveClock() {
   })
 
   return (
-    <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8' }}>
-      <Clock className="h-4 w-4" />
-      <span className="font-mono">
-        {timeString} | {dateString}
+    <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'rgba(0,212,200,0.1)' }}>
+      <span className="font-mono font-semibold" style={{ color: '#00D4C8' }}>
+        {timeString}
+      </span>
+      <span style={{ color: '#7EB8D8' }}>|</span>
+      <span className="font-mono" style={{ color: '#B8D4E8' }}>
+        {dateString}
       </span>
     </div>
   )
