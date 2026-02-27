@@ -97,7 +97,7 @@ export default function DisclosurePage() {
           <p className="text-gray-700 leading-relaxed">
             If you have any questions about our affiliate relationships or how we recommend products, 
             please feel free to contact us. We're always happy to provide more information about our 
-            practices and policies.
+            practices and policies. 
           </p>
         </section>
       </div>
