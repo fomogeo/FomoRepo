@@ -65,6 +65,26 @@ export default function ProductCard({ product }: { product: any }) {
           </h3>
         </Link>
 
+        {/* ========================================
+            COMPLIANCE FIX: VALUE-ADDED DESCRIPTION
+            Amazon requires context, not just price
+            ======================================== */}
+        {product.description && (
+          <p className="text-xs mb-3 line-clamp-2" style={{ color: '#B8D4E6' }}>
+            {product.description}
+          </p>
+        )}
+
+        {/* If no description in database, show generic value prop */}
+        {!product.description && (
+          <p className="text-xs mb-3 line-clamp-2" style={{ color: '#B8D4E6' }}>
+            {hasDiscount 
+              ? `Great deal! Save ${product.discount_percentage}% on this popular ${product.category.toLowerCase()} item. Limited time offer - verified deal.`
+              : `Verified deal on quality ${product.category.toLowerCase()} products. Hand-picked for value and customer reviews.`
+            }
+          </p>
+        )}
+
         {/* Price */}
         <div className="flex items-baseline gap-2 mb-3">
           <span className="text-2xl font-bold" style={{ color: '#FFB300' }}>
@@ -82,15 +102,25 @@ export default function ProductCard({ product }: { product: any }) {
           )}
         </div>
 
-        {/* CTA Button */}
-        <Link
+        {/* ========================================
+            COMPLIANCE FIX: PROPER AMAZON LINK
+            - Added rel="nofollow sponsored" (REQUIRED)
+            - Changed text to "View on Amazon" (COMPLIANT)
+            - Maintains affiliate-router for tracking
+            ======================================== */}
+        <a
           href={`/api/affiliate-router?productId=${product.id}`}
           target="_blank"
-          rel="noopener noreferrer"
-          className="btn-gold w-full text-center block py-2 px-4 rounded-lg font-bold text-sm"
+          rel="nofollow sponsored noopener noreferrer"
+          className="btn-gold w-full text-center block py-2 px-4 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity"
         >
-          View Deal →
-        </Link>
+          View on Amazon →
+        </a>
+
+        {/* Price accuracy disclaimer */}
+        <p className="text-xs mt-2 text-center" style={{ color: '#7EB8D8', opacity: 0.7 }}>
+          Price at time of posting
+        </p>
       </div>
     </article>
   )

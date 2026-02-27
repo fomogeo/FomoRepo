@@ -5,6 +5,9 @@ import { AffiliateLink } from '@/lib/supabase'
  * 
  * Routes users to the best affiliate link based on their country
  * Falls back gracefully if no link is available for their region
+ * 
+ * CRITICAL: Uses proper Amazon Associate tags for each region
+ * Amazon requires different tags for different stores!
  */
 
 export interface GeoLocation {
@@ -83,10 +86,52 @@ export function getAffiliateLink(
 }
 
 /**
- * Network-specific link generators
- * These functions create affiliate links for specific networks
+ * ========================================
+ * COMPLIANCE FIX: MULTI-REGION AMAZON TAGS
+ * Amazon requires DIFFERENT tags for each region!
+ * ========================================
+ * 
+ * Get the correct Amazon Associate tag for a specific country
+ * 
+ * CRITICAL: You MUST set these environment variables in Vercel:
+ * - AMAZON_TAG_US (for amazon.com)
+ * - AMAZON_TAG_UK (for amazon.co.uk)
+ * - AMAZON_TAG_DE (for amazon.de)
+ * - AMAZON_TAG_FR (for amazon.fr)
+ * - AMAZON_TAG_IT (for amazon.it)
+ * - AMAZON_TAG_ES (for amazon.es)
+ * - AMAZON_TAG_CA (for amazon.ca)
+ * - AMAZON_TAG_JP (for amazon.co.jp)
+ * - AMAZON_TAG_AU (for amazon.com.au)
+ * - AMAZON_TAG_IN (for amazon.in)
+ * 
+ * Example values:
+ * - AMAZON_TAG_US=yoursite-20
+ * - AMAZON_TAG_UK=yoursite-21
+ * - AMAZON_TAG_DE=yoursite1-21
+ * - AMAZON_TAG_FR=yoursite0d-21
  */
+function getAmazonTag(countryCode: string): string {
+  const tagMap: Record<string, string> = {
+    US: process.env.AMAZON_TAG_US || process.env.NEXT_PUBLIC_AMAZON_TAG_US || 'fomogeo-20',
+    UK: process.env.AMAZON_TAG_UK || process.env.NEXT_PUBLIC_AMAZON_TAG_UK || 'fomogeo-21',
+    DE: process.env.AMAZON_TAG_DE || process.env.NEXT_PUBLIC_AMAZON_TAG_DE || 'fomogeo1-21',
+    FR: process.env.AMAZON_TAG_FR || process.env.NEXT_PUBLIC_AMAZON_TAG_FR || 'fomogeo0d-21',
+    IT: process.env.AMAZON_TAG_IT || process.env.NEXT_PUBLIC_AMAZON_TAG_IT || 'fomogeo0e-21',
+    ES: process.env.AMAZON_TAG_ES || process.env.NEXT_PUBLIC_AMAZON_TAG_ES || 'fomogeo02-21',
+    CA: process.env.AMAZON_TAG_CA || process.env.NEXT_PUBLIC_AMAZON_TAG_CA || 'fomogeo0a-20',
+    JP: process.env.AMAZON_TAG_JP || process.env.NEXT_PUBLIC_AMAZON_TAG_JP || 'fomogeo-22',
+    AU: process.env.AMAZON_TAG_AU || process.env.NEXT_PUBLIC_AMAZON_TAG_AU || 'fomogeo-22',
+    IN: process.env.AMAZON_TAG_IN || process.env.NEXT_PUBLIC_AMAZON_TAG_IN || 'fomogeo-21',
+  }
 
+  return tagMap[countryCode] || tagMap.US
+}
+
+/**
+ * Network-specific link generators
+ * Creates properly formatted affiliate links with correct tags
+ */
 export function createAmazonAffiliateLink(
   asin: string,
   countryCode: string = 'US'
@@ -105,8 +150,9 @@ export function createAmazonAffiliateLink(
   }
 
   const domain = amazonDomains[countryCode] || amazonDomains.US
-  const tag = process.env.AMAZON_ASSOCIATES_TAG || 'your-tag-20'
+  const tag = getAmazonTag(countryCode)
 
+  // Proper Amazon affiliate link format
   return `https://${domain}/dp/${asin}?tag=${tag}`
 }
 

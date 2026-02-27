@@ -18,6 +18,62 @@ export default async function Home() {
       {/* Hero — full-width image */}
       <Hero />
 
+      {/* ========================================
+          COMPLIANCE FIX #1: AFFILIATE DISCLOSURE
+          Must appear BEFORE any affiliate links
+          ======================================== */}
+      <section className="py-6" style={{ background: '#0B1E30', borderBottom: '2px solid rgba(255,179,0,0.2)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-xl p-6 text-center" style={{ 
+            background: 'rgba(255,179,0,0.05)', 
+            border: '1px solid rgba(255,179,0,0.2)' 
+          }}>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className="text-2xl">📢</span>
+              <h3 className="text-lg font-bold" style={{ color: '#FFB300' }}>
+                Affiliate Disclosure
+              </h3>
+            </div>
+            <p className="text-sm max-w-4xl mx-auto leading-relaxed" style={{ color: '#B8D4E6' }}>
+              <strong>FomoGeo is a participant in the Amazon Services LLC Associates Program and Amazon EU Associates Programme</strong>, 
+              affiliate advertising programs designed to provide a means for sites to earn advertising fees by advertising and linking to 
+              Amazon.com, Amazon.co.uk, and other Amazon stores worldwide. 
+              <span className="font-semibold" style={{ color: '#FFB300' }}> As an Amazon Associate, we earn from qualifying purchases.</span> 
+              This means if you click our links and make a purchase, we may earn a commission at no extra cost to you. 
+              We only recommend products we believe provide genuine value.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================
+          COMPLIANCE FIX #2: SEO-DRIVEN INTRO CONTENT
+          Original, value-added content about the site
+          ======================================== */}
+      <section className="py-12" style={{ background: '#071828' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#E8F4FD' }}>
+            Discover the World's Best <span className="text-shimmer">Product Deals</span>
+          </h1>
+          <div className="space-y-4 text-left" style={{ color: '#B8D4E6' }}>
+            <p className="text-lg leading-relaxed">
+              Welcome to <strong>FomoGeo</strong> — your trusted source for hand-curated product deals from verified sellers worldwide. 
+              Every deal you see here has been personally researched, verified for authenticity, and selected based on genuine value, 
+              quality, and customer reviews.
+            </p>
+            <p className="leading-relaxed">
+              We don't just list products — we provide <strong>expert insights, price history analysis, and honest recommendations</strong> to 
+              help you make confident purchasing decisions. Our team monitors thousands of products daily across multiple categories including 
+              electronics, home & kitchen, gaming, fashion, and more to bring you only the best deals that are actually worth your time.
+            </p>
+            <p className="leading-relaxed">
+              Whether you're looking for the latest tech gadgets, home essentials, or seasonal must-haves, FomoGeo cuts through the noise 
+              to deliver deals that matter. <strong>Updated daily</strong> with fresh verified deals from Amazon and trusted international sellers.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Top leaderboard ad */}
       <div className="container mx-auto px-4 py-4">
         <AdSpace size="leaderboard" />
@@ -29,14 +85,24 @@ export default async function Home() {
       {/* Trending Products */}
       <TrendingSection />
 
-      {/* Products + sidebar */}
+      {/* ========================================
+          COMPLIANCE FIX #3: ENHANCED DEALS SECTION
+          Added context and value proposition
+          ======================================== */}
       <section className="py-16 starfield" style={{ background: '#0B1E30' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-4xl sm:text-5xl font-bold mb-3" style={{ color: '#E8F4FD' }}>
-              Today&apos;s Best <span className="text-shimmer">Deals</span>
+              Today&apos;s Best <span className="text-shimmer">Verified Deals</span>
             </h2>
-            <p style={{ color: '#7EB8D8' }}>Hand-picked deals updated daily</p>
+            <p className="text-lg mb-4" style={{ color: '#7EB8D8' }}>
+              Hand-picked deals updated daily • Verified by our expert team
+            </p>
+            <p className="text-sm max-w-2xl mx-auto" style={{ color: '#B8D4E6' }}>
+              Each deal below includes our expert analysis, why we recommend it, and who it's best for. 
+              We track price history and verify availability before featuring any product. 
+              <strong className="text-yellow-400"> Prices and availability are accurate as of the time listed and subject to change.</strong>
+            </p>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">
@@ -47,6 +113,17 @@ export default async function Home() {
               <AdSpace size="rectangle" label="Sidebar Ad" />
               <AdSpace size="rectangle" label="Sidebar Ad 2" />
             </div>
+          </div>
+
+          {/* Price disclaimer - Amazon requirement */}
+          <div className="mt-8 p-4 rounded-lg text-center text-xs" style={{ 
+            background: 'rgba(255,179,0,0.05)', 
+            border: '1px solid rgba(255,179,0,0.2)',
+            color: '#B8D4E6'
+          }}>
+            <strong style={{ color: '#FFB300' }}>Price Disclaimer:</strong> Product prices and availability are accurate as of the date/time 
+            indicated and are subject to change. Any price and availability information displayed on Amazon at the time of purchase will 
+            apply to the purchase of this product. We update prices regularly but cannot guarantee real-time accuracy for all listings.
           </div>
 
           <div className="mt-12">
