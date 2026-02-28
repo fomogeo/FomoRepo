@@ -8,6 +8,37 @@ export default function AffiliateDisclosurePage() {
 
           <div className="prose prose-lg max-w-none space-y-8" style={{ color: '#B8D4E8' }}>
             
+            {/* ========================================
+                COMPLIANCE ENHANCEMENT: AMAZON FIRST
+                Amazon Associates disclosure moved to top and enhanced
+                ======================================== */}
+            <section className="p-6 rounded-lg" style={{ background: 'rgba(255,179,0,0.1)', border: '3px solid rgba(255,179,0,0.4)' }}>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#FFB300' }}>
+                🏆 Amazon Associates Program - Primary Disclosure
+              </h2>
+              <div className="p-4 rounded-lg mb-4" style={{ background: 'rgba(0,197,83,0.15)', border: '2px solid rgba(0,197,83,0.4)' }}>
+                <p className="font-bold text-lg mb-3" style={{ color: '#E8F4FD' }}>Official Amazon Associates Disclosure:</p>
+                <p className="text-base leading-relaxed">
+                  "FomoGeo is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com, Amazon.co.uk, Amazon.ca, Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.co.jp, Amazon.com.au, Amazon.in, and other Amazon stores worldwide."
+                </p>
+              </div>
+              
+              <p className="font-semibold text-lg mb-3">
+                What This Means for You:
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>As an Amazon Associate, we earn from qualifying purchases</strong></li>
+                <li>When you click our Amazon links and buy products, we receive a small commission</li>
+                <li><strong style={{ color: '#00C853' }}>You pay the same price</strong> - Amazon pays us from their marketing budget</li>
+                <li>This helps support our website and allows us to provide free content</li>
+                <li>We participate in Amazon Associates programs across multiple countries worldwide</li>
+              </ul>
+              
+              <p className="mt-4 font-semibold" style={{ color: '#FFB300' }}>
+                Amazon Cookie Duration: 24 hours (or until you complete checkout if you add items to your cart)
+              </p>
+            </section>
+
             {/* FTC Compliance Notice */}
             <section className="p-6 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '2px solid rgba(255,107,0,0.3)' }}>
               <h2 className="text-xl font-bold mb-3" style={{ color: '#FF6B00' }}>
@@ -44,13 +75,23 @@ export default function AffiliateDisclosurePage() {
                 We are a participant in multiple affiliate programs. Here's a comprehensive list:
               </p>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Amazon Associates Program</h3>
-              <div className="p-4 rounded-lg" style={{ background: 'rgba(0,197,83,0.1)', border: '1px solid rgba(0,197,83,0.3)' }}>
-                <p className="font-semibold mb-2">Official Amazon Associates Disclosure:</p>
-                <p className="text-sm italic">
-                  "FomoGeo is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com, Amazon.co.uk, Amazon.ca, Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.co.jp, Amazon.com.au, Amazon.in, and other Amazon stores worldwide."
-                </p>
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>🏆 Amazon Associates Program (Primary Partner)</h3>
+              <p className="mb-3">
+                Amazon is our primary affiliate partner. We participate in Amazon Associates programs in the following countries:
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+                {['United States (Amazon.com)', 'United Kingdom (Amazon.co.uk)', 'Canada (Amazon.ca)', 
+                  'Germany (Amazon.de)', 'France (Amazon.fr)', 'Italy (Amazon.it)', 
+                  'Spain (Amazon.es)', 'Japan (Amazon.co.jp)', 'Australia (Amazon.com.au)', 
+                  'India (Amazon.in)'].map((store, i) => (
+                  <div key={i} className="text-sm px-3 py-2 rounded" style={{ background: 'rgba(0,212,200,0.1)', border: '1px solid rgba(0,212,200,0.3)' }}>
+                    ✓ {store}
+                  </div>
+                ))}
               </div>
+              <p className="text-sm" style={{ color: '#7EB8D8' }}>
+                We automatically route you to your local Amazon store based on your geographic location to provide the best shopping experience.
+              </p>
 
               <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Other Affiliate Networks</h3>
               <p>
@@ -90,7 +131,7 @@ export default function AffiliateDisclosurePage() {
                 After clicking our affiliate link, a cookie is stored in your browser for a limited time:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong>Amazon:</strong> 24 hours (or until checkout if added to cart)</li>
+                <li><strong>Amazon:</strong> 24 hours (or until checkout if added to cart, up to 90 days)</li>
                 <li><strong>Other merchants:</strong> Typically 30-90 days depending on program</li>
               </ul>
               <p className="mt-3">
@@ -132,20 +173,11 @@ export default function AffiliateDisclosurePage() {
                   <strong>We don't guarantee results:</strong> Product performance may vary, and we can't guarantee you'll have the same experience as described.
                 </li>
               </ul>
-
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>What We DON'T Do:</h3>
-              <ul className="list-disc pl-6 space-y-3">
-                <li>❌ Recommend products solely because they pay high commissions</li>
-                <li>❌ Hide negative reviews or known issues</li>
-                <li>❌ Misrepresent product features or pricing</li>
-                <li>❌ Make exaggerated or false claims</li>
-                <li>❌ Write fake reviews or testimonials</li>
-              </ul>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Price and Availability</h2>
-              <div className="p-4 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.3)' }}>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>Price and Availability Disclaimers</h2>
+              <div className="p-4 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '2px solid rgba(255,107,0,0.3)' }}>
                 <p className="font-semibold mb-2" style={{ color: '#FF6B00' }}>
                   ⚠️ Important Notice About Pricing:
                 </p>
@@ -212,6 +244,7 @@ export default function AffiliateDisclosurePage() {
               <ul className="list-disc pl-6 space-y-2">
                 <li>Users in the US see Amazon.com links</li>
                 <li>Users in the UK see Amazon.co.uk links</li>
+                <li>Users in Germany see Amazon.de links</li>
                 <li>Users in other countries see appropriate local links when available</li>
               </ul>
               <p className="mt-3">
@@ -262,7 +295,7 @@ export default function AffiliateDisclosurePage() {
                 By using FomoGeo, you acknowledge that:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>We earn commissions from affiliate links</li>
+                <li>We earn commissions from affiliate links (especially Amazon Associates)</li>
                 <li>Using our links doesn't cost you extra</li>
                 <li>We only recommend products we believe provide value</li>
                 <li>Prices and availability may change</li>

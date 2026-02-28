@@ -24,7 +24,7 @@ export default function TermsOfServicePage() {
               </p>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Provides information about trending products and deals from various retailers</li>
-                <li>Features affiliate links to third-party merchants</li>
+                <li>Features affiliate links to third-party merchants (primarily Amazon)</li>
                 <li>Offers product reviews, comparisons, and recommendations</li>
                 <li>Publishes blog content related to products, shopping, and deals</li>
                 <li>Sends email newsletters with deals and promotions (with user consent)</li>
@@ -34,27 +34,49 @@ export default function TermsOfServicePage() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>3. Affiliate Relationships</h2>
-              <p className="font-semibold" style={{ color: '#FF6B00' }}>
-                IMPORTANT DISCLOSURE: FomoGeo participates in affiliate marketing programs. This means we earn commissions from qualifying purchases made through our affiliate links.
-              </p>
-              <p className="mt-3">
-                We are a participant in the following affiliate programs (but not limited to):
+            {/* ========================================
+                COMPLIANCE ENHANCEMENT: AMAZON ASSOCIATES
+                More prominent Amazon disclosure
+                ======================================== */}
+            <section className="p-6 rounded-lg" style={{ background: 'rgba(255,179,0,0.1)', border: '3px solid rgba(255,179,0,0.4)' }}>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#FFB300' }}>3. Amazon Associates Program & Affiliate Relationships</h2>
+              
+              <div className="p-4 rounded-lg mb-4" style={{ background: 'rgba(0,197,83,0.15)', border: '2px solid rgba(0,197,83,0.4)' }}>
+                <p className="font-bold text-lg mb-2" style={{ color: '#E8F4FD' }}>⚠️ IMPORTANT DISCLOSURE:</p>
+                <p className="font-semibold">
+                  FomoGeo is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon stores worldwide (Amazon.com, Amazon.co.uk, Amazon.ca, Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.co.jp, Amazon.com.au, Amazon.in, and others).
+                </p>
+              </div>
+
+              <p className="font-semibold mb-3">
+                As an Amazon Associate, we earn from qualifying purchases. This means:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong>Amazon Associates Program:</strong> We earn from qualifying purchases</li>
+                <li>When you click our Amazon affiliate links and make purchases, we receive a commission</li>
+                <li><strong style={{ color: '#00C853' }}>You pay the same price</strong> - the commission comes from Amazon's marketing budget</li>
+                <li>Amazon places cookies in your browser to track purchases (24-hour duration)</li>
+                <li>We participate in Amazon Associates programs in multiple countries</li>
+                <li>Commission rates vary by product category (typically 1-15%)</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Other Affiliate Programs</h3>
+              <p>
+                We also participate in the following affiliate programs:
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Awin:</strong> Affiliate network with multiple merchants</li>
                 <li><strong>ShareASale:</strong> Affiliate network with multiple merchants</li>
                 <li><strong>CJ Affiliate:</strong> Affiliate network with multiple merchants</li>
-                <li><strong>Impact:</strong> Affiliate network with multiple merchants</li>
+                <li><strong>Impact:</strong> Affiliate network</li>
                 <li><strong>Rakuten Advertising:</strong> Affiliate network</li>
+                <li><strong>Direct merchant programs:</strong> Individual partnerships</li>
               </ul>
-              <p className="mt-4">
+
+              <p className="mt-4 font-semibold">
                 <strong>Our Promise:</strong> We only recommend products we believe will provide value to our users. Our affiliate relationships do not influence our editorial independence or the products we feature.
               </p>
               <p className="mt-3">
-                For complete details, see our <a href="/legal/disclosure" className="hover:underline" style={{ color: '#00E5FF' }}>Affiliate Disclosure</a>.
+                For complete details, see our <a href="/legal/disclosure" className="hover:underline" style={{ color: '#00E5FF' }}>Affiliate Disclosure</a> and <a href="/legal/privacy" className="hover:underline" style={{ color: '#00E5FF' }}>Privacy Policy</a>.
               </p>
             </section>
 
@@ -113,15 +135,17 @@ export default function TermsOfServicePage() {
                 <li>That products will meet your specific requirements</li>
                 <li>That product descriptions or reviews are completely accurate</li>
               </ul>
-              <p className="mt-4 font-semibold">
-                Always verify prices, availability, and product details directly with the retailer before making a purchase.
-              </p>
+              <div className="mt-4 p-4 rounded-lg" style={{ background: 'rgba(255,107,0,0.1)', border: '2px solid rgba(255,107,0,0.3)' }}>
+                <p className="font-semibold" style={{ color: '#FF6B00' }}>
+                  ⚠️ Always verify prices, availability, and product details directly with the retailer (Amazon, etc.) before making a purchase.
+                </p>
+              </div>
             </section>
 
             <section>
               <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>6. Third-Party Websites and Retailers</h2>
               <p>
-                The Website contains links to third-party websites and retailers. We are not responsible for:
+                The Website contains links to third-party websites and retailers (including Amazon and other merchants). We are not responsible for:
               </p>
               <ul className="list-disc pl-6 space-y-2">
                 <li>The content, products, or services of third-party websites</li>
@@ -132,7 +156,7 @@ export default function TermsOfServicePage() {
                 <li>Shipping, returns, refunds, or customer service from third parties</li>
               </ul>
               <p className="mt-4 font-semibold">
-                Your interactions with third-party retailers are solely between you and them. Review their terms, privacy policies, and return policies before making purchases.
+                Your interactions with third-party retailers, including Amazon, are solely between you and that third party. We are not a party to these transactions.
               </p>
             </section>
 
@@ -141,44 +165,44 @@ export default function TermsOfServicePage() {
               
               <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Our Content</h3>
               <p>
-                All content on the Website, including but not limited to text, graphics, logos, images, videos, and software, is the property of FomoGeo or its content suppliers and is protected by copyright, trademark, and other intellectual property laws.
+                The Website and its original content, features, and functionality are owned by FomoGeo and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+              </p>
+
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Trademarks</h3>
+              <p>
+                "Amazon," "Amazon.com," the Amazon logo, and other Amazon trademarks are trademarks of Amazon.com, Inc. or its affiliates. We are not affiliated with, endorsed by, or sponsored by Amazon.
               </p>
               <p className="mt-3">
-                You may not:
+                Other trademarks and logos displayed on the Website are the property of their respective owners.
+              </p>
+
+              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Product Images</h3>
+              <p>
+                Product images displayed on the Website may be provided by:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Copy, reproduce, distribute, or create derivative works from our content</li>
-                <li>Use our trademarks, logos, or branding without permission</li>
-                <li>Remove or alter any copyright notices or attributions</li>
-                <li>Scrape or systematically extract data from the Website</li>
-                <li>Use our content for commercial purposes without a license</li>
+                <li>Third-party retailers (including Amazon)</li>
+                <li>Manufacturers</li>
+                <li>Affiliate networks</li>
+                <li>AI-generated images (DALL-E)</li>
               </ul>
-
-              <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>User-Generated Content</h3>
-              <p>
-                If you submit any content (comments, reviews, emails, etc.), you grant us a non-exclusive, royalty-free, perpetual, worldwide license to use, reproduce, modify, and display that content in connection with the Website.
+              <p className="mt-3">
+                We use these images under affiliate program terms and for informational purposes only.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>8. Email Communications</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>8. User Content</h2>
               <p>
-                By subscribing to our email newsletter, you consent to receive:
+                If you submit content to the Website (comments, reviews, etc.), you grant us:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Deal alerts and promotional emails</li>
-                <li>Product recommendations</li>
-                <li>Blog post notifications</li>
-                <li>Special offers and exclusive discounts</li>
+                <li>A worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and display your content</li>
+                <li>The right to use your content for promotional purposes</li>
               </ul>
-              <p className="mt-4">
-                You can unsubscribe at any time by:
+              <p className="mt-3">
+                You represent that you own or have the necessary rights to submit the content and that it does not violate any third-party rights or applicable laws.
               </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>Clicking the "Unsubscribe" link in any email</li>
-                <li>Visiting our <a href="/legal/unsubscribe" className="hover:underline" style={{ color: '#00E5FF' }}>Unsubscribe page</a></li>
-                <li>Contacting us directly</li>
-              </ul>
             </section>
 
             <section>
@@ -186,7 +210,7 @@ export default function TermsOfServicePage() {
               
               <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFB300' }}>Disclaimer of Warranties</h3>
               <p className="font-semibold">
-                THE WEBSITE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT ANY WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+                THE WEBSITE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT ANY WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.
               </p>
               <p className="mt-3">
                 We disclaim all warranties, including but not limited to:
@@ -211,7 +235,7 @@ export default function TermsOfServicePage() {
                 <li>Use or inability to use the Website</li>
                 <li>Unauthorized access to or alteration of your data</li>
                 <li>Statements or conduct of any third party on the Website</li>
-                <li>Products purchased through affiliate links</li>
+                <li>Products purchased through affiliate links (including Amazon)</li>
                 <li>Errors, mistakes, or inaccuracies in content</li>
                 <li>Personal injury or property damage</li>
                 <li>Any bugs, viruses, or harmful code</li>
@@ -230,7 +254,7 @@ export default function TermsOfServicePage() {
                 <li>Your use of the Website</li>
                 <li>Your violation of these Terms</li>
                 <li>Your violation of any rights of another party</li>
-                <li>Your transactions with third-party retailers</li>
+                <li>Your transactions with third-party retailers (including Amazon)</li>
                 <li>Any content you submit or transmit</li>
               </ul>
             </section>

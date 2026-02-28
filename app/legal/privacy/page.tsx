@@ -17,6 +17,33 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
+            {/* ========================================
+                COMPLIANCE ENHANCEMENT: AMAZON ASSOCIATES SECTION
+                Amazon requires specific disclosure about their program
+                ======================================== */}
+            <section className="p-6 rounded-lg" style={{ background: 'rgba(255,179,0,0.1)', border: '2px solid rgba(255,179,0,0.3)' }}>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#FFB300' }}>⚠️ Amazon Associates Program Disclosure</h2>
+              <p className="font-semibold mb-3">
+                FomoGeo is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon properties.
+              </p>
+              <p className="mb-3">
+                This program operates across multiple Amazon stores worldwide, including Amazon.com, Amazon.co.uk, Amazon.ca, Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.co.jp, Amazon.com.au, Amazon.in, and other Amazon stores.
+              </p>
+              <p className="font-semibold" style={{ color: '#FFB300' }}>
+                When you click on Amazon affiliate links and make purchases:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-2">
+                <li><strong>Cookies are placed:</strong> Amazon places cookies in your browser for 24 hours (or until checkout)</li>
+                <li><strong>Your activity is tracked:</strong> Amazon tracks your purchases during this cookie duration</li>
+                <li><strong>We earn commissions:</strong> We receive a small commission from Amazon for qualifying purchases</li>
+                <li><strong>No extra cost to you:</strong> The commission comes from Amazon's marketing budget, not your wallet</li>
+                <li><strong>Data sharing:</strong> Amazon receives limited information about the referral (timestamp, referring URL, device type)</li>
+              </ul>
+              <p className="mt-3 text-sm">
+                Amazon's privacy policy governs their use of your data once you're on their website. We recommend reading Amazon's Privacy Notice for complete details.
+              </p>
+            </section>
+
             <section>
               <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>2. Information We Collect</h2>
               
@@ -67,8 +94,18 @@ export default function PrivacyPolicyPage() {
                 <li><strong>Essential Cookies:</strong> Necessary for the website to function properly</li>
                 <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our website (Google Analytics, Vercel Analytics)</li>
                 <li><strong>Advertising Cookies:</strong> Used to deliver relevant advertisements (Google AdSense)</li>
-                <li><strong>Affiliate Cookies:</strong> Track referrals from our affiliate links</li>
+                <li><strong>Affiliate Cookies:</strong> Track referrals from our affiliate links (Amazon, Awin, ShareASale, etc.)</li>
               </ul>
+              
+              {/* ENHANCEMENT: Amazon-specific cookie details */}
+              <div className="mt-4 p-4 rounded-lg" style={{ background: 'rgba(0,212,200,0.1)', border: '1px solid rgba(0,212,200,0.3)' }}>
+                <p className="font-semibold mb-2" style={{ color: '#00D4C8' }}>Amazon Affiliate Cookies:</p>
+                <p className="text-sm">
+                  When you click on Amazon affiliate links, Amazon sets cookies that last for 24 hours. If you add items to your cart, 
+                  the cookie persists until you complete checkout (up to 90 days). These cookies allow Amazon to track your purchase 
+                  and credit us with a commission. You can manage or delete these cookies through your browser settings.
+                </p>
+              </div>
             </section>
 
             <section>
@@ -108,14 +145,16 @@ export default function PrivacyPolicyPage() {
 
               <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Affiliate Partners</h3>
               <p>
-                When you click on affiliate links and make purchases, we may share limited information with our affiliate partners (Amazon Associates, Awin, ShareASale, CJ Affiliate, Impact, etc.) to track referrals and earn commissions. This typically includes:
+                When you click on affiliate links and make purchases, we may share limited information with our affiliate partners to track referrals and earn commissions:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Click timestamp</li>
-                <li>Referring URL</li>
-                <li>Anonymous user identifier</li>
-                <li>Device type and browser information</li>
+                <li><strong>Amazon Associates:</strong> Click timestamp, referring URL, anonymous identifier, device/browser info</li>
+                <li><strong>Other Networks (Awin, ShareASale, CJ, Impact, Rakuten):</strong> Similar tracking data</li>
               </ul>
+              <p className="mt-3 text-sm" style={{ color: '#7EB8D8' }}>
+                Note: We do not share your email address or personally identifiable information with affiliate partners. 
+                Only anonymous tracking data is shared to facilitate commission tracking.
+              </p>
 
               <h3 className="text-xl font-semibold mb-3 mt-6" style={{ color: '#FFB300' }}>Legal Requirements</h3>
               <p>
@@ -129,20 +168,22 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>5. Third-Party Websites and Affiliate Links</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: '#00D4C8' }}>5. Third-Party Advertising and Analytics</h2>
               <p>
-                Our website contains links to third-party websites and affiliate partners. We are not responsible for the privacy practices or content of these external sites. When you click on affiliate links or visit third-party websites, you are subject to their own privacy policies.
+                We use third-party advertising companies to serve ads when you visit our website. These companies may use information about your visits to this and other websites to provide relevant advertisements.
               </p>
-              <p className="mt-3">
-                We participate in affiliate marketing programs with the following networks (but not limited to):
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li><strong>Google AdSense:</strong> Uses cookies to display relevant ads based on your browsing history</li>
+                <li><strong>Google Analytics:</strong> Tracks website usage and provides analytics data</li>
+                <li><strong>Amazon Advertising:</strong> May display Amazon product ads based on your browsing behavior</li>
+              </ul>
+              <p className="mt-4">
+                You can opt out of personalized advertising by:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Amazon Associates</li>
-                <li>Awin</li>
-                <li>ShareASale</li>
-                <li>CJ Affiliate (Commission Junction)</li>
-                <li>Impact</li>
-                <li>Rakuten Advertising</li>
+                <li>Visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#00E5FF' }}>aboutads.info/choices</a> (US)</li>
+                <li>Visiting <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#00E5FF' }}>youronlinechoices.com</a> (EU)</li>
+                <li>Adjusting your browser settings to block third-party cookies</li>
               </ul>
             </section>
 
