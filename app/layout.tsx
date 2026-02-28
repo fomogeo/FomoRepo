@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import EmailPopup from '@/components/EmailPopup'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <EmailPopup />
         </div>
+        <Analytics />
       </body>
     </html>
   )
