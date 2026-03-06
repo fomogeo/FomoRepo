@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getProductById } from '@/lib/supabase'
 import { Tag, ExternalLink, Clock } from 'lucide-react'
+import ProductGallery from '@/components/ProductGallery'
 
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = await getProductById(params.id)
@@ -42,17 +43,17 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
             <div className="grid md:grid-cols-2 gap-8 p-8">
               
               {/* Product Image */}
-              <div className="relative aspect-square rounded-lg overflow-hidden" style={{ background: '#f8f9fa' }}>
-                <Image
-                  src={product.image_url || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600'}
-                  alt={product.name}
-                  fill
-                  className="object-contain p-4"
-                  priority
-                />
-                
+              {/* Product Image Gallery */}
+              <ProductGallery 
+                images={product.images || []}
+                mainImage={product.image_url || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600'}
+                productName={product.name}
+              />
+
+              {/* Product Details */}
+              <div className="flex flex-col justify-between">
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {hasDiscount && (
                     <span className="px-3 py-1 rounded-full text-sm font-bold" style={{ background: '#FF6B00', color: '#fff' }}>
                       -{product.discount_percentage}% OFF
@@ -69,10 +70,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
                     </span>
                   )}
                 </div>
-              </div>
 
-              {/* Product Details */}
-              <div className="flex flex-col justify-between">
                 {/* Category */}
                 <div className="mb-4">
                   <Link href={`/category/${product.category}`} className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity" style={{ color: '#00D4C8' }}>

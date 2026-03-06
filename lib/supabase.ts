@@ -29,6 +29,7 @@ export interface Product {
   original_price: number | null
   discount_percentage: number | null
   image_url: string | null
+  images: string[] | null
   category: string
   tags: string[] | null
   is_trending: boolean
