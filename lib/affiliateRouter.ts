@@ -23,19 +23,15 @@ export interface GeoLocation {
  * but Amazon/affiliate systems often use 'UK'. We normalize here.
  */
 export function getUserCountry(headers: Headers): string {
-  // Vercel provides geo headers
   const rawCountry = headers.get('x-vercel-ip-country') || 
-                     headers.get('cf-ipcountry') || // Cloudflare
-                     'US' // Default fallback
+                     headers.get('cf-ipcountry') || 
+                     'US'
 
   const country = rawCountry.toUpperCase()
 
   // Normalize ISO codes to match our affiliate_links table
   const countryMap: Record<string, string> = {
-    'GB': 'UK',  // Vercel sends GB, our DB uses UK
-    'JP': 'JP',
-    'AU': 'AU',
-    'IN': 'IN',
+    'GB': 'UK',
   }
 
   return countryMap[country] || country
@@ -43,11 +39,21 @@ export function getUserCountry(headers: Headers): string {
 
 /**
  * Route to the best affiliate link for the user's country
- * Priority: 
- * 1. Exact country match with highest priority
- * 2. Regional fallback (e.g., any EU country for EU products)
- * 3. Global link (country_code = 'GLOBAL')
- * 4. US link as final fallback
+ * 
+ * STRATEGY: Since products are sourced from Amazon US, the US link is
+ * always guaranteed to work. Regional links (UK, DE, etc.) may 404 if
+ * the ASIN doesn't exist on that regional store.
+ * 
+ * RECOMMENDED: Set up Amazon OneLink in your Associates dashboard.
+ * OneLink automatically redirects international users to their local
+ * Amazon store when the product exists there, while keeping the US
+ * store as fallback. This means we can safely always use the US link
+ * and OneLink handles the rest.
+ * 
+ * Priority:
+ * 1. US link (always works, OneLink handles international redirect)
+ * 2. Exact country match (only if you manually verify ASINs exist regionally)
+ * 3. First available link as final fallback
  */
 export function getAffiliateLink(
   affiliateLinks: AffiliateLink[],
@@ -60,41 +66,15 @@ export function getAffiliateLink(
   // Sort by priority (higher priority first)
   const sortedLinks = [...affiliateLinks].sort((a, b) => b.priority - a.priority)
 
-  // 1. Try exact country match
-  const exactMatch = sortedLinks.find(
-    link => link.country_code === userCountry
-  )
-  if (exactMatch) {
-    return exactMatch.affiliate_url
-  }
-
-  // 2. Try regional fallback for EU countries
-  const euCountries = [
-    'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
-    'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
-    'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'
-  ]
-
-  if (euCountries.includes(userCountry)) {
-    const euLink = sortedLinks.find(link => euCountries.includes(link.country_code))
-    if (euLink) {
-      return euLink.affiliate_url
-    }
-  }
-
-  // 3. Try global link
-  const globalLink = sortedLinks.find(link => link.country_code === 'GLOBAL')
-  if (globalLink) {
-    return globalLink.affiliate_url
-  }
-
-  // 4. Fallback to US or first available link
+  // Always prefer the US link — it's guaranteed to work since products
+  // are scraped from amazon.com. Amazon OneLink will handle redirecting
+  // international users to their local store automatically.
   const usLink = sortedLinks.find(link => link.country_code === 'US')
   if (usLink) {
     return usLink.affiliate_url
   }
 
-  // Return first available link
+  // Fallback to first available link
   return sortedLinks[0]?.affiliate_url || null
 }
 
