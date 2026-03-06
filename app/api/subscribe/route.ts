@@ -27,17 +27,12 @@ export async function POST(request: NextRequest) {
     // Sanitize email
     const sanitizedEmail = email.trim().toLowerCase()
 
-    // ========================================
-    // FIX: Check if email exists first
-    // Then handle appropriately
-    // ========================================
-    
     // Step 1: Check if email already exists
     const { data: existingSubscriber, error: checkError } = await supabaseAdmin
       .from('email_subscribers')
       .select('*')
       .eq('email', sanitizedEmail)
-      .maybeSingle() // Returns null if not found, no error
+      .maybeSingle()
 
     if (checkError) {
       console.error('Error checking email:', checkError)
@@ -58,7 +53,10 @@ export async function POST(request: NextRequest) {
           message: 'You\'re already subscribed to our newsletter!'
         })
       } else {
-        // Exists but unsubscribed - resubscribe them
+        // ========================================
+        // FIX: Resubscribe - DON'T send already: true
+        // This was causing the wrong message to show
+        // ========================================
         const { error: updateError } = await supabaseAdmin
           .from('email_subscribers')
           .update({ 
@@ -76,9 +74,10 @@ export async function POST(request: NextRequest) {
           )
         }
 
+        // Remove "already: true" so frontend shows success message
         return NextResponse.json({ 
           success: true,
-          already: true,
+          // already: true, ❌ REMOVED - This caused wrong message
           message: 'Welcome back! You\'ve been resubscribed to our newsletter.'
         })
       }
@@ -95,9 +94,8 @@ export async function POST(request: NextRequest) {
       if (insertError) {
         console.error('Error inserting subscriber:', insertError)
         
-        // Handle race condition - email might have been inserted between check and insert
-        if (insertError.code === '23505') { // Unique violation
-          // Try updating instead
+        // Handle race condition
+        if (insertError.code === '23505') {
           const { error: updateError } = await supabaseAdmin
             .from('email_subscribers')
             .update({ 

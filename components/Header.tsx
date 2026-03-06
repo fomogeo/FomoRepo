@@ -24,9 +24,12 @@ export default function Header() {
               <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-11 w-auto" priority />
             </Link>
             
-            {/* CLOCK - Left aligned next to logo */}
+            {/* ========================================
+                FIX: Hide clock CONTAINER on mobile
+                Added "hidden md:flex" to container div
+                ======================================== */}
             <div 
-              className="flex items-center clock-container"
+              className="hidden md:flex items-center clock-container"
               style={{
                 minWidth: '180px',
                 flex: '0 0 auto'

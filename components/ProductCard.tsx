@@ -27,13 +27,23 @@ export default function ProductCard({ product }: { product: any }) {
           unoptimized
         />
         
-        {/* Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-2">
-          {hasDiscount && (
+        {/* ========================================
+            FIX: Separated badges to avoid overlap
+            - Discount badge: TOP RIGHT
+            - Other badges: TOP LEFT
+            ======================================== */}
+        
+        {/* Discount Badge - TOP RIGHT */}
+        {hasDiscount && (
+          <div className="absolute top-2 right-2">
             <span className="discount-badge px-2 py-1 rounded-full text-xs font-bold">
               -{product.discount_percentage}%
             </span>
-          )}
+          </div>
+        )}
+        
+        {/* Other Badges - TOP LEFT */}
+        <div className="absolute top-2 left-2 flex flex-col gap-2">
           {product.is_trending && (
             <span className="px-2 py-1 rounded-full text-xs font-bold" 
               style={{ background: 'rgba(255,107,0,0.9)', color: '#fff' }}>
@@ -65,17 +75,14 @@ export default function ProductCard({ product }: { product: any }) {
           </h3>
         </Link>
 
-        {/* ========================================
-            COMPLIANCE FIX: VALUE-ADDED DESCRIPTION
-            Amazon requires context, not just price
-            ======================================== */}
+        {/* Description */}
         {product.description && (
           <p className="text-xs mb-3 line-clamp-2" style={{ color: '#B8D4E6' }}>
             {product.description}
           </p>
         )}
 
-        {/* If no description in database, show generic value prop */}
+        {/* Auto-generated description if none exists */}
         {!product.description && (
           <p className="text-xs mb-3 line-clamp-2" style={{ color: '#B8D4E6' }}>
             {hasDiscount 
@@ -102,12 +109,7 @@ export default function ProductCard({ product }: { product: any }) {
           )}
         </div>
 
-        {/* ========================================
-            COMPLIANCE FIX: PROPER AMAZON LINK
-            - Added rel="nofollow sponsored" (REQUIRED)
-            - Changed text to "View on Amazon" (COMPLIANT)
-            - Maintains affiliate-router for tracking
-            ======================================== */}
+        {/* Amazon Link */}
         <a
           href={`/api/affiliate-router?productId=${product.id}`}
           target="_blank"
@@ -117,7 +119,7 @@ export default function ProductCard({ product }: { product: any }) {
           View on Amazon →
         </a>
 
-        {/* Price accuracy disclaimer */}
+        {/* Price disclaimer */}
         <p className="text-xs mt-2 text-center" style={{ color: '#7EB8D8', opacity: 0.7 }}>
           Price at time of posting
         </p>
