@@ -241,10 +241,15 @@ function generateKeywords(postType: string, category: string): string[] {
 
 /**
  * Schedule social media posts to promote this blog post
+ * 
+ * ========================================
+ * FIX: Added Instagram to social media queue
+ * Was only scheduling Twitter, Facebook, Pinterest
+ * ========================================
  */
 async function scheduleSocialMediaPosts(blogPost: any) {
   try {
-    // Create social media posts for different times
+    // Create social media posts for different times and platforms
     const socialPosts = [
       {
         platform: 'twitter',
@@ -265,6 +270,16 @@ async function scheduleSocialMediaPosts(blogPost: any) {
         image_url: blogPost.featured_image,
         scheduled_for: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours from now
       },
+      // ========================================
+      // FIX: Instagram post added!
+      // ========================================
+      {
+        platform: 'instagram',
+        content: `📝 New on the blog: ${blogPost.title}\n\n${blogPost.excerpt}\n\nLink in bio! 👆`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${blogPost.slug}`,
+        image_url: blogPost.featured_image, // Instagram requires image
+        scheduled_for: new Date(Date.now() + 8 * 60 * 60 * 1000), // 8 hours from now
+      },
     ]
 
     // Save to social_media_queue table
@@ -281,7 +296,7 @@ async function scheduleSocialMediaPosts(blogPost: any) {
         }])
     }
 
-    console.log(`Scheduled ${socialPosts.length} social media posts`)
+    console.log(`Scheduled ${socialPosts.length} social media posts (including Instagram!)`)
   } catch (error) {
     console.error('Failed to schedule social media posts:', error)
   }

@@ -25,6 +25,22 @@ interface BlogPostConfig {
 }
 
 /**
+ * Strip markdown heading symbols from content
+ * Converts ## Heading to just Heading
+ */
+function stripMarkdownHeadings(content: string): string {
+  // Remove # symbols at start of lines (markdown headings)
+  return content
+    .split('\n')
+    .map(line => {
+      // Remove leading # symbols and spaces
+      return line.replace(/^#+\s+/, '')
+    })
+    .join('\n')
+    .trim()
+}
+
+/**
  * Generate a complete blog post using AI
  */
 export async function generateBlogPost(config: BlogPostConfig) {
@@ -72,7 +88,13 @@ export async function generateBlogPost(config: BlogPostConfig) {
   }
 
   // Call OpenAI API
-  const content = await callOpenAI(prompt, minWords)
+  const rawContent = await callOpenAI(prompt, minWords)
+  
+  // ========================================
+  // FIX: Strip markdown heading symbols
+  // Removes ##, ###, etc. from content
+  // ========================================
+  const content = stripMarkdownHeadings(rawContent)
 
   // Generate excerpt
   const excerpt = content.substring(0, 200) + '...'
@@ -91,8 +113,6 @@ export async function generateBlogPost(config: BlogPostConfig) {
     tags: keywords || [category?.toLowerCase() || 'deals'],
   }
 }
-
-// ... [Keep all the existing prompt generation functions exactly as they are] ...
 
 async function generateTop10Prompt(
   category: string = 'Electronics',
@@ -114,6 +134,10 @@ async function generateTop10Prompt(
     `${i + 1}. ${p.name} - $${p.price}${p.discount_percentage ? ` (${p.discount_percentage}% off)` : ''}`
   ).join('\n')
 
+  // ========================================
+  // FIX: Removed "Include a comparison table"
+  // Tables don't format well in blog content
+  // ========================================
   return `Write a comprehensive, SEO-optimized blog post titled "Top 10 ${category} Products of ${new Date().getFullYear()}".
 
 Target keywords: ${keywords.join(', ')}
@@ -129,13 +153,13 @@ Requirements:
    - Pros and cons
    - Who it's best for
    - Why we recommend it
-4. Include a comparison table
-5. Add a "How to Choose" section
-6. End with a conclusion and FAQ section
-7. Use natural language, not robotic
-8. Be helpful and honest
-9. Include transition words for readability
-10. Optimize for SEO without keyword stuffing
+4. Add a "How to Choose" section explaining what to look for
+5. End with a conclusion and FAQ section (5 common questions)
+6. Use natural language, not robotic
+7. Be helpful and honest
+8. Include transition words for readability
+9. Optimize for SEO without keyword stuffing
+10. DO NOT use markdown heading symbols (##, ###) - just write section titles as plain text
 
 Write in a friendly, authoritative tone. Make it genuinely useful for readers making a purchase decision.`
 }
@@ -177,7 +201,7 @@ Structure:
 
 Requirements:
 - At least 1,500 words total
-- Use headings (H2, H3)
+- Use section titles as plain text (DO NOT use ##, ### markdown symbols)
 - Include bullet points for readability
 - Write in second person ("you")
 - Be genuinely helpful
@@ -198,6 +222,10 @@ async function generateComparisonPrompt(
   const product1 = products[0]
   const product2 = products[1]
 
+  // ========================================
+  // FIX: Removed "Quick Comparison Table"
+  // Tables don't format well
+  // ========================================
   return `Write a detailed comparison article: "${product1.name} vs ${product2.name}: Which Should You Buy?"
 
 Target keywords: ${keywords.join(', ')}
@@ -218,10 +246,10 @@ Structure:
    - Why people compare these
    - What we'll cover
 
-2. Quick Comparison Table
-   - Side-by-side specs
-   - Price comparison
-   - Key differences
+2. Quick Overview (150 words)
+   - Product 1: Brief summary with key specs and price
+   - Product 2: Brief summary with key specs and price
+   - Main differences at a glance
 
 3. Detailed Feature Comparison (800 words)
    - Performance
@@ -248,6 +276,7 @@ Requirements:
 - SEO-optimized
 - Natural writing style
 - Include specific details
+- DO NOT use markdown symbols (##, ###) - write section titles as plain text
 
 Be fair to both products. Help readers choose based on their needs.`
 }
@@ -313,6 +342,7 @@ Requirements:
 - Personal experience tone
 - SEO-optimized
 - Helpful for purchase decision
+- DO NOT use markdown heading symbols - use plain text section titles
 
 Write as if you've actually used the product. Be specific and honest.`
 }
@@ -363,6 +393,7 @@ Requirements:
 - Real examples
 - SEO-optimized
 - Beginner-friendly
+- Use plain text for section titles (NO ## or ### markdown symbols)
 
 Make it practical and easy to follow.`
 }
@@ -386,7 +417,7 @@ async function callOpenAI(prompt: string, minWords: number = 1500): Promise<stri
         messages: [
           {
             role: 'system',
-            content: 'You are an expert content writer specializing in product reviews, buying guides, and SEO-optimized blog posts. Write engaging, helpful, and honest content that helps readers make purchasing decisions. Always write in a natural, conversational tone.'
+            content: 'You are an expert content writer specializing in product reviews, buying guides, and SEO-optimized blog posts. Write engaging, helpful, and honest content that helps readers make purchasing decisions. Always write in a natural, conversational tone. DO NOT use markdown heading symbols like ##, ###. Just write section titles as plain text in bold or regular text.'
           },
           {
             role: 'user',
@@ -423,7 +454,7 @@ export async function generateBlogPostWithImages(config: BlogPostConfig) {
 
   return {
     ...post,
-    content: post.content, // Keep content as-is (no inline images)
+    content: post.content, // Already stripped of markdown symbols
     featured_image: aiImage?.url || null,
   }
 }
