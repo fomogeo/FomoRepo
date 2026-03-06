@@ -17,12 +17,12 @@ export default function ProductCard({ product }: { product: any }) {
   return (
     <article className="deal-card group">
       {/* Product Image */}
-      <Link href={`/products/${product.id}`} className="block relative h-48 overflow-hidden rounded-lg mb-3">
+      <Link href={`/products/${product.id}`} className="block relative h-48 overflow-hidden rounded-lg mb-3" style={{ background: '#f8f9fa' }}>
         <Image
           src={imgSrc}
           alt={product.name}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-300"
+          className="object-contain p-3 group-hover:scale-110 transition-transform duration-300"
           onError={() => setImgError(true)}
           unoptimized
         />

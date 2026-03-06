@@ -42,12 +42,12 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
             <div className="grid md:grid-cols-2 gap-8 p-8">
               
               {/* Product Image */}
-              <div className="relative aspect-square rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.3)' }}>
+              <div className="relative aspect-square rounded-lg overflow-hidden" style={{ background: '#f8f9fa' }}>
                 <Image
                   src={product.image_url || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600'}
                   alt={product.name}
                   fill
-                  className="object-cover"
+                  className="object-contain p-4"
                   priority
                 />
                 
