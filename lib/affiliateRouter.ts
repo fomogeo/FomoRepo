@@ -18,14 +18,27 @@ export interface GeoLocation {
 /**
  * Detect user's country from request headers
  * Works with Vercel's geo headers
+ * 
+ * IMPORTANT: Vercel uses ISO 3166-1 alpha-2 codes (e.g., 'GB' for United Kingdom)
+ * but Amazon/affiliate systems often use 'UK'. We normalize here.
  */
 export function getUserCountry(headers: Headers): string {
   // Vercel provides geo headers
-  const country = headers.get('x-vercel-ip-country') || 
-                  headers.get('cf-ipcountry') || // Cloudflare
-                  'US' // Default fallback
+  const rawCountry = headers.get('x-vercel-ip-country') || 
+                     headers.get('cf-ipcountry') || // Cloudflare
+                     'US' // Default fallback
 
-  return country.toUpperCase()
+  const country = rawCountry.toUpperCase()
+
+  // Normalize ISO codes to match our affiliate_links table
+  const countryMap: Record<string, string> = {
+    'GB': 'UK',  // Vercel sends GB, our DB uses UK
+    'JP': 'JP',
+    'AU': 'AU',
+    'IN': 'IN',
+  }
+
+  return countryMap[country] || country
 }
 
 /**
