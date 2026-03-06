@@ -9,6 +9,9 @@ import { generateBlogPostWithImages, getTrendingTopics } from '@/lib/content-gen
  * 
  * This endpoint automatically generates SEO-optimized blog posts using AI.
  * 
+ * NEW: Optional social media post generation
+ * Add ?skipSocial=true to only create blog posts (no social media queue)
+ * 
  * Schedule Options:
  * - Daily: 1 post per day
  * - 3x per week: Monday, Wednesday, Friday
@@ -23,6 +26,7 @@ import { generateBlogPostWithImages, getTrendingTopics } from '@/lib/content-gen
  * - Auto-finds relevant images
  * - Varies content types (reviews, guides, comparisons)
  * - PERMANENT image storage (never expires!)
+ * - Optional social media scheduling
  */
 
 export async function GET(request: NextRequest) {
@@ -42,7 +46,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // ========================================
+    // NEW: Check if social media should be skipped
+    // ========================================
+    const skipSocial = request.nextUrl.searchParams.get('skipSocial') === 'true'
+
     console.log('Starting automatic blog post generation...')
+    if (skipSocial) {
+      console.log('⚠️  Social media posts DISABLED - blog only')
+    }
 
     // Check if OpenAI is configured
     if (!process.env.OPENAI_API_KEY) {
@@ -168,12 +180,19 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Schedule social media posts about this blog
-    if (savedPost) {
-      await scheduleSocialMediaPosts({
+    // ========================================
+    // NEW: Conditionally schedule social media posts
+    // Only if skipSocial is false
+    // ========================================
+    let socialPostsCount = 0
+    if (!skipSocial && savedPost) {
+      socialPostsCount = await scheduleSocialMediaPosts({
         ...savedPost,
         featured_image: permanentImageUrl || savedPost.featured_image
       })
+      console.log(`✅ Scheduled ${socialPostsCount} social media posts`)
+    } else if (skipSocial) {
+      console.log(`⚠️  Social media posts SKIPPED (skipSocial=true)`)
     }
 
     return NextResponse.json({
@@ -187,6 +206,7 @@ export async function GET(request: NextRequest) {
         imageUrl: permanentImageUrl || 'No image',
         imageType: permanentImageUrl ? 'permanent' : 'none',
       },
+      socialPostsScheduled: skipSocial ? 0 : socialPostsCount,
       timestamp: new Date().toISOString(),
     })
   } catch (error: any) {
@@ -242,12 +262,9 @@ function generateKeywords(postType: string, category: string): string[] {
 /**
  * Schedule social media posts to promote this blog post
  * 
- * ========================================
- * FIX: Added Instagram to social media queue
- * Was only scheduling Twitter, Facebook, Pinterest
- * ========================================
+ * UPDATED: Returns count of scheduled posts
  */
-async function scheduleSocialMediaPosts(blogPost: any) {
+async function scheduleSocialMediaPosts(blogPost: any): Promise<number> {
   try {
     // Create social media posts for different times and platforms
     const socialPosts = [
@@ -270,14 +287,11 @@ async function scheduleSocialMediaPosts(blogPost: any) {
         image_url: blogPost.featured_image,
         scheduled_for: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours from now
       },
-      // ========================================
-      // FIX: Instagram post added!
-      // ========================================
       {
         platform: 'instagram',
         content: `📝 New on the blog: ${blogPost.title}\n\n${blogPost.excerpt}\n\nLink in bio! 👆`,
         url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${blogPost.slug}`,
-        image_url: blogPost.featured_image, // Instagram requires image
+        image_url: blogPost.featured_image,
         scheduled_for: new Date(Date.now() + 8 * 60 * 60 * 1000), // 8 hours from now
       },
     ]
@@ -297,8 +311,10 @@ async function scheduleSocialMediaPosts(blogPost: any) {
     }
 
     console.log(`Scheduled ${socialPosts.length} social media posts (including Instagram!)`)
+    return socialPosts.length
   } catch (error) {
     console.error('Failed to schedule social media posts:', error)
+    return 0
   }
 }
 
@@ -312,4 +328,5 @@ async function scheduleSocialMediaPosts(blogPost: any) {
  * Query params:
  * - type: top-10, buying-guide, product-review, comparison, how-to
  * - category: Category name from your products
+ * - skipSocial: true to skip social media post scheduling
  */
