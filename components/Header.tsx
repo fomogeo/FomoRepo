@@ -53,6 +53,12 @@ export default function Header() {
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Blog</span>
             </Link>
+            <Link href="/about" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
+              <span className="hidden md:inline">About</span>
+            </Link>
+            <Link href="/contact" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
+              <span className="hidden md:inline">Contact</span>
+            </Link>
             <Link href="/#email-signup" className="btn-gold px-4 py-2 text-sm whitespace-nowrap">
               🔥 Get Deals
             </Link>

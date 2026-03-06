@@ -52,7 +52,7 @@ export default function Footer() {
           <div>
             <h3 className="text-base font-bold mb-5 uppercase tracking-wider" style={{ color: '#00D4C8' }}>Quick Links</h3>
             <ul className="space-y-3 text-sm">
-              {[['/', 'Home'], ['/categories', 'Categories'], ['/deals', 'Deals'], ['/blog', 'Blog']].map(([href, label]) => (
+              {[['/', 'Home'], ['/categories', 'Categories'], ['/deals', 'Deals'], ['/blog', 'Blog'], ['/about', 'About Us'], ['/contact', 'Contact']].map(([href, label]) => (
                 <li key={href}>
                   <Link href={href} className="fg-footer-link-teal inline-flex items-center gap-1">
                     <span style={{ color: '#00D4C8' }}>›</span> {label}

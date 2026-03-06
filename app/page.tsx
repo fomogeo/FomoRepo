@@ -7,7 +7,7 @@ import ProductGrid from '@/components/ProductGrid'
 import CategoryGrid from '@/components/CategoryGrid'
 import EmailSignup from '@/components/EmailSignup'
 import WeatherWidget from '@/components/WeatherWidget'
-import AdSpace from '@/components/AdSpace'
+import Link from 'next/link'
 
 export default async function Home() {
   const products = await getProducts()
@@ -18,10 +18,7 @@ export default async function Home() {
       {/* Hero — full-width image */}
       <Hero />
 
-      {/* ========================================
-          COMPLIANCE FIX #1: AFFILIATE DISCLOSURE
-          Must appear BEFORE any affiliate links
-          ======================================== */}
+      {/* AFFILIATE DISCLOSURE */}
       <section className="py-6" style={{ background: '#0B1E30', borderBottom: '2px solid rgba(255,179,0,0.2)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-xl p-6 text-center" style={{ 
@@ -46,10 +43,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ========================================
-          COMPLIANCE FIX #2: SEO-DRIVEN INTRO CONTENT
-          Original, value-added content about the site
-          ======================================== */}
+      {/* SEO INTRO CONTENT */}
       <section className="py-12" style={{ background: '#071828' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#E8F4FD' }}>
@@ -74,21 +68,13 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Top leaderboard ad */}
-      <div className="container mx-auto px-4 py-4">
-        <AdSpace size="leaderboard" />
-      </div>
-
       {/* Category Grid */}
       <CategoryGrid />
 
       {/* Trending Products */}
       <TrendingSection />
 
-      {/* ========================================
-          COMPLIANCE FIX #3: ENHANCED DEALS SECTION
-          Added context and value proposition
-          ======================================== */}
+      {/* DEALS SECTION */}
       <section className="py-16 starfield" style={{ background: '#0B1E30' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
@@ -105,17 +91,9 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1">
-              <ProductGrid products={products || []} />
-            </div>
-            <div className="lg:w-72 flex flex-col gap-6">
-              <AdSpace size="rectangle" label="Sidebar Ad" />
-              <AdSpace size="rectangle" label="Sidebar Ad 2" />
-            </div>
-          </div>
+          <ProductGrid products={products || []} />
 
-          {/* Price disclaimer - Amazon requirement */}
+          {/* Price disclaimer */}
           <div className="mt-8 p-4 rounded-lg text-center text-xs" style={{ 
             background: 'rgba(255,179,0,0.05)', 
             border: '1px solid rgba(255,179,0,0.2)',
@@ -125,15 +103,28 @@ export default async function Home() {
             indicated and are subject to change. Any price and availability information displayed on Amazon at the time of purchase will 
             apply to the purchase of this product. We update prices regularly but cannot guarantee real-time accuracy for all listings.
           </div>
+        </div>
+      </section>
 
-          <div className="mt-12">
-            <AdSpace size="wide" />
+      {/* Latest from Blog — NEW SECTION for AdSense */}
+      <section className="py-16" style={{ background: '#071828' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3" style={{ color: '#E8F4FD' }}>
+              📝 Latest from Our <span style={{ color: '#00D4C8' }}>Blog</span>
+            </h2>
+            <p style={{ color: '#7EB8D8' }}>Buying guides, comparisons, and expert tips to help you shop smarter</p>
+          </div>
+          <div className="text-center">
+            <Link href="/blog" className="inline-block px-8 py-4 rounded-lg font-bold transition-all hover:scale-105" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8', border: '1px solid rgba(0,212,200,0.3)' }}>
+              Read Our Articles →
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Weather Widget */}
-      <section className="py-14" style={{ background: '#071828' }}>
+      <section className="py-14" style={{ background: '#0B1E30' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-2" style={{ color: '#E8F4FD' }}>
@@ -146,8 +137,7 @@ export default async function Home() {
       </section>
 
       {/* Email Signup */}
-      <section id="email-signup" className="py-20 relative overflow-hidden" style={{ background: '#0B1E30' }}>
-        {/* Decorative glows */}
+      <section id="email-signup" className="py-20 relative overflow-hidden" style={{ background: '#071828' }}>
         <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,179,0,0.08) 0%, transparent 70%)', transform: 'translate(-50%, -50%)' }} />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)', transform: 'translate(50%, 50%)' }} />
 
@@ -187,7 +177,7 @@ export default async function Home() {
       </section>
 
       {/* Trust strip */}
-      <section className="py-14" style={{ background: '#071828', borderTop: '1px solid rgba(0,212,200,0.08)' }}>
+      <section className="py-14" style={{ background: '#0B1E30', borderTop: '1px solid rgba(0,212,200,0.08)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -204,11 +194,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Bottom ad */}
-      <div className="container mx-auto px-4 pb-10" style={{ background: '#071828' }}>
-        <AdSpace size="leaderboard" label="Bottom Leaderboard" />
-      </div>
 
     </main>
   )

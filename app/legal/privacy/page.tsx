@@ -185,6 +185,52 @@ export default function PrivacyPolicyPage() {
                 <li>Visiting <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#00E5FF' }}>youronlinechoices.com</a> (EU)</li>
                 <li>Adjusting your browser settings to block third-party cookies</li>
               </ul>
+
+              {/* Google AdSense Required Disclosures */}
+              <div className="mt-8 p-6 rounded-lg" style={{ background: 'rgba(255,179,0,0.05)', border: '1px solid rgba(255,179,0,0.15)' }}>
+                <h3 className="text-xl font-semibold mb-4" style={{ color: '#FFB300' }}>Google AdSense — How Advertising Cookies Work</h3>
+                <p className="mb-4">
+                  This website uses <strong>Google AdSense</strong>, a web advertising service provided by Google LLC (&quot;Google&quot;). Google AdSense uses cookies and web beacons to serve advertisements based on your prior visits to this website and other websites on the Internet.
+                </p>
+                <p className="mb-3 font-semibold" style={{ color: '#E8F4FD' }}>
+                  Specifically:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 mb-4">
+                  <li>Third-party vendors, including Google, use cookies to serve ads based on a user&apos;s prior visits to this website or other websites.</li>
+                  <li>Google&apos;s use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and/or other sites on the Internet.</li>
+                  <li>These cookies do not contain personally identifiable information, but they do track browsing behaviour across websites to build an advertising profile.</li>
+                  <li>Google may share this information with its advertising partners to serve personalised or non-personalised ads depending on your consent preferences.</li>
+                </ul>
+                <p className="mb-3 font-semibold" style={{ color: '#E8F4FD' }}>
+                  Your choices and opt-out options:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 mb-4">
+                  <li>
+                    You may opt out of personalised advertising by visiting{' '}
+                    <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#00E5FF' }}>
+                      Google Ads Settings
+                    </a>.
+                  </li>
+                  <li>
+                    You may opt out of a third-party vendor&apos;s use of cookies for personalised advertising by visiting the{' '}
+                    <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#00E5FF' }}>
+                      Network Advertising Initiative opt-out page
+                    </a>.
+                  </li>
+                  <li>
+                    For users in the European Economic Area, you may manage your consent preferences through our cookie consent banner when you first visit the site.
+                  </li>
+                  <li>
+                    You can also adjust your browser settings to block or delete cookies at any time. Note that disabling cookies may affect the functionality of some parts of this website.
+                  </li>
+                </ul>
+                <p>
+                  For more information about how Google collects and processes data, please visit{' '}
+                  <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#00E5FF' }}>
+                    Google&apos;s Privacy &amp; Terms page
+                  </a>.
+                </p>
+              </div>
             </section>
 
             <section>
