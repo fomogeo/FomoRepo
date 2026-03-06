@@ -13,7 +13,7 @@ export default function ProductGallery({ images, mainImage, productName }: Produ
   // Build full image list: main image first, then any additional images
   const allImages = [mainImage, ...images.filter(img => img !== mainImage)].filter(Boolean)
   // Deduplicate by normalizing URLs (some may differ only in size suffix)
-  const uniqueImages = [...new Set(allImages.map(img => img.replace(/\._.*_\./, '._AC_SL800_.')))]
+  const uniqueImages = Array.from(new Set(allImages.map(img => img.replace(/\._.*_\./, '._AC_SL800_.'))))
   
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [imgError, setImgError] = useState<Record<number, boolean>>({})
