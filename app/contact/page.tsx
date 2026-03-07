@@ -5,20 +5,13 @@ import { Mail, MessageSquare, Clock, Globe } from 'lucide-react'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setStatus('sending')
     
-    // For now, open mailto link as a simple solution
+    // Build mailto link with form data pre-filled
     const mailtoLink = `mailto:support@fomogeo.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`)}`
     window.location.href = mailtoLink
-    
-    setTimeout(() => {
-      setStatus('sent')
-      setFormData({ name: '', email: '', subject: '', message: '' })
-    }, 1000)
   }
 
   return (
@@ -109,17 +102,7 @@ export default function ContactPage() {
               <div className="rounded-xl p-8" style={{ background: '#0D2840', border: '1px solid rgba(0,212,200,0.2)' }}>
                 <h2 className="text-2xl font-bold mb-6" style={{ color: '#E8F4FD' }}>Send Us a Message</h2>
 
-                {status === 'sent' ? (
-                  <div className="text-center py-12">
-                    <div className="text-6xl mb-4">✅</div>
-                    <h3 className="text-2xl font-bold mb-3" style={{ color: '#00C853' }}>Message Sent!</h3>
-                    <p style={{ color: '#B8D4E8' }}>Thanks for reaching out. We'll get back to you within 24–48 hours.</p>
-                    <button onClick={() => setStatus('idle')} className="mt-6 px-6 py-2 rounded-lg font-semibold transition-all hover:scale-105" style={{ background: 'rgba(0,212,200,0.1)', color: '#00D4C8', border: '1px solid rgba(0,212,200,0.3)' }}>
-                      Send Another Message
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-sm font-semibold mb-2" style={{ color: '#B8D4E8' }}>Your Name</label>
@@ -138,14 +121,13 @@ export default function ContactPage() {
                       <label className="block text-sm font-semibold mb-2" style={{ color: '#B8D4E8' }}>Message</label>
                       <textarea required rows={6} value={formData.message} onChange={e => setFormData(prev => ({ ...prev, message: e.target.value }))} placeholder="Tell us what's on your mind..." className="w-full px-4 py-3 rounded-lg text-sm focus:outline-none resize-none" style={{ background: '#071828', border: '1px solid rgba(0,212,200,0.2)', color: '#E8F4FD' }} />
                     </div>
-                    <button type="submit" disabled={status === 'sending'} className="w-full py-4 rounded-lg font-bold text-lg transition-all hover:scale-105 disabled:opacity-50" style={{ background: 'linear-gradient(135deg, #FFB300, #FF8F00)', color: '#fff', boxShadow: '0 4px 15px rgba(255,179,0,0.3)' }}>
-                      {status === 'sending' ? 'Opening Email...' : 'Send Message'}
+                    <button type="submit" className="w-full py-4 rounded-lg font-bold text-lg transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #FFB300, #FF8F00)', color: '#fff', boxShadow: '0 4px 15px rgba(255,179,0,0.3)' }}>
+                      Open in Email Client
                     </button>
                     <p className="text-xs text-center" style={{ color: '#7EB8D8' }}>
-                      This will open your email client. You can also email us directly at <a href="mailto:support@fomogeo.com" className="underline" style={{ color: '#00D4C8' }}>support@fomogeo.com</a>
+                      This will open your email app with your message pre-filled. You can also email us directly at <a href="mailto:support@fomogeo.com" className="underline" style={{ color: '#00D4C8' }}>support@fomogeo.com</a>
                     </p>
                   </form>
-                )}
               </div>
             </div>
           </div>
