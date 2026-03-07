@@ -6,6 +6,68 @@ import { getProductById } from '@/lib/supabase'
 import { Tag, ExternalLink, Clock } from 'lucide-react'
 import ProductGallery from '@/components/ProductGallery'
 
+// Render product description markdown to styled HTML
+function descriptionToHtml(markdown: string): string {
+  if (!markdown) return ''
+  
+  let html = markdown
+  // Strip the ASIN tag from display
+  html = html.replace(/\[ASIN:\s*[A-Z0-9]+\]/g, '')
+  
+  // Headers
+  html = html.replace(/^## (.+)$/gm, '<div class="mt-8 mb-4 pb-2" style="border-bottom: 2px solid rgba(255,179,0,0.2);"><h2 class="text-xl font-bold" style="color: #FFB300;">$1</h2></div>')
+  
+  // Bold
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong style="color: #E8F4FD; font-weight: 700;">$1</strong>')
+  
+  // Italic
+  html = html.replace(/\*(.+?)\*/g, '<em style="color: #7EB8D8;">$1</em>')
+  
+  // Process lines
+  const lines = html.split('\n')
+  const processed: string[] = []
+  let inList = false
+  
+  for (const rawLine of lines) {
+    const line = rawLine.trim()
+    
+    const bulletMatch = line.match(/^- (.+)$/)
+    if (bulletMatch) {
+      if (!inList) {
+        processed.push('<div class="space-y-3 mb-6 ml-1">')
+        inList = true
+      }
+      processed.push(`<div class="flex gap-3 items-start p-3 rounded-lg" style="background: rgba(0,212,200,0.03); border: 1px solid rgba(0,212,200,0.08);"><span style="color: #00D4C8; font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 2px;">›</span><span class="text-sm leading-relaxed" style="color: #B8D4E8;">${bulletMatch[1]}</span></div>`)
+      continue
+    }
+    
+    if (inList) {
+      processed.push('</div>')
+      inList = false
+    }
+    
+    if (!line || line.startsWith('<')) {
+      processed.push(line)
+      continue
+    }
+    
+    processed.push(`<p class="mb-4 leading-relaxed" style="color: #B8D4E8;">${line}</p>`)
+  }
+  
+  if (inList) processed.push('</div>')
+  
+  return processed.join('\n')
+}
+
+// Extract first paragraph for the summary area
+function getDescriptionExcerpt(desc: string): string {
+  if (!desc) return ''
+  // Get everything before the first ## heading
+  const firstSection = desc.split(/\n##/)[0].trim()
+  // Strip markdown formatting for plain text
+  return firstSection.replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').replace(/\[ASIN:\s*[A-Z0-9]+\]/g, '').trim()
+}
+
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = await getProductById(params.id)
 
@@ -90,7 +152,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
                     ======================================== */}
                 {product.description ? (
                   <p className="text-lg mb-6 leading-relaxed" style={{ color: '#B8D4E6' }}>
-                    {product.description}
+                    {getDescriptionExcerpt(product.description)}
                   </p>
                 ) : (
                   <p className="text-lg mb-6 leading-relaxed" style={{ color: '#B8D4E6' }}>
@@ -170,18 +232,29 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
               </div>
             )}
 
-            {/* Why We Recommend Section */}
-            <div className="px-8 pb-8">
-              <div className="p-6 rounded-lg" style={{ background: 'rgba(255,179,0,0.05)', border: '1px solid rgba(255,179,0,0.2)' }}>
-                <h2 className="text-lg font-bold mb-3" style={{ color: '#FFB300' }}>Why We Recommend This Product</h2>
-                <div className="space-y-2 text-sm" style={{ color: '#B8D4E6' }}>
-                  <p>✓ <strong>Verified Quality:</strong> This product has been reviewed by our team and meets our standards for value and authenticity.</p>
-                  {hasDiscount && <p>✓ <strong>Genuine Discount:</strong> We've tracked the price history and confirmed this is a real {product.discount_percentage}% savings.</p>}
-                  {product.is_trending && <p>✓ <strong>High Demand:</strong> Currently trending due to customer popularity and positive reviews.</p>}
-                  <p>✓ <strong>Trusted Seller:</strong> Available from verified Amazon sellers with reliable shipping and customer service.</p>
+            {/* Full Editorial Description */}
+            {product.description && product.description.includes('##') && (
+              <div className="px-8 pb-8">
+                <div className="p-6 md:p-8 rounded-lg" style={{ background: 'rgba(13,40,64,0.3)', border: '1px solid rgba(0,212,200,0.15)' }}>
+                  <div dangerouslySetInnerHTML={{ __html: descriptionToHtml(product.description) }} />
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Fallback for products without rich descriptions */}
+            {(!product.description || !product.description.includes('##')) && (
+              <div className="px-8 pb-8">
+                <div className="p-6 rounded-lg" style={{ background: 'rgba(255,179,0,0.05)', border: '1px solid rgba(255,179,0,0.2)' }}>
+                  <h2 className="text-lg font-bold mb-3" style={{ color: '#FFB300' }}>Why We Recommend This Product</h2>
+                  <div className="space-y-2 text-sm" style={{ color: '#B8D4E6' }}>
+                    <p>✓ <strong>Verified Quality:</strong> This product has been reviewed by our team and meets our standards for value and authenticity.</p>
+                    {hasDiscount && <p>✓ <strong>Genuine Discount:</strong> We've tracked the price history and confirmed this is a real {product.discount_percentage}% savings.</p>}
+                    {product.is_trending && <p>✓ <strong>High Demand:</strong> Currently trending due to customer popularity and positive reviews.</p>}
+                    <p>✓ <strong>Trusted Seller:</strong> Available from verified Amazon sellers with reliable shipping and customer service.</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Price Disclaimer */}
