@@ -30,7 +30,7 @@ export default function Footer() {
               </a>
               
               {/* Facebook Icon */}
-              <a href="https://www.facebook.com/profile.php?id=61587989941776" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110" aria-label="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61582253331086" target="_blank" rel="noopener noreferrer" className="fg-footer-link-teal transition-all hover:scale-110" aria-label="Facebook">
                 <Facebook className="h-5 w-5" />
               </a>
               

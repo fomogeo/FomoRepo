@@ -3,31 +3,30 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import {
-  postToTwitter,
-  postToFacebook,
-  postToPinterest,
-  postToInstagram,
+  postToAllPlatforms,
   createProductPost,
+  createBlogPromotionPost,
+  createPriceDropPost,
+  createNewArrivalPost,
   generateHashtags,
 } from '@/lib/social-media/socialPoster'
 
 /**
  * AUTOMATIC SOCIAL MEDIA POSTING CRON JOB
  * 
- * This endpoint automatically posts to social media platforms.
- * 
- * Two modes:
- * 1. Process scheduled posts from queue
- * 2. Create and post new promotional content
+ * Posts to all Buffer-connected platforms (Facebook, Instagram, Pinterest)
+ * in a single API call.
  * 
  * Schedule: Once per day at 14:00 UTC (0 14 * * *)
- * Note: Vercel Hobby accounts allow max 1 run per day per cron job
  * 
- * Platforms supported:
- * - Twitter/X
- * - Facebook
- * - Pinterest
- * - Instagram
+ * Post type rotates daily:
+ * - Monday: Trending product
+ * - Tuesday: Blog post
+ * - Wednesday: Price drop alert
+ * - Thursday: New arrival
+ * - Friday: Trending product
+ * - Saturday: Blog post
+ * - Sunday: Best deal of the week
  */
 
 export async function GET(request: NextRequest) {
@@ -36,210 +35,240 @@ export async function GET(request: NextRequest) {
     const authHeader = request.headers.get('authorization')
     const querySecret = request.nextUrl.searchParams.get('secret')
     const cronSecret = process.env.CRON_SECRET
-    
+
     const isAuthorized = cronSecret && (
       authHeader === `Bearer ${cronSecret}` ||
       querySecret === cronSecret
     )
-    
+
     if (cronSecret && !isAuthorized) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    console.log('Starting social media posting...')
+    // Check Buffer is configured
+    if (!process.env.BUFFER_ACCESS_TOKEN) {
+      return NextResponse.json({
+        success: false,
+        error: 'BUFFER_ACCESS_TOKEN not set in environment variables',
+      }, { status: 500 })
+    }
+
+    console.log('Starting social media posting via Buffer...')
 
     const results = {
-      queueProcessed: 0,
-      newPosts: 0,
+      posted: false,
+      postType: '',
+      platforms: '',
       errors: [] as string[],
     }
 
-    // Step 1: Process scheduled posts from queue
-    const queueResults = await processScheduledPosts()
-    results.queueProcessed = queueResults.posted
-    results.errors.push(...queueResults.errors)
+    // Determine what to post based on day of week
+    const dayOfWeek = new Date().getDay() // 0=Sun, 1=Mon, ...
+    
+    try {
+      switch (dayOfWeek) {
+        case 1: // Monday - Trending product
+        case 5: // Friday - Trending product
+          await postTrendingProduct(results)
+          break
+        case 2: // Tuesday - Blog post
+        case 6: // Saturday - Blog post
+          await postRecentBlog(results)
+          break
+        case 3: // Wednesday - Price drop
+          await postPriceDrop(results)
+          break
+        case 4: // Thursday - New arrival
+          await postNewProducts(results)
+          break
+        case 0: // Sunday - Best deal of the week
+          await postBestDeal(results)
+          break
+      }
+    } catch (error: any) {
+      results.errors.push(error.message)
+      console.error('Posting failed:', error.message)
+    }
 
-    // Step 2: Create new promotional posts if needed
-    const newPostResults = await createAutomaticPosts()
-    results.newPosts = newPostResults.created
-    results.errors.push(...newPostResults.errors)
+    // Log to social_media_queue for tracking
+    if (results.posted) {
+      try {
+        await supabaseAdmin.from('social_media_queue').insert({
+          platform: 'buffer',
+          content: `[${results.postType}] Posted to: ${results.platforms}`,
+          status: 'posted',
+          posted_at: new Date().toISOString(),
+          scheduled_for: new Date().toISOString(),
+        })
+      } catch (e) {
+        // Don't fail the whole request if logging fails
+        console.error('Failed to log to queue:', e)
+      }
+    }
 
     console.log('Social media posting completed:', results)
 
     return NextResponse.json({
-      success: true,
-      message: 'Social media posting completed',
+      success: results.posted,
+      message: results.posted ? 'Posted successfully to all platforms' : 'No content to post',
       results,
       timestamp: new Date().toISOString(),
     })
   } catch (error: any) {
     console.error('Error in social media posting:', error)
-    return NextResponse.json(
-      { 
-        error: 'Failed to post to social media',
-        details: error.message,
-      },
-      { status: 500 }
-    )
+    return NextResponse.json({
+      error: 'Failed to post to social media',
+      details: error.message,
+    }, { status: 500 })
   }
 }
 
-async function processScheduledPosts() {
-  const results = { posted: 0, errors: [] as string[] }
-
-  try {
-    const { data: pendingPosts, error } = await supabaseAdmin
-      .from('social_media_queue')
-      .select('*')
-      .eq('status', 'pending')
-      .lte('scheduled_for', new Date().toISOString())
-      .limit(10)
-
-    if (error) throw error
-    if (!pendingPosts || pendingPosts.length === 0) {
-      console.log('No pending social media posts')
-      return results
-    }
-
-    for (const post of pendingPosts) {
-      try {
-        let result
-        const socialPost = {
-          platform: post.platform,
-          content: post.content,
-          url: post.url,
-          imageUrl: post.image_url,
-        }
-
-        switch (post.platform) {
-          case 'twitter': result = await postToTwitter(socialPost as any); break
-          case 'facebook': result = await postToFacebook(socialPost as any); break
-          case 'pinterest': result = await postToPinterest(socialPost as any); break
-          case 'instagram': result = await postToInstagram(socialPost as any); break
-          default: throw new Error(`Unsupported platform: ${post.platform}`)
-        }
-
-        await supabaseAdmin
-          .from('social_media_queue')
-          .update({ status: 'posted', posted_at: new Date().toISOString(), post_id: (result as any).postId })
-          .eq('id', post.id)
-
-        results.posted++
-      } catch (error: any) {
-        await supabaseAdmin
-          .from('social_media_queue')
-          .update({ status: 'failed', error_message: error.message })
-          .eq('id', post.id)
-        results.errors.push(`${post.platform}: ${error.message}`)
-      }
-    }
-  } catch (error: any) {
-    results.errors.push(`Queue processing: ${error.message}`)
-  }
-
-  return results
-}
-
-async function createAutomaticPosts() {
-  const results = { created: 0, errors: [] as string[] }
-
-  try {
-    const postType = determinePostType()
-
-    switch (postType) {
-      case 'trending-product': await postTrendingProduct(results); break
-      case 'price-drop': await postPriceDrop(results); break
-      case 'new-products': await postNewProducts(results); break
-      case 'blog-post': await postRecentBlog(results); break
-      default: console.log('No automatic post created this cycle')
-    }
-  } catch (error: any) {
-    results.errors.push(`Auto-post creation: ${error.message}`)
-  }
-
-  return results
-}
-
-function determinePostType(): string {
-  const hour = new Date().getHours()
-  if (hour >= 6 && hour < 10) return 'trending-product'
-  if (hour >= 12 && hour < 14) return 'price-drop'
-  if (hour >= 18 && hour < 20) return 'new-products'
-  if (hour >= 21 && hour < 23) return 'blog-post'
-  return 'none'
-}
-
+/**
+ * Post a trending product to all platforms
+ */
 async function postTrendingProduct(results: any) {
   const { data: products } = await supabaseAdmin
-    .from('products').select('*').eq('is_trending', true)
-    .order('created_at', { ascending: false }).limit(1)
+    .from('products')
+    .select('*')
+    .eq('is_trending', true)
+    .order('updated_at', { ascending: false })
+    .limit(5)
 
-  if (!products || products.length === 0) return
-  const product = products[0]
+  if (!products || products.length === 0) {
+    console.log('No trending products found')
+    return
+  }
+
+  // Pick a random one from the top 5 for variety
+  const product = products[Math.floor(Math.random() * products.length)]
   const post = createProductPost(product)
 
-  try {
-    await postToTwitter(post as any)
-    results.created++
-  } catch (error: any) {
-    results.errors.push(`Trending product: ${error.message}`)
-  }
+  console.log(`Posting trending product: ${product.name}`)
+  const result = await postToAllPlatforms(post)
+  
+  results.posted = true
+  results.postType = 'Trending Product'
+  results.platforms = result.postedTo
 }
 
+/**
+ * Post a price drop alert to all platforms
+ */
 async function postPriceDrop(results: any) {
   const { data: products } = await supabaseAdmin
-    .from('products').select('*').gte('discount_percentage', 20)
-    .order('updated_at', { ascending: false }).limit(1)
+    .from('products')
+    .select('*')
+    .gte('discount_percentage', 15)
+    .order('discount_percentage', { ascending: false })
+    .limit(5)
 
-  if (!products || products.length === 0) return
-  const product = products[0]
-  const content = `🚨 PRICE DROP ALERT! 🚨\n\n${product.name}\n\n💰 ${product.discount_percentage}% OFF\nNow: $${product.price}\nWas: $${product.original_price}\n\nGrab it while you can! 👇`
-
-  try {
-    await postToTwitter({ platform: 'twitter', content, url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${product.id}`, imageUrl: product.image_url, hashtags: ['deal', 'sale'] } as any)
-    results.created++
-  } catch (error: any) {
-    results.errors.push(`Price drop: ${error.message}`)
+  if (!products || products.length === 0) {
+    // Fallback to any trending product
+    await postTrendingProduct(results)
+    return
   }
+
+  const product = products[Math.floor(Math.random() * products.length)]
+  const post = createPriceDropPost(product)
+
+  console.log(`Posting price drop: ${product.name} (${product.discount_percentage}% off)`)
+  const result = await postToAllPlatforms(post)
+
+  results.posted = true
+  results.postType = 'Price Drop'
+  results.platforms = result.postedTo
 }
 
+/**
+ * Post about new products to all platforms
+ */
 async function postNewProducts(results: any) {
-  const threeDaysAgo = new Date()
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
+  const sevenDaysAgo = new Date()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
   const { data: products } = await supabaseAdmin
-    .from('products').select('*').gte('created_at', threeDaysAgo.toISOString())
-    .order('created_at', { ascending: false }).limit(1)
+    .from('products')
+    .select('*')
+    .gte('created_at', sevenDaysAgo.toISOString())
+    .order('created_at', { ascending: false })
+    .limit(5)
 
-  if (!products || products.length === 0) return
-  const product = products[0]
-  const content = `✨ NEW ARRIVAL!\n\n${product.name}\n\n${product.description?.substring(0, 100)}...\n\nCheck it out! 👇`
-
-  try {
-    await postToTwitter({ platform: 'twitter', content, url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${product.id}`, imageUrl: product.image_url, hashtags: generateHashtags(product.name, product.category) } as any)
-    results.created++
-  } catch (error: any) {
-    results.errors.push(`New product: ${error.message}`)
+  if (!products || products.length === 0) {
+    await postTrendingProduct(results)
+    return
   }
+
+  const product = products[Math.floor(Math.random() * products.length)]
+  const post = createNewArrivalPost(product)
+
+  console.log(`Posting new arrival: ${product.name}`)
+  const result = await postToAllPlatforms(post)
+
+  results.posted = true
+  results.postType = 'New Arrival'
+  results.platforms = result.postedTo
 }
 
+/**
+ * Post a recent blog article to all platforms
+ */
 async function postRecentBlog(results: any) {
-  const threeDaysAgo = new Date()
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { data: posts } = await supabaseAdmin
-    .from('blog_posts').select('*').eq('is_published', true)
-    .gte('published_at', threeDaysAgo.toISOString())
-    .order('published_at', { ascending: false }).limit(1)
+    .from('blog_posts')
+    .select('*')
+    .eq('is_published', true)
+    .gte('published_at', thirtyDaysAgo.toISOString())
+    .order('published_at', { ascending: false })
+    .limit(5)
 
-  if (!posts || posts.length === 0) return
-  const post = posts[0]
-  const content = `📝 Latest from the blog:\n\n${post.title}\n\nRead it here! 👇`
-
-  try {
-    await postToTwitter({ platform: 'twitter', content, url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`, imageUrl: post.featured_image, hashtags: post.tags?.slice(0, 3) || ['blog'] } as any)
-    results.created++
-  } catch (error: any) {
-    results.errors.push(`Blog post: ${error.message}`)
+  if (!posts || posts.length === 0) {
+    // Fallback to trending product if no recent blogs
+    await postTrendingProduct(results)
+    return
   }
+
+  const blogPost = posts[Math.floor(Math.random() * posts.length)]
+  const post = createBlogPromotionPost(blogPost)
+
+  console.log(`Posting blog: ${blogPost.title}`)
+  const result = await postToAllPlatforms(post)
+
+  results.posted = true
+  results.postType = 'Blog Post'
+  results.platforms = result.postedTo
+}
+
+/**
+ * Post the best deal of the week (Sunday special)
+ */
+async function postBestDeal(results: any) {
+  const { data: products } = await supabaseAdmin
+    .from('products')
+    .select('*')
+    .gte('discount_percentage', 10)
+    .order('discount_percentage', { ascending: false })
+    .limit(1)
+
+  if (!products || products.length === 0) {
+    await postTrendingProduct(results)
+    return
+  }
+
+  const product = products[0]
+  const post: any = {
+    content: `🏆 DEAL OF THE WEEK\n\n${product.name}\n\n💰 ${product.discount_percentage}% OFF — Just $${product.price}\n\nOur top pick this week. Verified and recommended by the FomoGeo team.\n\nDon't miss out! 👇`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://fomogeo.com'}/products/${product.id}`,
+    imageUrl: product.image_url,
+    hashtags: ['FomoGeo', 'DealOfTheWeek', 'BestDeals', product.category?.replace(/[&\s]+/g, '') || 'deals'],
+  }
+
+  console.log(`Posting deal of the week: ${product.name}`)
+  const result = await postToAllPlatforms(post)
+
+  results.posted = true
+  results.postType = 'Deal of the Week'
+  results.platforms = result.postedTo
 }
