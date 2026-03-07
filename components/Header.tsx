@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Tag, FileText, Grid3x3 } from 'lucide-react'
+import { Tag, FileText, Grid3x3, Users, Mail } from 'lucide-react'
 import LiveClock from './LiveClock'
 
 export default function Header() {
@@ -14,57 +14,56 @@ export default function Header() {
         boxShadow: '0 4px 30px rgba(0,0,0,0.5)',
       }}
     >
+      {/* Top Row: Logo + Clock + CTA */}
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 gap-4">
+        <div className="flex items-center justify-between h-14">
           
-          {/* Left Section: Logo + Clock */}
-          <div className="flex items-center gap-6 shrink-0">
-            {/* Logo - Links to Homepage */}
-            <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-              <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-11 w-auto" priority />
-            </Link>
-            
-            {/* ========================================
-                FIX: Hide clock CONTAINER on mobile
-                Added "hidden md:flex" to container div
-                ======================================== */}
-            <div 
-              className="hidden md:flex items-center clock-container"
-              style={{
-                minWidth: '180px',
-                flex: '0 0 auto'
-              }}
-            >
-              <LiveClock />
-            </div>
+          {/* Logo */}
+          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity shrink-0">
+            <Image src="/logo.png" alt="FomoGeo" width={160} height={55} className="h-10 w-auto" priority />
+          </Link>
+
+          {/* Clock - desktop only */}
+          <div className="hidden md:flex items-center clock-container" style={{ minWidth: '180px', flex: '0 0 auto' }}>
+            <LiveClock />
           </div>
-          
-          {/* Navigation */}
-          <nav className="flex items-center space-x-2 md:space-x-4 shrink-0">
-            <Link href="/categories" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
-              <Grid3x3 className="h-4 w-4" />
-              <span className="hidden sm:inline">Categories</span>
-            </Link>
-            <Link href="/deals" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
-              <Tag className="h-4 w-4" />
-              <span className="hidden sm:inline">Deals</span>
-            </Link>
-            <Link href="/blog" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
-              <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">Blog</span>
-            </Link>
-            <Link href="/about" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
-              <span className="hidden md:inline">About</span>
-            </Link>
-            <Link href="/contact" className="fg-nav-link flex items-center space-x-1 font-semibold text-sm px-2 py-1 rounded-lg hover:bg-white/5">
-              <span className="hidden md:inline">Contact</span>
-            </Link>
-            <Link href="/#email-signup" className="btn-gold px-4 py-2 text-sm whitespace-nowrap">
-              🔥 Get Deals
-            </Link>
-          </nav>
+
+          {/* Get Deals CTA */}
+          <Link href="/#email-signup" className="btn-gold px-4 py-2 text-sm whitespace-nowrap shrink-0">
+            🔥 Get Deals
+          </Link>
         </div>
       </div>
+
+      {/* Thin separator */}
+      <div style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(0,212,200,0.15), transparent)' }} />
+
+      {/* Bottom Row: Navigation */}
+      <div className="container mx-auto px-4">
+        <nav className="flex items-center justify-center gap-1 sm:gap-2 h-11 overflow-x-auto">
+          <Link href="/categories" className="fg-nav-link flex items-center gap-1.5 font-semibold text-sm px-3 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap">
+            <Grid3x3 className="h-4 w-4" />
+            <span>Categories</span>
+          </Link>
+          <Link href="/deals" className="fg-nav-link flex items-center gap-1.5 font-semibold text-sm px-3 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap">
+            <Tag className="h-4 w-4" />
+            <span>Deals</span>
+          </Link>
+          <Link href="/blog" className="fg-nav-link flex items-center gap-1.5 font-semibold text-sm px-3 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap">
+            <FileText className="h-4 w-4" />
+            <span>Blog</span>
+          </Link>
+          <Link href="/about" className="fg-nav-link flex items-center gap-1.5 font-semibold text-sm px-3 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap">
+            <Users className="h-4 w-4" />
+            <span>About</span>
+          </Link>
+          <Link href="/contact" className="fg-nav-link flex items-center gap-1.5 font-semibold text-sm px-3 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap">
+            <Mail className="h-4 w-4" />
+            <span>Contact</span>
+          </Link>
+        </nav>
+      </div>
+
       <SeasonalBanner />
     </header>
   )

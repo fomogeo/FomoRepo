@@ -5,6 +5,21 @@ import { getBlogPostBySlug } from '@/lib/supabase'
 import Link from 'next/link'
 import { Calendar, Clock, ArrowLeft, Tag } from 'lucide-react'
 
+// Sanitize HTML to prevent XSS — strips dangerous tags and attributes
+function sanitizeHtml(html: string): string {
+  // Remove script tags and their content
+  let safe = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+  // Remove event handlers (onclick, onerror, onload, etc.)
+  safe = safe.replace(/\s+on\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]*)/gi, '')
+  // Remove javascript: URLs
+  safe = safe.replace(/href\s*=\s*["']javascript:[^"']*["']/gi, 'href="#"')
+  // Remove iframe, object, embed, form tags
+  safe = safe.replace(/<\/?(?:iframe|object|embed|form|input|button|textarea)\b[^>]*>/gi, '')
+  // Remove style attributes that could hide content
+  safe = safe.replace(/\s+style\s*=\s*(?:"[^"]*"|'[^']*')/gi, '')
+  return safe
+}
+
 // Convert markdown to styled HTML matching the site's dark theme
 function markdownToHtml(markdown: string): string {
   let html = markdown
@@ -105,7 +120,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     : 'Draft'
 
   const readTime = Math.ceil(post.content.split(' ').length / 200)
-  const htmlContent = markdownToHtml(post.content)
+  const htmlContent = sanitizeHtml(markdownToHtml(post.content))
 
   return (
     <div className="min-h-screen" style={{ background: '#071828' }}>
