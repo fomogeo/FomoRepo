@@ -145,7 +145,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
 
                 {/* Trust Signal */}
                 <p className="text-xs text-center mt-4" style={{ color: '#7EB8D8' }}>
-                  ✓ Verified seller | ✓ Secure Amazon checkout | ✓ Amazon customer service
+                  ✓ Curated by Michael & the FomoGeo Team | ✓ Secure Amazon checkout | ✓ Amazon customer service
                 </p>
               </div>
             </div>

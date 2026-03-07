@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <Clock className="h-4 w-4" style={{ color: '#00D4C8' }} /> {readTime} min read
             </span>
             <span className="flex items-center gap-2">
-              <Tag className="h-4 w-4" style={{ color: '#00C853' }} /> By {post.author || 'FomoGeo Team'}
+              <Tag className="h-4 w-4" style={{ color: '#00C853' }} /> By Michael, FomoGeo
             </span>
           </div>
         </div>
@@ -192,6 +192,25 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
             {/* Rendered content */}
             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+
+            {/* Author Bio Card */}
+            <div className="mt-12 pt-8" style={{ borderTop: '2px solid rgba(255,179,0,0.15)' }}>
+              <div className="flex flex-col sm:flex-row gap-5 items-start p-6 rounded-xl" style={{ background: 'rgba(255,179,0,0.04)', border: '1px solid rgba(255,179,0,0.15)' }}>
+                <div className="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shrink-0" style={{ background: 'linear-gradient(135deg, #FFB300, #FF8F00)', color: '#071828' }}>
+                  M
+                </div>
+                <div>
+                  <h4 className="text-lg font-bold" style={{ color: '#FFB300' }}>Michael</h4>
+                  <p className="text-sm font-semibold mb-2" style={{ color: '#00D4C8' }}>Founder & Deals Editor at FomoGeo</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#B8D4E8' }}>
+                    Michael is the founder of FomoGeo and personally oversees every deal and article on the site. 
+                    He researches prices, reads customer reviews, and verifies discounts to ensure you only see products 
+                    that are genuinely worth your money. Have a question or deal suggestion? {' '}
+                    <a href="/contact" className="underline" style={{ color: '#00D4C8' }}>Get in touch</a>.
+                  </p>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>

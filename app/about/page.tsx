@@ -34,23 +34,35 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold mb-6" style={{ color: '#00D4C8' }}>Our Story</h2>
             <div className="space-y-5 text-lg leading-relaxed" style={{ color: '#B8D4E8' }}>
               <p>
-                FomoGeo was born from a simple frustration: <strong style={{ color: '#E8F4FD' }}>most "deal" sites are just noise</strong>. Endless product listings with fake discounts, zero context, and no genuine curation. We knew there had to be a better way to help people find products that are actually worth buying.
+                FomoGeo was founded by <strong style={{ color: '#FFB300' }}>Michael</strong> from a simple frustration: <strong style={{ color: '#E8F4FD' }}>most "deal" sites are just noise</strong>. Endless product listings with fake discounts, zero context, and no genuine curation. There had to be a better way to help people find products that are actually worth buying.
               </p>
               <p>
-                We started FomoGeo as a passion project — a place where every single product is <strong style={{ color: '#E8F4FD' }}>hand-reviewed, price-verified, and chosen because it genuinely offers value</strong>. Not because someone paid us to list it. Not because an algorithm decided it was "trending." Because a real person looked at it and thought: <em style={{ color: '#FFB300' }}>"This is a genuinely good deal."</em>
+                As someone who spent years researching products before every purchase — comparing prices, reading reviews, checking price history — Michael built FomoGeo to do that work for everyone. A place where every single product is <strong style={{ color: '#E8F4FD' }}>hand-reviewed, price-verified, and chosen because it genuinely offers value</strong>. Not because someone paid us to list it. Not because an algorithm decided it was "trending." Because a real person looked at it and thought: <em style={{ color: '#FFB300' }}>"This is a genuinely good deal."</em>
               </p>
               <p>
-                Today, we monitor thousands of products across 30 categories daily, covering everything from electronics and home essentials to fashion and outdoor gear. We serve deal-hunters from over 50 countries, with affiliate links properly routed to regional Amazon stores so you always get the best local pricing.
+                Today, FomoGeo monitors thousands of products across 30 categories daily, covering everything from electronics and home essentials to fashion and outdoor gear. We serve deal-hunters from over 50 countries, with affiliate links properly routed to regional Amazon stores so you always get the best local pricing.
               </p>
               <p>
                 We're proudly independent. Our recommendations are based on research, customer reviews, and price history analysis — never paid placement. When you buy through our links, we earn a small commission from Amazon at no extra cost to you. That's how we keep the lights on while keeping our recommendations honest.
               </p>
             </div>
           </div>
+
+          {/* Meet the Founder */}
+          <div className="mt-8 rounded-xl p-6 md:p-8 flex flex-col sm:flex-row gap-6 items-start" style={{ background: 'rgba(255,179,0,0.04)', border: '1px solid rgba(255,179,0,0.2)' }}>
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold shrink-0" style={{ background: 'linear-gradient(135deg, #FFB300, #FF8F00)', color: '#071828' }}>
+              M
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-1" style={{ color: '#FFB300' }}>Michael</h3>
+              <p className="text-sm font-semibold mb-3" style={{ color: '#00D4C8' }}>Founder & Deals Editor</p>
+              <p className="leading-relaxed" style={{ color: '#B8D4E8' }}>
+                Michael is the founder and lead deals editor at FomoGeo. With a passion for finding genuine value and a sharp eye for spotting inflated "discounts," he personally oversees the product curation process — researching prices, reading customer reviews, and verifying every deal before it goes live. His goal is simple: help people spend smarter by cutting through the noise of fake deals and low-quality recommendations.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
-
-      {/* How We Pick Deals */}
       <section className="py-16" style={{ background: '#0B1E30' }}>
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-4" style={{ color: '#E8F4FD' }}>
